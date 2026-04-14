@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback | Kalashree Sangeet Gurukul</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="teacher-common.css" />
+  <link rel="stylesheet" href="teacher-feedback.css" />
+
+</head>
+<body>
+
+<div class="page">
+
+  <div class="main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Feedback</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+      <div class="topbar-right">
+        <p class="today-date">18 March 2026</p>
+        <p class="today-day">Wednesday</p>
+      </div>
+    </div>
+
+    <!-- SECTION 1 - WRITE FEEDBACK -->
+    <h2 class="section-title">Write Guru Note</h2>
+
+    <!-- Info bar -->
+    <div class="info-bar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B5572A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 20h9"></path>
+        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+      </svg>
+      <p class="info-text">
+        Write a personal note for a student after today's class. Students can view their notes on their dashboard.
+      </p>
+    </div>
+
+    <!-- Feedback form -->
+    <div class="feedback-form-wrap">
+
+      <!-- Student selector -->
+      <div class="form-field">
+        <label class="form-label">Select Student</label>
+        <select class="form-select" id="selectStudent">
+          <option value="">— Choose a student —</option>
+          <option value="ALL">All Students (Global Task / Prep)</option>
+        </select>
+      </div>
+
+      <!-- Note textarea -->
+      <div class="form-field">
+        <label class="form-label">Guru Note</label>
+        <textarea
+          class="form-textarea"
+          id="noteText"
+          placeholder="Write your feedback here — e.g. Your taan in Raag Bhoopali is improving. Focus on the upper octave..."
+          rows="5"
+        ></textarea>
+      </div>
+
+      <!-- Submit button and success message -->
+      <div class="form-bottom">
+        <p class="form-success" id="formSuccess" style="display: none;">
+          &#10003; Note saved successfully for the student.
+        </p>
+        <button class="submit-btn" onclick="submitNote()">Save Note</button>
+      </div>
+
+    </div>
+    <!-- end feedback form -->
+
+
+    <!-- SECTION 2 - PREVIOUS NOTES -->
+    <h2 class="section-title">Previous Notes</h2>
+
+    <div class="notes-list" id="previousNotesContainer">
+      <p style="padding: 20px; color: #666;">Loading previous notes...</p>
+    </div>
+    <!-- end notes list -->
+
+  </div>
+  <!-- end main -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet Gurukul</p>
+    </div>
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Teacher</p>
+        <p class="profile-role">Teacher</p>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="teacher-dashboard.html" class="nav-link">Dashboard</a>
+      <a href="teacher-students.html" class="nav-link">Student Management</a>
+      <a href="teacher-attendance.html" class="nav-link">Attendance</a>
+      <a href="teacher-fee.html" class="nav-link">Fee Management</a>
+      <a href="teacher-homework.html" class="nav-link">Review Practice</a>
+      <a href="teacher-feedback.html" class="nav-link active">Feedback</a>
+      <a href="teacher-events.html" class="nav-link">Events</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="teacher-feedback.js"></script>
+<script src="auth-ui.js"></script>
+</body>
+</html>

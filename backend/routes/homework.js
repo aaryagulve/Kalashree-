@@ -1,0 +1,141 @@
+const express  = require('express');
+const router   = express.Router();
+const multer   = require('multer');
+const path     = require('path');
+const fs       = require('fs');
+const Homework = require('../models/Homework');
+
+// ── Audio folder: backend/uploads/audio ──────────────────
+// __dirname = backend/routes, so go up one level
+const audioDir = path.join(__dirname, '..', 'uploads', 'audio');
+if (!fs.existsSync(audioDir)) fs.mkdirSync(audioDir, { recursive: true });
+
+// ── Multer ────────────────────────────────────────────────
+const audioUpload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => cb(null, audioDir),
+    filename:    (req, file, cb) => {
+      const ext = path.extname(file.originalname).toLowerCase() || '.mp3';
+      cb(null, 'audio-' + Date.now() + ext);
+    }
+  }),
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB
+  fileFilter: (req, file, cb) => {
+    // Accept anything the browser labels as audio or video/mp4
+    if (file.mimetype.startsWith('audio/') || file.mimetype === 'video/mp4') {
+      cb(null, true);
+    } else {
+      cb(new Error('Only audio files are allowed (MP3, WAV, M4A, MP4)'));
+    }
+  }
+});
+
+// ── POST /api/homework/submit ─────────────────────────────
+// Handles both file upload (FormData) and link (JSON)
+router.post('/submit', audioUpload.single('audioFile'), async (req, res) => {
+  try {
+    const { studentId, title, fileUrl, submissionType } = req.body;
+
+    if (!studentId || !title) {
+      return res.status(400).json({ message: 'studentId and title are required' });
+    }
+
+    // Determine type: if a file was received → upload, else → link
+    const type = req.file ? 'upload' : (submissionType || 'link');
+
+    if (type === 'link' && !fileUrl) {
+      return res.status(400).json({ message: 'Please provide an audio/video link' });
+    }
+
+    const homework = new Homework({
+      studentId,
+      title,
+      fileUrl:        type === 'link'   ? (fileUrl || '') : '',
+      audioFilePath:  type === 'upload' ? req.file.filename : '',
+      submissionType: type
+    });
+
+    await homework.save();
+
+    // Only count as a practice session if an actual audio file was uploaded
+    if (type === 'upload' && req.file) {
+      const User = require('../models/User');
+      const student = await User.findById(studentId);
+      if (student) {
+        const today = new Date(); today.setHours(0,0,0,0);
+        const alreadyToday = (student.practiceHistory || []).some(d => {
+          const pd = new Date(d); pd.setHours(0,0,0,0);
+          return pd.getTime() === today.getTime();
+        });
+        if (!alreadyToday) {
+          // Update streak
+          let streak = student.practiceStreak || 0;
+          if (student.lastPracticeDate) {
+            const last = new Date(student.lastPracticeDate); last.setHours(0,0,0,0);
+            const diff = Math.round((today - last) / (1000*60*60*24));
+            streak = diff === 1 ? streak + 1 : 1;
+          } else {
+            streak = 1;
+          }
+          student.practiceStreak    = streak;
+          student.lastPracticeDate  = new Date();
+          student.practiceHistory   = [...(student.practiceHistory || []), new Date()];
+          await student.save();
+        }
+      }
+    }
+
+    res.status(201).json({ message: 'Practice submitted successfully', homework });
+
+  } catch (err) {
+    console.error('Homework submit error:', err.message);
+    res.status(500).json({ message: err.message || 'Server error' });
+  }
+});
+
+// ── GET /api/homework/student/:studentId ──────────────────
+router.get('/student/:studentId', async (req, res) => {
+  try {
+    const homework = await Homework.find({ studentId: req.params.studentId }).sort({ submittedAt: -1 });
+    res.json(homework);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// ── GET /api/homework ─────────────────────────────────────
+// Teacher view — ?filter=pending|reviewed|all
+router.get('/', async (req, res) => {
+  try {
+    const filter = req.query.filter || 'pending';
+    let query = {};
+    if (filter === 'pending')  query = { isReviewed: false };
+    if (filter === 'reviewed') query = { isReviewed: true };
+    const homework = await Homework.find(query)
+      .populate('studentId', 'name email ragaLevel')
+      .sort({ submittedAt: -1 });
+    res.json(homework);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// ── PUT /api/homework/:id/feedback ────────────────────────
+router.put('/:id/feedback', async (req, res) => {
+  try {
+    const homework = await Homework.findById(req.params.id);
+    if (!homework) return res.status(404).json({ message: 'Homework not found' });
+
+    homework.teacherFeedback = req.body.feedback;
+    homework.status     = 'Reviewed';
+    homework.isReviewed = true;
+    homework.reviewedAt = new Date();
+    await homework.save();
+
+    res.json({ message: 'Feedback added successfully', homework });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+module.exports = router;

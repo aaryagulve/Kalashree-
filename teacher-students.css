@@ -1,0 +1,432 @@
+/* Kalashree Sangeet Gurukul — Student Management */
+
+
+/* ── TOPBAR RIGHT ── */
+
+.topbar-right { text-align: right; }
+.today-date { font-size: 14px; font-weight: 600; color: #3F1A12; }
+.today-day { font-size: 12px; color: #D4A017; margin-top: 2px; font-weight: 500; }
+
+
+/* ── TOOLBAR ── */
+
+.students-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 8px;
+  padding: 9px 16px;
+  width: 280px;
+  box-shadow: 
+    0 4px 12px rgba(63, 26, 18, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.08);
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.search-wrap:focus-within {
+  box-shadow: 
+    0 8px 24px rgba(63, 26, 18, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 2px rgba(181, 87, 42, 0.2);
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.search-icon { color: #B0907A; flex-shrink: 0; }
+
+.search-input {
+  border: none;
+  outline: none;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13.5px;
+  color: #231007;
+  background: transparent;
+  width: 100%;
+}
+
+.search-input::placeholder { color: #C4AA96; }
+
+.student-count {
+  font-size: 13px;
+  color: #8C6A52;
+  background: #ffffff;
+  border: 1.5px solid #E8D5BC;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 500;
+}
+
+
+/* ── STUDENTS TABLE ── */
+
+.students-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead tr { background: #FDF6EE; }
+
+th {
+  padding: 13px 18px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8C6A52;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1.5px solid #E8D5BC;
+}
+
+td {
+  padding: 14px 18px;
+  color: #231007;
+  border-bottom: 1px solid #F5EDE0;
+  vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #FFFAF6; }
+
+.td-muted { color: #8C6A52; font-size: 13px; }
+.td-fee { font-weight: 600; color: #3D1A08; }
+
+
+/* ── STUDENT CELL ── */
+
+.student-cell { display: flex; align-items: center; gap: 12px; }
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.av-blue   { background: #E3F0FB; color: #1565C0; }
+.av-green  { background: #E6F4EA; color: #2E7D32; }
+.av-amber  { background: #FFF8E1; color: #E65100; }
+.av-purple { background: #EDE7F6; color: #4527A0; }
+.av-coral  { background: #FBE9E7; color: #BF360C; }
+
+.student-name { font-size: 14px; font-weight: 600; color: #231007; margin-bottom: 2px; }
+.student-email { font-size: 11.5px; color: #B0907A; }
+
+
+/* ── BADGES ── */
+
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.badge-regular  { background: #F5EDE0; color: #7A4A2A; border: 1px solid #E8D5BC; }
+.badge-gurukul  { background: #FBE9E0; color: #B5572A; border: 1px solid #E8C5B0; }
+.badge-active   { background: #E6F4EA; color: #2E7D32; }
+.badge-inactive { background: #FEEBEE; color: #C62828; }
+
+
+/* ── VIEW PROGRESS LINK ── */
+
+/* Simple anchor link - no button needed */
+.progress-link {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2C1608;
+  text-decoration: none;
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.15), rgba(212, 160, 23, 0.08));
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  padding: 6px 14px;
+  border-radius: 6px;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.progress-link:hover {
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.25), rgba(212, 160, 23, 0.15));
+  border-color: #D4A017;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 160, 23, 0.15);
+}
+
+
+/* ── ADD STUDENT CARD ── */
+
+.add-student-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 
+    0 12px 36px rgba(63, 26, 18, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.1);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+}
+
+.add-student-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 16px 42px rgba(63, 26, 18, 0.07),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.15);
+}
+
+.add-student-form {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-group label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #8C6A52;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #E8D5BC;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  outline: none;
+  background: white;
+}
+
+.form-group input:focus {
+  border-color: #B5572A;
+}
+
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap input {
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #B5572A;
+  cursor: pointer;
+  background: white;
+}
+
+.form-submit {
+  flex-shrink: 0;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #D4A017, #B5872A);
+  color: #2C1608;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 20px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(212, 160, 23, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #E0B020, #C4962E);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(212, 160, 23, 0.4);
+}
+
+
+/* ── NO RESULTS ── */
+
+.no-results {
+  padding: 36px;
+  text-align: center;
+  color: #B0907A;
+  font-size: 14px;
+  font-style: italic;
+}
+
+
+/* ── PROGRESS CARDS ── */
+
+/* Stack all student progress cards vertically */
+.progress-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-bottom: 32px;
+}
+
+/* Each student progress card */
+.progress-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
+  backdrop-filter: blur(20px);
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+  box-shadow: 
+    0 10px 30px rgba(63, 26, 18, 0.03),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.08);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+}
+
+.progress-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 16px 40px rgba(63, 26, 18, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.15);
+}
+
+/* Header of progress card - student name and batch */
+.progress-card-header {
+  background: #FDF6EE;
+  padding: 14px 20px;
+  border-bottom: 1px solid #E8D5BC;
+}
+
+/* Raga list inside card */
+.raga-list {
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Each raga row */
+.raga-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.raga-row:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 10px rgba(63, 26, 18, 0.03);
+}
+
+/* Background color per status */
+.raga-row.mastered   { background: #EAF3DE; }
+.raga-row.practicing { background: #E3F0FB; }
+.raga-row.learning   { background: #FFF8E1; }
+
+/* Colored dot */
+.raga-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-green { background: #2E7D32; }
+.dot-blue  { background: #1565C0; }
+.dot-amber { background: #E65100; }
+
+.raga-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #231007;
+  flex: 1;
+}
+
+.raga-since {
+  font-size: 11.5px;
+  color: #8C6A52;
+}
+
+.raga-status {
+  font-size: 12px;
+  font-weight: 600;
+  min-width: 100px;
+  text-align: right;
+}
+
+.status-green { color: #2E7D32; }
+.status-blue  { color: #1565C0; }
+.status-amber { color: #E65100; }
+
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .students-toolbar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  .search-wrap {
+    width: 100%;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .students-table {
+    min-width: 700px;
+  }
+
+  .add-student-form {
+    flex-direction: column;
+  }
+
+  .form-group {
+    min-width: 100%;
+  }
+
+  .progress-card {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .student-count {
+    text-align: center;
+  }
+}

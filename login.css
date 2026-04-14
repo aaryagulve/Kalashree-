@@ -1,0 +1,445 @@
+/* login.css */
+/* Kalashree Sangeet Gurukul — Premium Login Page */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: #FAF6F0;
+  min-height: 100vh;
+}
+
+/* ── LAYOUT ── */
+.page {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── LEFT PANEL — Deep Maroon with Mandala ── */
+.left {
+  width: 44%;
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #3F1A12, #2C1608, #5A2810, #3F1A12);
+  background-size: 400% 400%;
+  animation: gradientShift 18s ease infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Mandala pattern overlay */
+.left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(212, 160, 23, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Warm vignette */
+.left::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.35) 100%);
+}
+
+.left-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 44px 40px;
+}
+
+.brand {
+  margin-bottom: auto;
+}
+
+.brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #F8F1E3;
+  letter-spacing: 1px;
+}
+
+.brand-sub {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: rgba(212, 160, 23, 0.6);
+  margin-top: 3px;
+}
+
+.left-center {
+  position: relative;
+  margin: auto 0;
+}
+
+.clef-bg {
+  font-size: 200px;
+  color: rgba(212, 160, 23, 0.04);
+  position: absolute;
+  top: -70px;
+  left: -30px;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.left-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #F8F1E3;
+  line-height: 1.15;
+  position: relative;
+}
+
+.left-heading em {
+  font-style: italic;
+  font-weight: 400;
+  color: #D4A017;
+  text-shadow: 0 0 30px rgba(212, 160, 23, 0.15);
+}
+
+.short-line {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #D4A017, rgba(212, 160, 23, 0.2));
+  margin: 18px 0 14px;
+}
+
+.left-sub {
+  font-size: 13px;
+  color: rgba(248, 241, 227, 0.4);
+  letter-spacing: 0.3px;
+  line-height: 1.6;
+}
+
+.tanpura-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 36px 0;
+}
+
+.tanpura-img {
+  width: 200px;
+  opacity: 0.18;
+  animation: float 7s ease-in-out infinite;
+  filter: sepia(0.5) brightness(0.8);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%       { transform: translateY(-14px) rotate(2deg); }
+}
+
+.raga-names {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: rgba(212, 160, 23, 0.2);
+  letter-spacing: 1px;
+}
+
+/* ── RIGHT PANEL ── */
+.right {
+  width: 56%;
+  min-height: 100vh;
+  background: #FAF6F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+  position: relative;
+}
+
+/* Subtle decorative element */
+.right::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 160, 23, 0.04);
+  pointer-events: none;
+}
+
+.back-link {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  font-size: 12px;
+  color: #D4A017;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+
+.back-link:hover { color: #B5572A; }
+
+.form-card {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 44px 38px;
+  box-shadow: 
+    0 12px 36px rgba(63, 26, 18, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative gold corner line */
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #D4A017, transparent);
+}
+
+.form-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 2px;
+  height: 60px;
+  background: linear-gradient(180deg, #D4A017, transparent);
+}
+
+.form-top {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.form-icon {
+  font-size: 38px;
+  color: #D4A017;
+  line-height: 1;
+  margin-bottom: 14px;
+  text-shadow: 0 0 20px rgba(212, 160, 23, 0.2);
+}
+
+.form-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #2C1608;
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.form-subtitle {
+  font-size: 13.5px;
+  color: #8C6A52;
+}
+
+/* ── ROLE TABS ── */
+.role-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 26px;
+  background: rgba(63, 26, 18, 0.04);
+  border-radius: 12px;
+  padding: 4px;
+  border: 1px solid rgba(212, 160, 23, 0.08);
+}
+
+.role-tab {
+  flex: 1;
+  cursor: pointer;
+}
+
+.role-tab input[type="radio"] {
+  display: none;
+}
+
+.role-tab span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #8C6A52;
+  border-radius: 9px;
+  transition: all 0.25s ease;
+}
+
+.role-tab input[type="radio"]:checked + span {
+  background: rgba(255, 255, 255, 0.95);
+  color: #D4A017;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(212, 160, 23, 0.15);
+}
+
+.role-tab:hover span {
+  color: #D4A017;
+}
+
+/* ── FIELDS ── */
+.field {
+  margin-bottom: 20px;
+}
+
+.field label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #3F1A12;
+  margin-bottom: 8px;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: rgba(212, 160, 23, 0.5);
+  pointer-events: none;
+}
+
+.input-wrap input {
+  width: 100%;
+  padding: 12px 15px 12px 40px;
+  background: rgba(248, 241, 227, 0.6);
+  border: 1.5px solid rgba(212, 160, 23, 0.15);
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  color: #2C1608;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.input-wrap input:focus {
+  border-color: #D4A017;
+  box-shadow: 0 0 0 3px rgba(212, 160, 23, 0.1);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.input-wrap input::placeholder {
+  color: #C4AA96;
+}
+
+.eye-btn {
+  position: absolute;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgba(212, 160, 23, 0.5);
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.eye-btn:hover { color: #D4A017; }
+
+/* ── LOGIN BUTTON — Saffron Gold Gradient ── */
+.login-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  background: linear-gradient(135deg, #D4A017, #B5872A);
+  color: #2C1608;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(212, 160, 23, 0.3);
+}
+
+.login-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #E0B020, #C4962E);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(212, 160, 23, 0.4);
+}
+
+.login-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.login-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 0.8s linear infinite;
+}
+
+/* ── HINT ── */
+.signup-hint {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 12.5px;
+  color: #B09A88;
+  line-height: 1.5;
+}
+
+/* ── FOOTER ── */
+.footer-text {
+  position: absolute;
+  bottom: 20px;
+  font-size: 11px;
+  color: rgba(212, 160, 23, 0.35);
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .page { flex-direction: column; }
+  .left { width: 100%; min-height: 220px; }
+  .left-inner { padding: 32px 28px; min-height: 220px; }
+  .left-heading { font-size: 34px; }
+  .tanpura-wrap { display: none; }
+  .clef-bg { font-size: 100px; }
+  .right { width: 100%; padding: 40px 20px 60px; }
+  .back-link { top: 16px; left: 20px; }
+  .form-card { padding: 32px 24px; }
+}

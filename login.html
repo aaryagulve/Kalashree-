@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | Kalashree Sangeet Gurukul</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+
+  <div class="page">
+
+    <!-- LEFT PANEL -->
+    <div class="left">
+      <div class="left-inner">
+
+        <div class="brand">
+          <p class="brand-name">Kalashree</p>
+          <p class="brand-sub">Sangeet Gurukul</p>
+        </div>
+
+        <div class="left-center">
+          <div class="clef-bg">𝄞</div>
+          <h1 class="left-heading">
+            Where ragas<br />
+            <em>come alive.</em>
+          </h1>
+          <div class="short-line"></div>
+          <p class="left-sub">Indian Classical Music Academy · Nashik</p>
+        </div>
+
+        <div class="tanpura-wrap">
+          <img src="tanpura.png" alt="Tanpura" class="tanpura-img" />
+        </div>
+
+        <p class="raga-names">Raag Yaman &nbsp;·&nbsp; Raag Bhairav &nbsp;·&nbsp; Raag Darbari</p>
+
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right">
+
+      <a href="landing.html" class="back-link">&#8592; Back to Home</a>
+
+      <div class="form-card">
+
+        <div class="form-top">
+          <div class="form-icon">𝄢</div>
+          <h2 class="form-title">Welcome back</h2>
+          <p class="form-subtitle">Sign in to your academy account</p>
+        </div>
+
+        <!-- Role tabs -->
+        <div class="role-tabs">
+          <label class="role-tab">
+            <input type="radio" name="role" value="student" />
+            <span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Student
+            </span>
+          </label>
+          <label class="role-tab">
+            <input type="radio" name="role" value="teacher" />
+            <span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Teacher
+            </span>
+          </label>
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label for="email">Email Address</label>
+          <div class="input-wrap">
+            <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <svg class="input-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+            <button type="button" class="eye-btn" onclick="togglePassword()" aria-label="Toggle password visibility">
+              <svg id="eye-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Login button -->
+        <button class="login-btn" id="login-btn" type="button" onclick="handleLogin()">
+          <span id="btn-text">Sign In</span>
+          <span id="btn-loader" style="display:none;">
+            <svg class="spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            Signing in...
+          </span>
+        </button>
+
+        <p class="signup-hint">New student? Your Guru will provide your login credentials.</p>
+
+      </div>
+
+      <p class="footer-text">Kalashree Sangeet Gurukul &copy; 2025</p>
+
+    </div>
+    <!-- end right -->
+
+  </div>
+
+  <script src="login.js"></script>
+
+</body>
+</html>

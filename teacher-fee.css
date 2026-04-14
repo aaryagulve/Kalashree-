@@ -1,0 +1,229 @@
+/* Kalashree Sangeet Gurukul — Fee Management */
+
+.topbar-right { text-align: right; }
+.today-date { font-size: 14px; font-weight: 600; color: #3F1A12; }
+.today-day { font-size: 12px; color: #D4A017; margin-top: 2px; font-weight: 500; }
+
+/* SUMMARY CARDS */
+.summary-row { display: flex; gap: 18px; margin-bottom: 22px; }
+
+.summary-card {
+  flex: 1;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
+  backdrop-filter: blur(24px);
+  border-radius: 16px;
+  padding: 24px 26px;
+  border-left: 5px solid rgba(212, 160, 23, 0.5);
+  box-shadow: 
+    0 12px 36px rgba(63, 26, 18, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.1);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image: 
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='40' stroke='%23D4A017' stroke-width='1.5' fill='none' opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 100px 100px;
+  background-position: bottom -20px right -20px;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 
+    0 18px 48px rgba(63, 26, 18, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.15);
+}
+
+.summary-card:hover::after {
+  opacity: 1;
+}
+
+.card-blue   { border-left-color: #4A7CB5; }
+.card-green  { border-left-color: #4A9B6F; }
+.card-orange { border-left-color: #B5572A; }
+
+.summary-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #8C6A52;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.summary-number {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: #231007;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.summary-hint { font-size: 11.5px; color: #B0907A; }
+
+/* INFO BAR */
+.info-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #FFF8EC;
+  border: 1px solid #F0D9A8;
+  border-radius: 8px;
+  padding: 12px 18px;
+  margin-bottom: 28px;
+}
+
+.info-text { font-size: 13.5px; color: #5A3A10; }
+.info-text strong { color: #B5572A; }
+
+/* FEE TABLE */
+.table-wrap {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
+  backdrop-filter: blur(24px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 
+    0 12px 36px rgba(63, 26, 18, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.1);
+  overflow: hidden;
+}
+
+.fee-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+
+thead tr { background: #FDF6EE; }
+
+th {
+  padding: 13px 18px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  color: #8C6A52;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-bottom: 1.5px solid #E8D5BC;
+}
+
+td {
+  padding: 14px 18px;
+  color: #231007;
+  border-bottom: 1px solid #F5EDE0;
+  vertical-align: middle;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+
+/* Row background tints */
+.row-overdue { background: #FFF5F5; }
+.row-unpaid  { background: #FFFBF5; }
+
+.td-muted { color: #8C6A52; font-size: 13px; }
+.td-fee { font-weight: 600; color: #3D1A08; }
+.td-paid-check { color: #2E7D32; font-size: 13px; font-weight: 600; }
+
+/* STUDENT CELL */
+.student-cell { display: flex; align-items: center; gap: 12px; }
+
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.av-blue   { background: #E3F0FB; color: #1565C0; }
+.av-green  { background: #E6F4EA; color: #2E7D32; }
+.av-amber  { background: #FFF8E1; color: #E65100; }
+.av-purple { background: #EDE7F6; color: #4527A0; }
+.av-coral  { background: #FBE9E7; color: #BF360C; }
+
+.student-name { font-size: 14px; font-weight: 600; color: #231007; margin-bottom: 2px; }
+.student-email { font-size: 11.5px; color: #B0907A; }
+
+/* BADGES */
+.badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.badge-regular  { background: #F5EDE0; color: #7A4A2A; border: 1px solid #E8D5BC; }
+.badge-gurukul  { background: #E3F0FB; color: #1565C0; border: 1px solid #BBDEFB; }
+.badge-paid     { background: #E6F4EA; color: #2E7D32; }
+.badge-unpaid   { background: #FFF3E0; color: #E65100; }
+.badge-overdue  { background: #FEEBEE; color: #C62828; }
+
+/* MARK AS PAID BUTTON */
+.mark-paid-btn {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2C1608;
+  background: linear-gradient(135deg, rgba(212, 160, 23, 0.2), rgba(212, 160, 23, 0.1));
+  border: 1px solid rgba(212, 160, 23, 0.3);
+  padding: 6px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.mark-paid-btn:hover { 
+  background: #F5D5C0; 
+  border-color: #B5572A; 
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(181, 87, 42, 0.2);
+}
+
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
+@media (max-width: 900px) {
+  .summary-row {
+    flex-wrap: wrap;
+  }
+
+  .summary-card {
+    min-width: calc(50% - 12px);
+    flex: none;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .fee-table {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 600px) {
+  .summary-card {
+    min-width: 100%;
+  }
+
+  .summary-number {
+    font-size: 28px;
+  }
+}

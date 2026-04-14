@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events | Kalashree Sangeet Gurukul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="teacher-common.css" />
+  <link rel="stylesheet" href="teacher-events.css" />
+</head>
+<body>
+<div class="page">
+  <div class="main">
+
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Events</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+      <div class="topbar-right">
+        <p class="today-date"></p>
+        <p class="today-day"></p>
+      </div>
+    </div>
+
+    <!-- CREATE EVENT FORM -->
+    <h2 class="section-title">Create New Event</h2>
+    <div class="event-form-card glass-card">
+      <form id="eventForm" enctype="multipart/form-data">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Event Title *</label>
+            <input type="text" id="evTitle" placeholder="e.g. Raag Yaman Baithak" required />
+          </div>
+          <div class="form-group">
+            <label>Event Date *</label>
+            <input type="date" id="evDate" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Event Type</label>
+            <select id="evType">
+              <option value="Baithak">Baithak</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Recital">Recital</option>
+              <option value="Festival">Festival</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Fee Amount (₹)</label>
+            <input type="number" id="evFee" placeholder="0 for free" min="0" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Location / Link</label>
+          <input type="text" id="evLocation" placeholder="e.g. Kalashree Hall, Nashik or Zoom link" />
+        </div>
+
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="evDesc" rows="3" placeholder="Brief description of the event..."></textarea>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="evMandatory" style="margin-right:6px;" />
+              Mandatory for all students
+            </label>
+          </div>
+        </div>
+
+        <!-- Poster upload -->
+        <div class="form-group">
+          <label>Event Poster (JPG / PNG)</label>
+          <div class="poster-upload-area" id="posterArea" onclick="document.getElementById('posterInput').click()">
+            <div id="posterPlaceholder">
+              <span style="font-size:32px;">🖼️</span>
+              <p style="font-size:13px; color:#9C7A62; margin-top:8px;">Click to upload poster</p>
+              <p style="font-size:11px; color:#C4A88C;">JPG, PNG — max 5MB</p>
+            </div>
+            <img id="posterPreview" src="" alt="Poster preview" style="display:none; width:100%; border-radius:8px; max-height:280px; object-fit:cover;" />
+          </div>
+          <input type="file" id="posterInput" accept="image/*" style="display:none;" onchange="previewPoster(event)" />
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span id="submitText">Create Event</span>
+          <span id="submitLoader" style="display:none;">Creating...</span>
+        </button>
+        <p id="formMsg" style="margin-top:10px; font-size:13px; font-weight:600;"></p>
+
+      </form>
+    </div>
+
+    <!-- EXISTING EVENTS -->
+    <h2 class="section-title" style="margin-top:36px;">All Events</h2>
+    <div id="eventsList" class="events-grid">
+      <p style="color:#B0907A; font-size:13px;">Loading events...</p>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet Gurukul</p>
+    </div>
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Teacher</p>
+        <p class="profile-role">Teacher</p>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="teacher-dashboard.html" class="nav-link">Dashboard</a>
+      <a href="teacher-students.html" class="nav-link">Student Management</a>
+      <a href="teacher-attendance.html" class="nav-link">Attendance</a>
+      <a href="teacher-fee.html" class="nav-link">Fee Management</a>
+      <a href="teacher-homework.html" class="nav-link">Review Practice</a>
+      <a href="teacher-feedback.html" class="nav-link">Feedback</a>
+      <a href="teacher-events.html" class="nav-link active">Events</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </div>
+</div>
+
+<div class="ev-modal-backdrop" id="evModalBackdrop" onclick="closeEvModal(event)">
+  <div class="ev-modal ev-modal-wrap" id="evModal">
+    <button class="ev-modal-close" onclick="closeEvModal()">&#10005;</button>
+    <div id="evModalPoster"></div>
+    <div class="ev-modal-body">
+      <span class="ev-modal-type" id="evModalType"></span>
+      <p class="ev-modal-title" id="evModalTitle"></p>
+      <div class="ev-modal-row"><span>📅</span><span id="evModalDate"></span></div>
+      <div class="ev-modal-row" id="evModalLocRow" style="display:none;"><span>📍</span><span id="evModalLoc"></span></div>
+      <div class="ev-modal-row" id="evModalFeeRow"><span>💰</span><span id="evModalFee"></span></div>
+      <div class="ev-modal-row" id="evModalMandRow" style="display:none;"><span>⚠️</span><span style="color:#E65100;font-weight:600;">Mandatory for all students</span></div>
+      <div class="ev-modal-desc" id="evModalDesc" style="display:none;"></div>
+      <div class="ev-modal-actions" id="evModalActions"></div>
+    </div>
+  </div>
+</div>
+
+<div class="poster-lightbox" id="posterLightbox" onclick="closePosterLightbox()">
+  <button class="poster-lightbox-close" onclick="closePosterLightbox()">&#10005;</button>
+  <img id="posterLightboxImg" src="" alt="Event Poster" onclick="event.stopPropagation()" />
+</div>
+
+<script src="auth-ui.js"></script>
+<script src="teacher-events.js"></script>
+</body>
+</html>

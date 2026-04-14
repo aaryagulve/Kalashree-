@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "69cec5972e18bf14843954cc"
+  },
+  "studentId": {
+    "$oid": "69c04fe3e9199da26122b17f"
+  },
+  "title": "Raag puriyadhanashree",
+  "fileUrl": "",
+  "audioFilePath": "audio-1775158679911.mp4",
+  "submissionType": "upload",
+  "teacherFeedback": "good work ",
+  "status": "Reviewed",
+  "isReviewed": true,
+  "submittedAt": {
+    "$date": "2026-04-02T19:37:59.971Z"
+  },
+  "__v": 0
+}]

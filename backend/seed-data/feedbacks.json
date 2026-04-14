@@ -1,0 +1,30 @@
+[{
+  "_id": {
+    "$oid": "69cc0207de0baa9179abaa04"
+  },
+  "teacherId": {
+    "$oid": "69cbfad3b3acd2f0ad559aa0"
+  },
+  "studentId": null,
+  "isGlobal": true,
+  "noteText": "everyone listen to avgha ranga bhajan by bhimsen joshi and practice raag bhoopali from last class",
+  "date": {
+    "$date": "2026-03-31T17:19:03.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69d8b3c5fc115bf7c56468f6"
+  },
+  "teacherId": {
+    "$oid": "69cc0d76638f266c3af95fbf"
+  },
+  "studentId": null,
+  "isGlobal": true,
+  "noteText": "practice all the taals taught in yesterdays batch",
+  "date": {
+    "$date": "2026-04-10T08:24:37.624Z"
+  },
+  "__v": 0
+}]

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events | Kalashree Sangeet Gurukul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="student-common.css" />
+  <link rel="stylesheet" href="teacher-events.css" />
+</head>
+<body>
+<div class="page">
+  <div class="main">
+
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Upcoming Events</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+      <div class="topbar-right">
+        <p class="today-date"></p>
+        <p class="today-day"></p>
+      </div>
+    </div>
+
+    <div id="eventsList" class="events-grid">
+      <p style="color:#B0907A; font-size:13px;">Loading events...</p>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet Gurukul</p>
+    </div>
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Student Name</p>
+        <p class="profile-role">Student</p>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="student-dashboard.html" class="nav-link">Dashboard</a>
+      <a href="student-details.html" class="nav-link">My Details</a>
+      <a href="student-practice-notes.html" class="nav-link">Practice and Notes</a>
+      <a href="student-events.html" class="nav-link active">Events</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </div>
+</div>
+
+<!-- Poster Lightbox -->
+<div class="poster-lightbox" id="posterLightbox" onclick="closePosterLightbox()">
+  <button class="poster-lightbox-close" onclick="closePosterLightbox()">&#10005;</button>
+  <img id="posterLightboxImg" src="" alt="Event Poster" onclick="event.stopPropagation()" />
+</div>
+
+<script src="auth-ui.js"></script>
+
+<!-- Event Detail Modal -->
+<div class="ev-modal-backdrop" id="evModalBackdrop" onclick="closeEvModal(event)">
+  <div class="ev-modal ev-modal-wrap" id="evModal">
+    <button class="ev-modal-close" onclick="closeEvModal()">&#10005;</button>
+    <div id="evModalPoster"></div>
+    <div class="ev-modal-body">
+      <span class="ev-modal-type" id="evModalType"></span>
+      <p class="ev-modal-title" id="evModalTitle"></p>
+      <div class="ev-modal-row"><span>📅</span><span id="evModalDate"></span></div>
+      <div class="ev-modal-row" id="evModalLocRow" style="display:none;"><span>📍</span><span id="evModalLoc"></span></div>
+      <div class="ev-modal-row" id="evModalFeeRow"><span>💰</span><span id="evModalFee"></span></div>
+      <div class="ev-modal-row" id="evModalMandRow" style="display:none;"><span>⚠️</span><span style="color:#E65100;font-weight:600;">Mandatory for all students</span></div>
+      <div class="ev-modal-desc" id="evModalDesc" style="display:none;"></div>
+      <div class="ev-modal-actions" id="evModalActions"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var API_BASE = 'http://localhost:5000';
+
+document.addEventListener('DOMContentLoaded', async function () {
+  const container = document.getElementById('eventsList');
+  const studentId   = localStorage.getItem('userId');
+  const studentName = localStorage.getItem('userName') || 'Student';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/events`);
+    const events = await res.json();
+    if (events.length === 0) {
+      container.innerHTML = '<p style="color:#B0907A;font-size:13px;">No upcoming events announced yet.</p>';
+      return;
+    }
+    container.innerHTML = events.map(ev => {
+      const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      const posterHtml = ev.poster
+        ? `<img src="${API_BASE}/uploads/${ev.poster}" alt="Event Poster" class="event-poster-img" onclick="event.stopPropagation(); openPosterLightbox('${API_BASE}/uploads/${ev.poster}')" />`
+        : `<div class="event-poster-placeholder">🎵</div>`;
+      const mandatoryTag = ev.isMandatory ? '<span class="mandatory-tag">Mandatory</span>' : '';
+      const feeText = ev.feeAmount > 0 ? `₹ ${ev.feeAmount}` : 'Free';
+      const isAttending = studentId && ev.attendees && ev.attendees.some(a => a.studentId === studentId || (a.studentId && a.studentId._id === studentId));
+      const attendeeCount = ev.attendees ? ev.attendees.length : 0;
+      const evData = encodeURIComponent(JSON.stringify(ev));
+      return `
+        <div class="event-card" onclick="openEvModal(decodeURIComponent('${evData}'), '${studentId}', '${studentName}')">
+          ${posterHtml}
+          <div class="event-body">
+            <span class="event-type-badge">${ev.type}</span>
+            ${mandatoryTag}
+            <p class="event-title">${ev.title}</p>
+            <p class="event-meta">📅 ${dateStr}</p>
+            ${ev.locationOrLink ? `<p class="event-meta">📍 ${ev.locationOrLink}</p>` : ''}
+            ${ev.description ? `<p class="event-desc">${ev.description}</p>` : ''}
+            <div class="event-footer">
+              <span class="event-fee">${feeText}</span>
+              <span style="font-size:12px;color:#8C6A52;">👥 ${attendeeCount} attending</span>
+              ${isAttending ? '<span style="font-size:11px;background:#E6F4EA;color:#2E7D32;padding:3px 10px;border-radius:12px;font-weight:600;">✓ You\'re in</span>' : ''}
+            </div>
+          </div>
+        </div>`;
+    }).join('');
+  } catch (err) {
+    container.innerHTML = '<p style="color:#D32F2F;font-size:13px;">Failed to load events.</p>';
+  }
+});
+
+function openEvModal(evJson, studentId, studentName) {
+  const ev = typeof evJson === 'string' ? JSON.parse(evJson) : evJson;
+  const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.getElementById('evModalPoster').innerHTML = ev.poster
+    ? `<img src="${API_BASE}/uploads/${ev.poster}" alt="Poster" class="ev-modal-poster" onclick="openPosterLightbox('${API_BASE}/uploads/${ev.poster}')" />`
+    : `<div class="ev-modal-poster-placeholder">🎵</div>`;
+
+  document.getElementById('evModalType').textContent  = ev.type;
+  document.getElementById('evModalTitle').textContent = ev.title;
+  document.getElementById('evModalDate').textContent  = dateStr;
+
+  const locRow = document.getElementById('evModalLocRow');
+  if (ev.locationOrLink) {
+    document.getElementById('evModalLoc').textContent = ev.locationOrLink;
+    locRow.style.display = 'flex';
+  } else { locRow.style.display = 'none'; }
+
+  document.getElementById('evModalFee').textContent = ev.feeAmount > 0 ? `₹ ${ev.feeAmount}` : 'Free entry';
+  document.getElementById('evModalMandRow').style.display = ev.isMandatory ? 'flex' : 'none';
+
+  const descEl = document.getElementById('evModalDesc');
+  if (ev.description) { descEl.textContent = ev.description; descEl.style.display = 'block'; }
+  else { descEl.style.display = 'none'; }
+
+  const sid = studentId || localStorage.getItem('userId');
+  const sName = studentName || localStorage.getItem('userName') || 'Student';
+  const isAttending = sid && ev.attendees && ev.attendees.some(a =>
+    a.studentId === sid || (a.studentId && (a.studentId._id === sid || a.studentId.toString() === sid))
+  );
+  const attendeeCount = ev.attendees ? ev.attendees.length : 0;
+
+  document.getElementById('evModalActions').innerHTML = `
+    <button class="ev-modal-btn ev-modal-btn-secondary" onclick="closeEvModal()">Close</button>
+    <button class="ev-modal-btn ev-modal-btn-primary" id="rsvpBtn-${ev._id}"
+      onclick="toggleRSVP('${ev._id}', '${sid}', '${sName}', ${isAttending})"
+      style="${isAttending ? 'background:linear-gradient(135deg,#2E7D32,#1B5E20);' : ''}">
+      ${isAttending ? '✓ Attending — Cancel RSVP' : '✅ I Will Attend'}
+    </button>
+    <p style="font-size:12px;color:#8C6A52;margin-top:8px;text-align:center;">👥 ${attendeeCount} student${attendeeCount !== 1 ? 's' : ''} attending</p>`;
+
+  document.getElementById('evModalBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+async function toggleRSVP(eventId, studentId, studentName, isCurrentlyAttending) {
+  const btn = document.getElementById('rsvpBtn-' + eventId);
+  if (btn) { btn.disabled = true; btn.textContent = '...'; }
+
+  try {
+    const method = isCurrentlyAttending ? 'DELETE' : 'POST';
+    const res = await fetch(`${API_BASE}/api/events/${eventId}/attend`, {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ studentId, studentName })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      const count = data.attendees ? data.attendees.length : 0;
+      const nowAttending = !isCurrentlyAttending;
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = nowAttending ? '✓ Attending — Cancel RSVP' : '✅ I Will Attend';
+        btn.style.background = nowAttending ? 'linear-gradient(135deg,#2E7D32,#1B5E20)' : '';
+        btn.onclick = () => toggleRSVP(eventId, studentId, studentName, nowAttending);
+      }
+      // Update count
+      const countEl = btn ? btn.nextElementSibling : null;
+      if (countEl) countEl.textContent = `👥 ${count} student${count !== 1 ? 's' : ''} attending`;
+    }
+  } catch (err) {
+    if (btn) { btn.disabled = false; btn.textContent = 'Error — try again'; }
+  }
+}
+
+function closeEvModal(e) {
+  if (e && e.target !== document.getElementById('evModalBackdrop')) return;
+  document.getElementById('evModalBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function openPosterLightbox(src) {
+  const lb  = document.getElementById('posterLightbox');
+  const img = document.getElementById('posterLightboxImg');
+  if (!lb || !img) return;
+  img.src = src;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePosterLightbox() {
+  const lb = document.getElementById('posterLightbox');
+  if (lb) lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closePosterLightbox(); closeEvModal(); }
+});
+</script>
+</body>
+</html>

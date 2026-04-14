@@ -1,0 +1,220 @@
+/* student-fee.css */
+
+.topbar-right { text-align: right; }
+.today-date { font-size: 14px; font-weight: 600; color: #3F1A12; }
+.today-day  { font-size: 12px; color: #D4A017; margin-top: 2px; font-weight: 500; }
+
+/* ── QR CARD ── */
+.qr-card {
+  display: flex;
+  gap: 32px;
+  padding: 32px 36px;
+  margin-bottom: 12px;
+  align-items: flex-start;
+}
+
+.qr-left { flex-shrink: 0; text-align: center; }
+
+.qr-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #D4A017;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.qr-frame {
+  width: 180px;
+  height: 180px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 2px solid rgba(212,160,23,0.3);
+  box-shadow: 0 8px 24px rgba(63,26,18,0.08);
+  background: #FAF4EC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-frame img { width: 100%; height: 100%; object-fit: contain; }
+
+.qr-right { flex: 1; }
+
+.qr-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1A0D05;
+  margin-bottom: 4px;
+}
+
+
+
+.qr-note {
+  font-size: 13px;
+  color: #7A4A2A;
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+.pay-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #D4A017, #B5872A);
+  color: #2C1608;
+  border: none;
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(212,160,23,0.3);
+  transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  letter-spacing: 0.3px;
+}
+
+.pay-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(212,160,23,0.4);
+  background: linear-gradient(135deg, #E0B020, #C4962E);
+}
+
+.pay-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── FEE HISTORY TABLE ── */
+.fee-history-wrap {
+  padding: 0;
+  overflow: hidden;
+  margin-bottom: 40px;
+}
+
+.fee-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.fee-history-table thead tr {
+  background: linear-gradient(135deg, rgba(253,248,242,0.9), rgba(245,237,224,0.8));
+}
+
+.fee-history-table th {
+  padding: 14px 20px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 700;
+  color: #D4A017;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid rgba(212,160,23,0.12);
+}
+
+.fee-history-table td {
+  padding: 14px 20px;
+  color: #2C1608;
+  border-bottom: 1px solid rgba(212,160,23,0.06);
+  vertical-align: middle;
+}
+
+.fee-history-table tbody tr:last-child td { border-bottom: none; }
+
+.fee-history-table tbody tr {
+  transition: background 0.2s ease;
+}
+
+.fee-history-table tbody tr:hover {
+  background: rgba(212,160,23,0.03);
+}
+
+/* Status badges */
+.fee-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.fee-badge-paid      { background: #E6F4EA; color: #2E7D32; }
+.fee-badge-unpaid    { background: #FFF3E0; color: #E65100; }
+.fee-badge-requested { background: linear-gradient(135deg,rgba(212,160,23,0.15),rgba(212,160,23,0.08)); color: #B5872A; border: 1px solid rgba(212,160,23,0.3); }
+.fee-badge-overdue   { background: #FEEBEE; color: #C62828; }
+.fee-badge-rejected  { background: #FEEBEE; color: #C62828; }
+
+/* Screenshot thumbnail */
+.screenshot-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  cursor: pointer;
+  border: 1.5px solid rgba(212,160,23,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.screenshot-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(63,26,18,0.15);
+}
+
+/* Screenshot preview modal */
+#screenshotPreviewArea:hover {
+  border-color: rgba(212,160,23,0.7);
+  background: rgba(253,248,242,0.95);
+}
+
+/* ── QR LIGHTBOX ── */
+.qr-frame {
+  cursor: zoom-in;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.qr-frame:hover {
+  transform: scale(1.04);
+  box-shadow: 0 12px 32px rgba(212,160,23,0.25);
+}
+
+.qr-zoom-hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(0deg, rgba(63,26,18,0.75), transparent);
+  color: rgba(255,255,255,0.9);
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px 4px 6px;
+  border-radius: 0 0 12px 12px;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.qr-frame:hover .qr-zoom-hint {
+  opacity: 1;
+}
+
+#qrLightbox {
+  animation: lbFadeIn 0.2s ease;
+}
+
+@keyframes lbFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+#qrLightboxImg {
+  animation: lbZoomIn 0.25s cubic-bezier(0.165,0.84,0.44,1);
+}
+
+@keyframes lbZoomIn {
+  from { transform: scale(0.85); opacity: 0; }
+  to   { transform: scale(1);    opacity: 1; }
+}

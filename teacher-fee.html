@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fee Management | Kalashree Sangeet Gurukul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="teacher-common.css" />
+  <link rel="stylesheet" href="teacher-fee.css" />
+  <!-- HTML to PDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+<div class="page">
+  <div class="main">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Fee Management</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+      <div class="topbar-right" style="display: flex; flex-direction: column; align-items: flex-end;">
+        <button onclick="exportFeePDF()" style="margin-bottom: 8px; padding: 8px 12px; border-radius: 7px; border: none; background: #4A7CB5; color: white; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600;">Export PDF</button>
+        <p class="today-date">18 March 2026</p>
+        <p class="today-day">Wednesday</p>
+      </div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-card card-blue">
+        <p class="summary-label">Total Expected</p>
+        <p class="summary-number" id="feeExpected">&#8377; —</p>
+        <p class="summary-hint" id="feeExpectedHint">This month</p>
+      </div>
+      <div class="summary-card card-green">
+        <p class="summary-label">Total Collected</p>
+        <p class="summary-number" id="feeCollected">&#8377; —</p>
+        <p class="summary-hint" id="feeCollectedHint">— students paid</p>
+      </div>
+      <div class="summary-card card-orange">
+        <p class="summary-label">Pending</p>
+        <p class="summary-number" id="feePending">&#8377; —</p>
+        <p class="summary-hint" id="feePendingHint">— students unpaid</p>
+      </div>
+    </div>
+
+    <div class="info-bar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B5572A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <p class="info-text" style="flex:1;">
+        Viewing fees for <strong id="currentMonthLabel">—</strong> — Due date is <strong>10th of every month</strong>.
+      </p>
+      <select id="monthFilter" onchange="loadFees()" style="padding:7px 12px;border:1.5px solid rgba(212,160,23,0.3);border-radius:8px;font-family:inherit;font-size:13px;color:#3F1A12;background:#fff;cursor:pointer;outline:none;">
+        <option value="">Loading months...</option>
+      </select>
+    </div>
+
+    <h2 class="section-title" id="requestsTitle" style="display: none;">Payment Requests</h2>
+    <div class="table-wrap" id="requestsTableWrap" style="display: none; margin-bottom: 30px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;background:linear-gradient(135deg,rgba(253,248,242,0.9),rgba(245,237,224,0.8));border-bottom:1px solid rgba(212,160,23,0.12);">
+        <p style="font-size:13px;color:#8C6A52;margin:0;">Select entries to bulk confirm</p>
+        <button onclick="confirmAllSelected()" style="padding:8px 18px;background:linear-gradient(135deg,#4A9B6F,#2E7D52);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(74,155,111,0.25);">✓ Confirm All Selected</button>
+      </div>
+      <table class="fee-table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" id="selectAllRequests" onchange="toggleSelectAll(this)" /></th>
+            <th>Student</th>
+            <th>Month</th>
+            <th>Amount</th>
+            <th>Request Date</th>
+            <th>Screenshot</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="requestsTbody">
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="section-title">Student Fee Status</h2>
+
+    <div class="table-wrap">
+      <table class="fee-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Batch</th>
+            <th>Monthly Fee</th>
+            <th>Due Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled dynamically by teacher-fee.js -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet Gurukul</p>
+    </div>
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Teacher</p>
+        <p class="profile-role">Teacher</p>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="teacher-dashboard.html" class="nav-link">Dashboard</a>
+      <a href="teacher-students.html" class="nav-link">Student Management</a>
+      <a href="teacher-attendance.html" class="nav-link">Attendance</a>
+      <a href="teacher-fee.html" class="nav-link active">Fee Management</a>
+      <a href="teacher-homework.html" class="nav-link">Review Practice</a>
+      <a href="teacher-feedback.html" class="nav-link">Feedback</a>
+      <a href="teacher-events.html" class="nav-link">Events</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </div>
+
+</div>
+<script src="teacher-fee.js"></script>
+<script src="auth-ui.js"></script>
+</body>
+</html>

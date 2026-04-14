@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kalashree Sangeet Gurukul — Indian Classical Music Academy, Nashik</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="landing.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════
+       NAVBAR
+  ══════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+
+      <!-- Logo left - with image -->
+      <div class="nav-logo">
+        <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="nav-logo-img" />
+        <div>
+          <p class="nav-logo-name">Kalashree</p>
+          <p class="nav-logo-sub">Sangeet Gurukul</p>
+        </div>
+      </div>
+
+      <!-- Nav links center -->
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#courses">Courses</a></li>
+        <li><a href="#why">Why Us</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <!-- Buttons right side -->
+      <div class="nav-actions">
+        <a href="login.html" class="nav-login">Login</a>
+        <a href="signup.html" class="nav-signup">Sign Up</a>
+      </div>
+
+    </div>
+  </nav>
+
+
+  <!-- ══════════════════════════
+       HERO SECTION
+  ══════════════════════════ -->
+  <section class="hero">
+
+    <div class="hero-dots"></div>
+
+    <div class="hero-inner">
+
+      <!-- Left side - text -->
+      <div class="hero-text">
+        <p class="hero-tag">Under the guidance of Dr. Ashish Ranade</p>
+        <h1 class="hero-heading">
+          Learn the Art of<br />
+          <em>Indian Classical</em><br />
+          Music
+        </h1>
+        <div class="hero-line"></div>
+        <p class="hero-sub">
+          A structured, soulful journey into the world of ragas, talas
+          and the rich tradition of Hindustani classical music —
+          right here in Nashik.
+        </p>
+        <div class="hero-btns">
+          <a href="login.html" class="btn-primary">Get Started</a>
+          <a href="#about" class="btn-ghost">Learn More</a>
+        </div>
+        <p class="hero-ragas">Raag Yaman &nbsp;·&nbsp; Raag Bhairav &nbsp;·&nbsp; Raag Darbari</p>
+      </div>
+
+      <!-- Right side - class photo frame -->
+      <div class="hero-visual">
+        <div class="hero-img-frame">
+          <!-- Replace class-photo.jpg with your actual class image file -->
+          <img
+            src="class-photo.png"
+            alt="Kalashree Sangeet Gurukul"
+            class="hero-img"
+            onerror="this.style.display='none'; document.getElementById('hero-fallback').style.display='flex';"
+          />
+          <!-- Shown if image not found -->
+          <div class="hero-img-fallback" id="hero-fallback">
+            <p class="fallback-icon">𝄞</p>
+            <p class="fallback-text">Add class-photo.jpg to your folder</p>
+          </div>
+        </div>
+        <!-- Decorative label below photo -->
+        <p class="hero-photo-label">Kalashree Sangeet Gurukul · Nashik</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════
+       ABOUT SECTION
+  ══════════════════════════ -->
+  <section class="about" id="about">
+    <div class="section-inner about-inner">
+
+      <div class="about-text">
+        <p class="section-tag">About Us</p>
+        <h2 class="section-heading">A Gurukul rooted in<br />tradition, built for today</h2>
+        <div class="section-line"></div>
+        <p class="about-para">
+          Kalashree Sangeet Gurukul is a premier Indian classical music
+          academy based in Indira Nagar, Nashik, Maharashtra. Founded
+          and led by an accomplished musician, the academy is built on the
+          vision of preserving and propagating the rich heritage of
+          Hindustani classical music.
+        </p>
+        <p class="about-para">
+          We offer structured learning for students of all ages and
+          levels — from young beginners to advanced disciples. Every
+          student is guided personally in the true spirit of the
+          Gurukul tradition.
+        </p>
+      </div>
+
+      <div class="about-stats">
+        <div class="stat-box">
+          <p class="stat-num">24+</p>
+          <p class="stat-label">Students Enrolled</p>
+        </div>
+        <div class="stat-box">
+          <p class="stat-num">10+</p>
+          <p class="stat-label">Years of Excellence</p>
+        </div>
+        <div class="stat-box">
+          <p class="stat-num">50+</p>
+          <p class="stat-label">Performances Held</p>
+        </div>
+        <div class="stat-box">
+          <p class="stat-num">15+</p>
+          <p class="stat-label">Ragas Taught</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════
+       COURSES SECTION
+  ══════════════════════════ -->
+  <section class="courses" id="courses">
+    <div class="section-inner">
+
+      <div class="section-center-head">
+        <p class="section-tag">What We Offer</p>
+        <h2 class="section-heading">Our Courses</h2>
+        <div class="section-line" style="margin: 10px auto 0;"></div>
+      </div>
+
+      <div class="courses-grid">
+
+        <div class="course-card">
+          <div class="course-band band-1"></div>
+          <div class="course-body">
+            <h3 class="course-title">Vocal Music</h3>
+            <p class="course-level">Beginner to Advanced</p>
+            <p class="course-desc">Classical vocal training in Hindustani style — from basic swaras and alankaars to complex ragas and bandishes.</p>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <div class="course-band band-2"></div>
+          <div class="course-body">
+            <h3 class="course-title">Harmonium</h3>
+            <p class="course-level">Beginner to Advanced</p>
+            <p class="course-desc">Structured harmonium training covering scale practice, raga accompaniment and solo performance techniques.</p>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <div class="course-band band-3"></div>
+          <div class="course-body">
+            <h3 class="course-title">Tabla</h3>
+            <p class="course-level">Beginner to Intermediate</p>
+            <p class="course-desc">Learn the art of tala and rhythm through structured tabla training — from basic bols to complex compositions.</p>
+          </div>
+        </div>
+
+        <div class="course-card">
+          <div class="course-band band-4"></div>
+          <div class="course-body">
+            <h3 class="course-title">Theory and Ragas</h3>
+            <p class="course-level">All Levels</p>
+            <p class="course-desc">In-depth study of raga grammar, aroha-avaroha, tala systems and the cultural history of classical music.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════
+       WHY US SECTION
+  ══════════════════════════ -->
+  <section class="why" id="why">
+    <div class="section-inner">
+
+      <div class="why-head">
+        <p class="section-tag why-tag">Why Choose Us</p>
+        <h2 class="section-heading why-heading">What makes Kalashree different</h2>
+        <div class="section-line" style="margin: 10px auto 0;"></div>
+      </div>
+
+      <div class="why-grid">
+
+        <div class="why-item">
+          <p class="why-num">01</p>
+          <h3 class="why-title">Experienced Guru</h3>
+          <p class="why-desc">Learn directly under an experienced Guru — an accomplished musician with decades of performance and teaching experience.</p>
+        </div>
+
+        <div class="why-item">
+          <p class="why-num">02</p>
+          <h3 class="why-title">Structured Curriculum</h3>
+          <p class="why-desc">A well-defined learning path from beginner to advanced level with regular assessments and milestone tracking.</p>
+        </div>
+
+        <div class="why-item">
+          <p class="why-num">03</p>
+          <h3 class="why-title">Regular Performances</h3>
+          <p class="why-desc">Students get regular opportunities to perform at events, concerts and cultural programmes throughout the year.</p>
+        </div>
+
+        <div class="why-item">
+          <p class="why-num">04</p>
+          <h3 class="why-title">Smart Digital Portal</h3>
+          <p class="why-desc">Track attendance, fee status and raga progress through our dedicated Smart Academy Management Portal.</p>
+        </div>
+
+        <div class="why-item">
+          <p class="why-num">05</p>
+          <h3 class="why-title">Personal Attention</h3>
+          <p class="why-desc">Small batch sizes ensure every student gets individual guidance tailored to their pace, style and level.</p>
+        </div>
+
+        <div class="why-item">
+          <p class="why-num">06</p>
+          <h3 class="why-title">True Gurukul Spirit</h3>
+          <p class="why-desc">We don't just teach music — we pass on the living tradition of the Gurukul rooted in the culture of Nashik.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════
+       CONTACT SECTION
+  ══════════════════════════ -->
+  <section class="contact" id="contact">
+    <div class="section-inner">
+
+      <div class="section-center-head">
+        <p class="section-tag">Get In Touch</p>
+        <h2 class="section-heading">Contact Us</h2>
+        <div class="section-line" style="margin: 10px auto 0;"></div>
+      </div>
+
+      <!-- Contact info card -->
+      <div class="contact-card">
+
+        <div class="contact-item">
+          <p class="contact-label">Address</p>
+          <p class="contact-val">Indira Nagar, Nashik<br />Maharashtra, India</p>
+        </div>
+
+        <div class="contact-divider"></div>
+
+        <div class="contact-item">
+          <p class="contact-label">Email</p>
+          <p class="contact-val">kalashree&#64;gmail&#46;com</p>
+        </div>
+
+        <div class="contact-divider"></div>
+
+        <div class="contact-item">
+          <p class="contact-label">Phone</p>
+          <p class="contact-val">+91 94230 07xxx</p>
+        </div>
+
+        <div class="contact-divider"></div>
+
+        <div class="contact-item">
+          <p class="contact-label">Hours</p>
+          <p class="contact-val">Mon – Sat<br />6:00 AM – 9:00 PM</p>
+        </div>
+
+      </div>
+
+      <!-- Social media links -->
+      <div class="social-row">
+        <p class="social-label">Follow us on</p>
+        <div class="social-links">
+
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/kalashreesangeet" target="_blank" class="social-btn social-insta">
+            <!-- Instagram SVG icon -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+            </svg>
+            Instagram
+          </a>
+
+          <!-- Facebook -->
+          <a href="https://www.facebook.com/kalashreesangeet" target="_blank" class="social-btn social-fb">
+            <!-- Facebook SVG icon -->
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+            </svg>
+            Facebook
+          </a>
+
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="contact-cta">
+        <p class="contact-cta-text">Ready to begin your musical journey?</p>
+        <a href="login.html" class="btn-primary">Get Started</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ══════════════════════════
+       FOOTER
+  ══════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+
+      <div class="footer-left">
+        <p class="footer-name">Kalashree Sangeet Gurukul</p>
+        <p class="footer-tagline">Preserving the tradition of Indian Classical Music · Nashik</p>
+        <p class="footer-copy">&copy; 2025 Kalashree Sangeet Gurukul. All rights reserved.</p>
+      </div>
+
+      <div class="footer-right">
+        <div class="footer-links">
+          <a href="login.html">Login</a>
+          <a href="login.html">Sign Up</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/kalashreesangeet" target="_blank">Instagram</a>
+          <a href="https://www.facebook.com/kalashreesangeet" target="_blank">Facebook</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="landing.js"></script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance | Kalashree Sangeet Gurukul</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Shared sidebar styles -->
+  <link rel="stylesheet" href="teacher-common.css" />
+
+  <!-- This page only styles -->
+  <link rel="stylesheet" href="teacher-attendance.css" />
+
+  <!-- HTML to PDF Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<body>
+
+<div class="page">
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Attendance</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+      <div class="topbar-right" style="display: flex; align-items: center; justify-content: flex-end;">
+        <button onclick="exportAttendancePDF()" style="margin-right: 12px; padding: 8px 12px; border-radius: 7px; border: none; background: #4A7CB5; color: white; cursor: pointer; font-family: inherit; font-size: 13px; font-weight: 600;">Export PDF</button>
+        <input type="date" id="attendanceDate" style="padding: 8px 12px; border-radius: 7px; border: 1.5px solid #E2CEBC; font-family: 'Source Sans 3', sans-serif; font-size: 14px; color: #5A3018; background: #ffffff; outline: none; cursor: pointer;" />
+      </div>
+    </div>
+    <!-- end topbar -->
+
+    <!-- MONTHLY SUMMARY CARDS -->
+    <div class="summary-row">
+      <div class="summary-card">
+        <p class="summary-label">Classes This Month</p>
+        <p class="summary-number" id="summaryClassesMonth">—</p>
+      </div>
+      <div class="summary-card">
+        <p class="summary-label">Average Attendance</p>
+        <p class="summary-number" id="summaryAvgAttendance">—<span class="summary-percent">%</span></p>
+      </div>
+      <div class="summary-card">
+        <p class="summary-label">Full Attendance</p>
+        <p class="summary-number" id="summaryFullAttendance">— <span class="summary-small">students</span></p>
+      </div>
+    </div>
+    <!-- end summary row -->
+
+    <!-- INFO BAR -->
+    <div class="info-bar">
+      <!-- Calendar icon -->
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#B5572A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+      <p class="info-text">
+        Marking attendance for <strong id="selectedDateText">today</strong> — mark all students then click Save Attendance.
+      </p>
+    </div>
+
+    <!-- SECTION TITLE -->
+    <h2 class="section-title">Mark Today's Attendance</h2>
+
+    <!-- STUDENT CARDS GRID -->
+    <div class="attendance-grid" id="attendanceGrid">
+      <!-- Filled dynamically by teacher-attendance.js -->
+    </div>
+    <!-- end attendance grid -->
+
+    <!-- SAVE BUTTON ROW -->
+    <div class="save-row">
+      <!-- Success message - hidden by default, shown after save -->
+      <p class="save-success" id="saveSuccess" style="display: none;">
+        &#10003; Attendance saved successfully for today.
+      </p>
+      <button class="save-btn" onclick="saveAttendance()">Save Attendance</button>
+    </div>
+
+  </div>
+  <!-- end main -->
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Academy logo -->
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet Gurukul</p>
+    </div>
+
+    <!-- Teacher profile -->
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Teacher</p>
+        <p class="profile-role">Teacher</p>
+      </div>
+    </div>
+
+    <!-- Navigation links -->
+    <nav class="sidebar-nav">
+      <a href="teacher-dashboard.html" class="nav-link">Dashboard</a>
+      <a href="teacher-students.html" class="nav-link">Student Management</a>
+      <a href="teacher-attendance.html" class="nav-link active">Attendance</a>
+      <a href="teacher-fee.html" class="nav-link">Fee Management</a>
+      <a href="teacher-homework.html" class="nav-link">Review Practice</a>
+      <a href="teacher-feedback.html" class="nav-link">Feedback</a>
+      <a href="teacher-events.html" class="nav-link">Events</a>
+    </nav>
+
+    <!-- Logout -->
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+
+  </div>
+  <!-- end sidebar -->
+
+</div>
+<!-- end page -->
+
+<script src="teacher-attendance.js"></script>
+<script src="auth-ui.js"></script>
+</body>
+</html>

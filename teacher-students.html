@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Management | Kalashree Sangeet Gurukul</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="teacher-common.css" />
+  <link rel="stylesheet" href="teacher-students.css" />
+
+</head>
+<body>
+
+<div class="page">
+
+  <div class="main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Student Management</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+      <div class="topbar-right">
+        <p class="today-date">18 March 2026</p>
+        <p class="today-day">Wednesday</p>
+      </div>
+    </div>
+
+    <!-- SECTION: ADD NEW STUDENT -->
+    <div class="add-student-card">
+      <h2 class="section-title" style="margin-top: 0; margin-bottom: 16px;">Add New Student</h2>
+      <form id="addStudentForm" class="add-student-form">
+        
+        <div class="form-group">
+          <label for="newStudentName">Student Name</label>
+          <input type="text" id="newStudentName" placeholder="e.g. Priya Sharma" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="newStudentEmail">Email Address</label>
+          <input type="email" id="newStudentEmail" placeholder="student@example.com" required />
+        </div>
+        
+        <div class="form-group">
+          <label for="newStudentPassword">Password</label>
+          <div class="password-wrap">
+            <input type="password" id="newStudentPassword" placeholder="••••••••" required />
+            <span class="toggle-password" onclick="togglePassword()">Show</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="newStudentBatch">Batch Type</label>
+          <select id="newStudentBatch" style="padding:10px 14px; border:1.5px solid #E2CEBC; border-radius:8px; font-family:inherit; font-size:14px; outline:none; background:#fff; width:100%;">
+            <option value="Regular Class">Regular Class (2 classes/week)</option>
+            <option value="Gurukul Batch">Gurukul Batch (6 classes/week)</option>
+          </select>
+        </div>
+        
+        <div class="form-submit">
+          <button type="submit" class="btn-primary">Add Student</button>
+        </div>
+        
+      </form>
+    </div>
+
+    <!-- SECTION 1 - STUDENT LIST -->
+    <h2 class="section-title">All Students</h2>
+
+    <div class="students-toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" class="search-input" id="searchInput" placeholder="Search by student name..." onkeyup="filterStudents()" />
+      </div>
+      <p class="student-count" id="studentCount">5 Students</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="students-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Phone</th>
+            <th>Batch</th>
+            <th>Level</th>
+            <th>Monthly Fee</th>
+            <th>Joined</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="studentsBody">
+          <!-- Dynamic backend injected students will appear here -->
+        </tbody>
+      </table>
+
+      <div class="no-results" id="noResults" style="display: none;">
+        <p>No students found matching your search.</p>
+      </div>
+
+    </div>
+
+
+    <!-- SECTION 2 - RAGA PROGRESS -->
+    <h2 class="section-title">Raga Progress — All Students</h2>
+
+    <!-- Global raga list editor -->
+    <div class="add-student-card" style="margin-bottom:20px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 style="font-family:'Cormorant Garamond',serif; font-size:18px; color:#1E0A02;">Global Raga List</h3>
+        <button onclick="saveGlobalRagas()" class="btn-primary" style="padding:7px 16px; font-size:13px;">Save List</button>
+      </div>
+      <p style="font-size:12px; color:#9C7A62; margin-bottom:10px;">Edit the academy-wide raga list. Separate ragas with commas. New students will be seeded with this list.</p>
+      <textarea id="globalRagaInput" rows="3" style="width:100%; padding:10px 12px; border:1.5px solid #E2CEBC; border-radius:8px; font-family:'Source Sans 3',sans-serif; font-size:13.5px; color:#1E0A02; resize:vertical;" placeholder="Yaman, Bhairav, Bhoopali..."></textarea>
+    </div>
+
+    <div class="progress-cards" id="progressCards">
+      <p style="color:#B0907A; font-size:13px;">Loading student progress...</p>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet Gurukul</p>
+    </div>
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Teacher</p>
+        <p class="profile-role">Teacher</p>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="teacher-dashboard.html" class="nav-link">Dashboard</a>
+      <a href="teacher-students.html" class="nav-link active">Student Management</a>
+      <a href="teacher-attendance.html" class="nav-link">Attendance</a>
+      <a href="teacher-fee.html" class="nav-link">Fee Management</a>
+      <a href="teacher-homework.html" class="nav-link">Review Practice</a>
+      <a href="teacher-feedback.html" class="nav-link">Feedback</a>
+      <a href="teacher-events.html" class="nav-link">Events</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </div>
+
+</div>
+
+  <!-- EDIT STUDENT MODAL -->
+  <div id="editModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div style="background:rgba(255,255,255,0.94); backdrop-filter:blur(18px); border-radius:20px; padding:36px; width:460px; max-width:95vw; max-height:90vh; overflow-y:auto; box-shadow:0 24px 64px rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.7);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px;">
+        <h3 style="font-family:'Cormorant Garamond',serif; font-size:24px; color:#1E0A02;">Edit Student</h3>
+        <button onclick="closeEditModal()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#9C7A62;">&#10005;</button>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="editName" style="width:100%; padding:10px 14px; border:1.5px solid #E2CEBC; border-radius:9px; font-family:inherit; font-size:14px; outline:none;" />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="editPhone" placeholder="Optional" style="width:100%; padding:10px 14px; border:1.5px solid #E2CEBC; border-radius:9px; font-family:inherit; font-size:14px; outline:none;" />
+        </div>
+        <div class="form-group">
+          <label>Batch Type</label>
+          <select id="editBatchType" style="width:100%; padding:10px 14px; border:1.5px solid #E2CEBC; border-radius:9px; font-family:inherit; font-size:14px; outline:none; background:#fff;">
+            <option value="Regular Class">Regular Class</option>
+            <option value="Gurukul Batch">Gurukul Batch</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Monthly Fee (₹)</label>
+          <input type="number" id="editFee" min="0" style="width:100%; padding:10px 14px; border:1.5px solid #E2CEBC; border-radius:9px; font-family:inherit; font-size:14px; outline:none;" />
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="editStatus" onchange="autoSetFee(this.value)" style="width:100%; padding:10px 14px; border:1.5px solid #E2CEBC; border-radius:9px; font-family:inherit; font-size:14px; outline:none; background:#fff;">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+            <option value="On Leave">On Leave</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:24px;">
+        <button onclick="closeEditModal()" style="padding:10px 22px; border:1.5px solid #E2CEBC; border-radius:9px; background:#fff; color:#7A3210; font-size:13px; cursor:pointer;">Cancel</button>
+        <button onclick="saveEditStudent()" style="padding:10px 22px; background:linear-gradient(135deg,#C4622E,#9A3E18); color:#fff; border:none; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer;">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREDENTIALS MODAL -->
+  <div id="credentialsModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:2000; align-items:center; justify-content:center;">
+    <div style="background:rgba(255,255,255,0.92); backdrop-filter:blur(16px); border-radius:20px; padding:36px; width:420px; max-width:95vw; box-shadow:0 24px 64px rgba(0,0,0,0.18); border:1px solid rgba(255,255,255,0.7); text-align:center;">
+      <div style="font-size:40px; margin-bottom:12px;">🎉</div>
+      <h3 style="font-family:'Cormorant Garamond',serif; font-size:24px; color:#1E0A02; margin-bottom:6px;">Student Added!</h3>
+      <p style="font-size:13px; color:#9C7A62; margin-bottom:24px;">Share these credentials with the student. They will be asked to change their password on first login.</p>
+      <div style="background:#FAF4EC; border-radius:12px; padding:18px; margin-bottom:20px; text-align:left; border:1px solid #EAD9C8;">
+        <p style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.8px; color:#8C6A52; margin-bottom:8px;">Login Credentials</p>
+        <p style="font-size:14px; color:#1E0A02; margin-bottom:6px;"><strong>Email:</strong> <span id="credEmail" style="font-family:monospace; background:#fff; padding:2px 8px; border-radius:4px; border:1px solid #E2CEBC;"></span></p>
+        <p style="font-size:14px; color:#1E0A02;"><strong>Password:</strong> <span id="credPassword" style="font-family:monospace; background:#fff; padding:2px 8px; border-radius:4px; border:1px solid #E2CEBC; letter-spacing:1px;"></span></p>
+      </div>
+      <div style="display:flex; gap:10px; justify-content:center;">
+        <button onclick="copyCredentials()" style="padding:10px 22px; background:linear-gradient(135deg,#C4622E,#9A3E18); color:#fff; border:none; border-radius:9px; font-size:13px; font-weight:600; cursor:pointer;">📋 Copy Credentials</button>
+        <button onclick="closeCredentialsModal()" style="padding:10px 22px; border:1.5px solid #E2CEBC; border-radius:9px; background:#fff; color:#7A3210; font-size:13px; cursor:pointer;">Done</button>
+      </div>
+      <p id="copyConfirm" style="font-size:12px; color:#2E7D32; margin-top:10px; display:none;">✓ Copied to clipboard!</p>
+    </div>
+  </div>
+
+  <!-- RAGA MODAL -->
+  <div id="ragaModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:32px; width:480px; max-width:95vw; max-height:85vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <div>
+          <h3 style="font-family:'Cormorant Garamond',serif; font-size:22px; color:#1E0A02;" id="ragaModalTitle">Manage Ragas</h3>
+          <p style="font-size:12px; color:#9C7A62; margin-top:2px;" id="ragaModalSubtitle"></p>
+        </div>
+        <button onclick="closeRagaModal()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#9C7A62;">&#10005;</button>
+      </div>
+      <p style="font-size:12px; color:#9C7A62; margin-bottom:12px;">Level auto-updates based on mastered ragas: 0–2 = Beginner · 3–4 = Intermediate · 5–6 = Advanced · 7+ = Gurukul</p>
+      <div id="ragaModalBody" style="display:flex; flex-direction:column; gap:10px;"></div>
+      <div style="margin-top:24px; display:flex; gap:10px; justify-content:flex-end;">
+        <button onclick="closeRagaModal()" style="padding:9px 20px; border:1.5px solid #E2CEBC; border-radius:8px; background:#fff; color:#7A3210; font-size:13px; cursor:pointer;">Cancel</button>
+        <button onclick="saveRagaProgress()" style="padding:9px 20px; background:linear-gradient(135deg,#C4622E,#9A3E18); color:#fff; border:none; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer;">Save Progress</button>
+      </div>
+    </div>
+  </div>
+
+<script src="teacher-students.js"></script>
+<script src="auth-ui.js"></script>
+</body>
+</html>

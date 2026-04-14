@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | Kalashree Sangeet Gurukul</title>
+
+  <!-- Loading the Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Common styles for sidebar used by all teacher pages -->
+  <link rel="stylesheet" href="teacher-common.css" />
+
+  <!-- Styles only for this dashboard page -->
+  <link rel="stylesheet" href="teacher-dashboard.css" />
+
+  <!-- Chart.js for analytics -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+<body>
+
+<div class="page">
+
+  <!-- LEFT SIDE - main content area -->
+  <div class="main">
+
+    <!-- Top bar with title and date -->
+    <div class="topbar">
+
+      <!-- Left side of topbar is page title -->
+      <div>
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+
+      <!-- Right side of topbar includes today's date -->
+      <div class="topbar-right">
+        <p class="today-date">18 March 2026</p>
+        <p class="today-day">Wednesday</p>
+      </div>
+
+    </div>
+    <!-- end topbar -->
+
+    <!-- CLASS PERFORMANCE OVERVIEW -->
+    <h2 class="section-title">Class Performance Overview</h2>
+    <div class="insights-grid" id="teacherInsightsCards">
+      <div class="insight-card glass-card">
+        <div class="insight-icon">👥</div>
+        <p class="insight-label">Total Students</p>
+        <p class="insight-value" id="tiTotal">—</p>
+      </div>
+      <div class="insight-card glass-card">
+        <div class="insight-icon">📅</div>
+        <p class="insight-label">Avg Attendance</p>
+        <p class="insight-value" id="tiAvgAtt">—</p>
+        <p class="insight-sub">this month</p>
+      </div>
+      <div class="insight-card glass-card">
+        <div class="insight-icon">📝</div>
+        <p class="insight-label">Avg Practice Sessions</p>
+        <p class="insight-value" id="tiAvgSub">—</p>
+        <p class="insight-sub">per student / month</p>
+      </div>
+      <div class="insight-card glass-card">
+        <div class="insight-icon">⚠️</div>
+        <p class="insight-label">Needs Attention</p>
+        <p class="insight-value" id="tiNeedsCount">—</p>
+        <p class="insight-sub">no practice in 7 days</p>
+      </div>
+    </div>
+
+    <!-- Two-col: needs attention + top students -->
+    <div class="two-col">
+      <div class="glass-card col-box" style="padding:22px;">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:700; color:#1E0A02; margin-bottom:14px;">⚠️ Needs Attention</p>
+        <div id="tiNeedsList"><p style="color:#B0907A;font-size:13px;">Loading...</p></div>
+      </div>
+      <div class="glass-card col-box" style="padding:22px;">
+        <p style="font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:700; color:#1E0A02; margin-bottom:14px;">🏆 Most Consistent</p>
+        <div id="tiTopList"><p style="color:#B0907A;font-size:13px;">Loading...</p></div>
+      </div>
+    </div>
+
+    <!-- OVERVIEW SECTION -->
+    <h2 class="section-title">Overview</h2>
+
+    <!-- Four stat cards in a row -->
+    <div class="cards-row">
+
+      <!-- Card 1 - Total Students -->
+      <a href="teacher-students.html" class="card card-blue" style="text-decoration: none; color: inherit;">
+        <p class="card-label">Total Students</p>
+        <p class="card-number" id="totalStudents">0</p>
+        <div class="card-bar">
+          <div class="card-bar-fill" style="width: 80%"></div>
+        </div>
+        <p class="card-hint">Enrolled this year</p>
+      </a>
+
+      <!-- Card 2 - Attendance Today -->
+      <a href="teacher-attendance.html" class="card card-green" style="text-decoration: none; color: inherit;">
+        <p class="card-label">Attendance Today</p>
+        <p class="card-number" id="attendanceToday">0</p>
+        <div class="card-bar">
+          <div class="card-bar-fill" style="width: 75%"></div>
+        </div>
+        <p class="card-hint">Present out of 20</p>
+      </a>
+
+      <!-- Card 3 - Fee Defaulters -->
+      <a href="teacher-fee.html" class="card card-orange" style="text-decoration: none; color: inherit;">
+        <p class="card-label">Fee Defaulters</p>
+        <p class="card-number" id="feeDefaulters">0</p>
+        <div class="card-bar">
+          <div class="card-bar-fill" style="width: 20%"></div>
+        </div>
+        <p class="card-hint">Overdue this month</p>
+      </a>
+
+      <!-- Card 4 - Ragas Mastered -->
+      <a href="teacher-homework.html" class="card card-purple" style="text-decoration: none; color: inherit;">
+        <p class="card-label">Total Submissions</p>
+        <p class="card-number" id="ragasMastered">0</p>
+        <div class="card-bar">
+          <div class="card-bar-fill" style="width: 50%"></div>
+        </div>
+        <p class="card-hint">Pending review</p>
+      </a>
+
+    </div>
+    <!-- end cards row -->
+
+    <!-- ANALYTICS CHART SECTION -->
+    <h2 class="section-title">Weekly Practice Analytics 📈</h2>
+    <div class="chart-container">
+      <canvas id="practiceChart"></canvas>
+    </div>
+
+    <!-- UPCOMING EVENTS SUMMARY -->
+    <h2 class="section-title">Upcoming Events</h2>
+    <div id="teacherEventSummary" style="margin-bottom:28px;">
+      <p style="color:#B0907A;font-size:13px;">Loading events...</p>
+    </div>
+
+    <!-- QUICK ACTIONS SECTION -->
+    <h2 class="section-title">Quick Actions</h2>
+
+    <div class="quick-links">
+
+      <!-- Clicking this goes to attendance page -->
+      <a href="teacher-attendance.html" class="quick-card">
+        <p class="quick-title">Mark Attendance</p>
+        <p class="quick-sub">For today's classes</p>
+        <span class="quick-arrow">&#8594;</span>
+      </a>
+
+      <!-- Clicking this goes to student management page -->
+      <a href="teacher-students.html" class="quick-card">
+        <p class="quick-title">Student Management</p>
+        <p class="quick-sub">View students and progress</p>
+        <span class="quick-arrow">&#8594;</span>
+      </a>
+
+      <!-- Clicking this goes to fee management page -->
+      <a href="teacher-fee.html" class="quick-card">
+        <p class="quick-title">Fee Management</p>
+        <p class="quick-sub" id="feeQuickSub">Loading...</p>
+        <span class="quick-arrow">&#8594;</span>
+      </a>
+
+      <!-- Clicking this goes to feedback page -->
+      <a href="teacher-feedback.html" class="quick-card">
+        <p class="quick-title">Feedback</p>
+        <p class="quick-sub">Write notes for students</p>
+        <span class="quick-arrow">&#8594;</span>
+      </a>
+
+      <!-- Clicking this goes to homework review page -->
+      <a href="teacher-homework.html" class="quick-card">
+        <p class="quick-title">Review Practice</p>
+        <p class="quick-sub">Listen to submitted audios</p>
+        <span class="quick-arrow">&#8594;</span>
+      </a>
+
+      <a href="teacher-events.html" class="quick-card">
+        <p class="quick-title">Events</p>
+        <p class="quick-sub">Create & manage events</p>
+        <span class="quick-arrow">&#8594;</span>
+      </a>
+
+    </div>
+    <!-- end quick links -->
+
+  </div>
+  <!-- end main content -->
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+
+    <!-- Academy logo at top of sidebar -->
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet Gurukul</p>
+    </div>
+
+    <!-- Teacher name and role -->
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Teacher</p>
+        <p class="profile-role">Teacher</p>
+      </div>
+    </div>
+
+    <!-- Navigation links -->
+    <nav class="sidebar-nav">
+      <a href="teacher-dashboard.html" class="nav-link active">Dashboard</a>
+      <a href="teacher-students.html" class="nav-link">Student Management</a>
+      <a href="teacher-attendance.html" class="nav-link">Attendance</a>
+      <a href="teacher-fee.html" class="nav-link">Fee Management</a>
+      <a href="teacher-homework.html" class="nav-link">Review Practice</a>
+      <a href="teacher-feedback.html" class="nav-link">Feedback</a>
+      <a href="teacher-events.html" class="nav-link">Events</a>
+    </nav>
+
+    <!-- Logout button at bottom -->
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+
+  </div>
+  <!-- end sidebar -->
+
+</div>
+<!-- end page -->
+
+<script src="auth-ui.js"></script>
+<script src="teacher-dashboard.js"></script>
+</body>
+</html>

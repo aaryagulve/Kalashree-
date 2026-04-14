@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Details | Kalashree Sangeet Gurukul</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="student-common.css" />
+  <link rel="stylesheet" href="student-details.css" />
+
+</head>
+<body>
+
+<div class="page">
+
+  <div class="main">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">My Details</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+      <div class="topbar-right">
+        <p class="today-date">18 March 2026</p>
+        <p class="today-day">Wednesday</p>
+      </div>
+    </div>
+
+
+    <!-- SECTION 1 - MY ATTENDANCE -->
+    <h2 class="section-title" id="attendance">My Attendance</h2>
+
+    <!-- Month selector -->
+    <div class="month-selector-row">
+      <label class="month-label">Viewing month</label>
+      <select class="month-select" id="monthSelect" onchange="changeMonth()">
+        <option value="march">March 2026</option>
+        <option value="february">February 2026</option>
+        <option value="january">January 2026</option>
+      </select>
+    </div>
+
+    <!-- Attendance content - percentage left, dot record right -->
+    <div class="attend-wrap">
+
+      <!-- Big percentage on left -->
+      <div class="percent-box">
+        <p class="big-percent" id="attendPercent">84%</p>
+        <p class="big-percent-label">Overall</p>
+        <div class="attend-stats">
+          <div class="attend-stat">
+            <p class="attend-stat-num" id="presentCount">18</p>
+            <p class="attend-stat-label">Present</p>
+          </div>
+          <div class="attend-divider"></div>
+          <div class="attend-stat">
+            <p class="attend-stat-num" id="absentCount">4</p>
+            <p class="attend-stat-label">Absent</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dot record on right -->
+      <div class="dot-calendar">
+        <p class="cal-month-title" id="calMonthTitle">March 2026 — Class Record</p>
+        <div class="dot-list" id="dotList">
+          <!-- Filled by JavaScript -->
+        </div>
+      </div>
+
+    </div>
+    <!-- end attend wrap -->
+
+
+    <!-- SECTION 2 - FEE HISTORY -->
+    <h2 class="section-title" id="fees">My Fee History</h2>
+
+    <!-- Fee info bar -->
+    <div class="fee-info-bar" id="feeInfoBar">
+      Monthly fee — <strong>&#8377; —</strong> &nbsp;·&nbsp;
+      Batch — <strong>—</strong> &nbsp;·&nbsp;
+      Due on — <strong>10th of every month</strong>
+    </div>
+
+    <!-- Fee timeline -->
+    <div class="timeline" id="feeTimelineContainer">
+      <p style="padding: 20px; color: #666;">Loading fee records...</p>
+    </div>
+    <!-- end timeline -->
+
+
+    <!-- SECTION 3 - GURU NOTES -->
+    <h2 class="section-title">My Guru Notes</h2>
+
+    <p class="notes-sub">Personal feedback</p>
+
+    <div class="notes-list" id="detailsNotesContainer">
+      <p class="loading-text">Loading feedback history...</p>
+    </div>
+    <!-- end notes list -->
+
+  </div>
+  <!-- end main -->
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet Gurukul</p>
+    </div>
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Aarya</p>
+        <p class="profile-role">Student</p>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="student-dashboard.html" class="nav-link">Dashboard</a>
+      <a href="student-details.html" class="nav-link active">My Details</a>
+      <a href="student-practice-notes.html" class="nav-link">Practice and Notes</a>
+      <a href="student-fee.html" class="nav-link">My Fees</a>
+      <a href="student-events.html" class="nav-link">Events</a>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="student-details.js"></script>
+<script src="auth-ui.js"></script>
+</body>
+</html>

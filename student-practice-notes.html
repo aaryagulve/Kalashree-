@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Practice & Notes | Kalashree Sangeet Gurukul</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Shared Sidebar and Premium Layout Styles -->
+  <link rel="stylesheet" href="student-common.css" />
+  <!-- Specific Page Styles -->
+  <link rel="stylesheet" href="student-practice-notes.css" />
+</head>
+<body>
+
+<div class="page">
+  
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    
+    <!-- Top bar -->
+    <div class="topbar">
+      <div>
+        <h1 class="page-title">Practice & Notes</h1>
+        <p class="page-subtitle">Kalashree Sangeet Gurukul</p>
+      </div>
+      <div class="topbar-right">
+        <p class="today-date">26 March 2026</p>
+        <p class="today-day">Thursday</p>
+      </div>
+    </div>
+
+    <!-- SECTION 1: PRACTICE SUBMISSION -->
+    <div class="section-block">
+      <h2 class="section-title">Submit Practice</h2>
+      
+      <div class="submission-layout">
+        
+        <!-- LEFT: Submit Form -->
+        <div class="submit-form-card premium-glass staggered-1">
+          <h3 class="card-heading">New Submission</h3>
+          <p class="card-sub">Upload your audio to count towards your streak. Links are saved but don't count.</p>
+          
+          <div class="form-field">
+            <label>Practice Title or Raga</label>
+            <input type="text" id="hwTitle" placeholder="e.g. Raga Yaman Alap" />
+          </div>
+
+          <!-- Toggle: Upload vs Link — Upload is default (counts for streak) -->
+          <div class="form-field">
+            <label>Submission Type</label>
+            <div class="submit-toggle">
+              <label class="toggle-opt">
+                <input type="radio" name="submitType" value="upload" checked onchange="toggleSubmitType('upload')" />
+                <span>🎵 Upload Audio <span style="font-size:10px;background:#E6F4EA;color:#2E7D32;padding:2px 6px;border-radius:8px;margin-left:4px;font-weight:700;">Counts for streak</span></span>
+              </label>
+              <label class="toggle-opt">
+                <input type="radio" name="submitType" value="link" onchange="toggleSubmitType('link')" />
+                <span>🔗 Paste Link</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- File upload input — shown by default -->
+          <div class="form-field" id="uploadSection">
+            <label>Audio File (MP3, WAV, M4A — max 50MB)</label>
+            <div class="audio-upload-area" onclick="document.getElementById('audioFileInput').click()">
+              <div id="audioPlaceholder">
+                <span style="font-size:28px;">🎵</span>
+                <p style="font-size:13px;color:#9C7A62;margin-top:6px;">Click to choose audio file</p>
+                <p style="font-size:11px;color:#C4A88C;">MP3, WAV, M4A, MP4</p>
+              </div>
+              <p id="audioFileName" style="display:none;font-size:13px;font-weight:600;color:#5A3018;"></p>
+            </div>
+            <input type="file" id="audioFileInput" accept="audio/*" style="display:none;" onchange="previewAudioFile(event)" />
+          </div>
+
+          <!-- Link input — hidden by default -->
+          <div class="form-field" id="linkSection" style="display:none;">
+            <label>Audio or Video Link</label>
+            <input type="url" id="hwLink" placeholder="Paste Google Drive or YouTube link" />
+          </div>
+          
+          <div class="form-field">
+            <label>Notes (optional)</label>
+            <textarea id="hwNotes" rows="3" placeholder="Any specific questions about your practice?"></textarea>
+          </div>
+          
+          <button class="primary-btn" id="submitBtn" onclick="submitPractice()">Submit to Guru</button>
+          <p id="submitMsg" style="margin-top:10px; font-size:13px; font-weight:600;"></p>
+        </div>
+
+        <!-- RIGHT: Recent Submissions -->
+        <div class="recent-hw-card premium-glass staggered-2">
+          <h3 class="card-heading">Recent Submissions</h3>
+          <div class="hw-list" id="hwList">
+            <p style="color:#B0907A; font-size:13px;">Loading...</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SECTION 2: GURU NOTES -->
+    <div class="section-block">
+      <h2 class="section-title">Guru Notes</h2>
+      <p class="italic-subtitle">Personal feedback from your Guru</p>
+      
+      <!-- Filter Buttons -->
+      <div class="filter-row staggered-3">
+        <button class="filter-btn active" onclick="filterNotes('all', this)">All</button>
+        <button class="filter-btn" onclick="filterNotes('month', this)">This Month</button>
+        <button class="filter-btn" onclick="filterNotes('week', this)">This Week</button>
+      </div>
+
+      <!-- Notes List -->
+      <div class="notes-container" id="notesContainer">
+        <p style="color:#B0907A; font-size:13px;">Loading notes...</p>
+      </div>
+    </div>
+
+    </div>
+    <!-- end main -->
+
+  <!-- RIGHT SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <img src="logo-img.avif" alt="Kalashree" class="logo-img" />
+      <p class="logo-name">Kalashree Sangeet<br>Gurukul</p>
+    </div>
+
+    <div class="sidebar-profile">
+      <div class="profile-avatar">A</div>
+      <div>
+        <p class="profile-name">Aarya</p>
+        <p class="profile-role">Student</p>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="student-dashboard.html" class="nav-link">Dashboard</a>
+      <a href="student-details.html" class="nav-link">My Details</a>
+      <a href="student-practice-notes.html" class="nav-link active">Practice and Notes</a>
+      <a href="student-events.html" class="nav-link">Events</a>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="auth-ui.js"></script>
+<script src="student-practice-notes.js"></script>
+</body>
+</html>
