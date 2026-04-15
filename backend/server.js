@@ -1,18 +1,39 @@
+// ── Load environment variables FIRST ─────────────────────
+require('dotenv').config();
+
 const express  = require('express');
 const mongoose = require('mongoose');
 const cors     = require('cors');
+const helmet   = require('helmet');
 const path     = require('path');
-
-// ── Load .env FIRST before anything else ──────────────────
-require('dotenv').config();
 
 const app = express();
 
+// ── Security headers ──────────────────────────────────────
+app.use(helmet());
+
 // ── CORS ──────────────────────────────────────────────────
+const allowedOrigins = [
+  'https://kalashree.vercel.app',
+  'http://localhost:5500',
+  'http://127.0.0.1:5500',
+  'http://localhost:3000',
+];
+
 app.use(cors({
-  origin: 'https://kalashree.vercel.app', // No slash at the end!
-  credentials: true
+  origin: function (origin, callback) {
+    // Allow requests with no origin (Postman, mobile apps, curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new Error('Not allowed by CORS: ' + origin));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+// Handle preflight OPTIONS requests
+app.options('*', cors());
 
 // ── Body parser ───────────────────────────────────────────
 app.use(express.json());
@@ -24,22 +45,15 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const MONGO_URL = process.env.MONGO_URL;
 
 if (!MONGO_URL) {
-  console.error('❌  MONGO_URL is not set in .env — server cannot start.');
-  process.exit(1); // Hard stop — no silent fallback to localhost
+  console.error('❌  MONGO_URL is not set in environment variables.');
+  process.exit(1);
 }
-
-console.log('🔗  Connecting to:', MONGO_URL.includes('localhost') ? '⚠️  LOCAL MongoDB' : '☁️  MongoDB ATLAS');
 
 mongoose
   .connect(MONGO_URL)
   .then(() => {
     const host = mongoose.connection.host;
     console.log(`✅  MongoDB connected → ${host}`);
-    if (host.includes('localhost') || host.includes('127.0.0.1')) {
-      console.warn('⚠️  WARNING: Connected to LOCAL MongoDB, not Atlas!');
-    } else {
-      console.log('☁️  Confirmed: Using MongoDB ATLAS');
-    }
   })
   .catch((err) => {
     console.error('❌  MongoDB connection FAILED:', err.message);
@@ -60,18 +74,31 @@ app.use('/api/events',     require('./routes/events'));
 
 // ── Health check ──────────────────────────────────────────
 app.get('/api/health', (req, res) => {
-  const host = mongoose.connection.host;
   res.json({
     status: 'ok',
-    database: host,
-    usingAtlas: !host.includes('localhost')
+    database: mongoose.connection.host,
+    usingAtlas: !mongoose.connection.host.includes('localhost'),
   });
 });
 
-// ── Start server ──────────────────────────────────────────
+// ── Global error handler ──────────────────────────────────
+app.use((err, req, res, next) => {
+  console.error('Unhandled error:', err.message);
+  res.status(500).json({ message: err.message || 'Internal server error' });
+});
 
+// ── Unhandled promise rejections ──────────────────────────
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Promise Rejection:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err.message);
+  process.exit(1);
+});
+
+// ── Start server — bind to 0.0.0.0 for Render ────────────
 const PORT = process.env.PORT || 5000;
-
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is actually running on port ${PORT}`);
+  console.log(`🚀  Server running on port ${PORT}`);
 });
