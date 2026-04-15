@@ -9,7 +9,10 @@ require('dotenv').config();
 const app = express();
 
 // ── CORS ──────────────────────────────────────────────────
-app.use(cors({ origin: 'https://kalashree.vercel.app/', credentials: true }));
+app.use(cors({
+  origin: 'https://kalashree.vercel.app', // No slash at the end!
+  credentials: true
+}));
 
 // ── Body parser ───────────────────────────────────────────
 app.use(express.json());
