@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/User');
+const User = require('../models/user');
 
 // @route   PUT /api/practice/mark-done
 // @desc    Mark practice done for a student and update streak

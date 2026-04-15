@@ -4,7 +4,7 @@ const multer  = require('multer');
 const path    = require('path');
 const fs      = require('fs');
 const Fee     = require('../models/Fee');
-const User    = require('../models/User');
+const User    = require('../models/user');
 
 // ── Screenshot upload folder ──────────────────────────────
 const screenshotDir = path.join(__dirname, '..', 'uploads', 'screenshots');

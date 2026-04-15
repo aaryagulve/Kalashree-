@@ -59,7 +59,7 @@ router.post('/submit', audioUpload.single('audioFile'), async (req, res) => {
 
     // Only count as a practice session if an actual audio file was uploaded
     if (type === 'upload' && req.file) {
-      const User = require('../models/User');
+      const User = require('../models/user');
       const student = await User.findById(studentId);
       if (student) {
         const today = new Date(); today.setHours(0,0,0,0);

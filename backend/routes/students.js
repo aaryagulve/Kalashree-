@@ -1,6 +1,6 @@
 const express = require('express'); // Import Express
 const router = express.Router(); // Create a router for student routes
-const User = require('../models/User'); // Import the User model
+const User = require('../models/user'); // Import the User model
 const bcrypt = require('bcryptjs'); // For hashed passwords
 
 // GET /api/students

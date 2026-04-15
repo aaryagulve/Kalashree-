@@ -108,7 +108,7 @@ router.get('/percentage/:id', async (req, res) => {
 // Returns this week's expected vs actual attendance based on batchType
 router.get('/weekly-progress/:id', async (req, res) => {
   try {
-    const User = require('../models/User');
+    const User = require('../models/user');
     const student = await User.findById(req.params.id);
     if (!student) return res.status(404).json({ message: 'Student not found' });
 

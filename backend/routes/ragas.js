@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const RagaList = require('../models/Raga');
-const User = require('../models/User');
+const User = require('../models/user');
 
 const JWT_SECRET = 'kalashree_secret_key';
 
