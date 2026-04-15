@@ -2,7 +2,6 @@
 // This file saves attendance using your backend APIs.
 
 // Backend base url (your backend runs on port 5000)
-var API_BASE = 'http://localhost:5000';
 
 // This stores teacher selection
 // Key: studentId

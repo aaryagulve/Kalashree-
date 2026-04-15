@@ -1,5 +1,4 @@
 // teacher-feedback.js
-var API_BASE = 'http://localhost:5000';
 var teacherId = localStorage.getItem('userId');
 
 document.addEventListener('DOMContentLoaded', async function() {

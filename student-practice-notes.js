@@ -1,4 +1,3 @@
-var API_BASE = 'http://localhost:5000';
 var allNotes = [];
 
 document.addEventListener('DOMContentLoaded', function () {

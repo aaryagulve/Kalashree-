@@ -1,4 +1,3 @@
-var API_BASE = 'http://localhost:5000';
 
 document.addEventListener('DOMContentLoaded', function () {
   loadEvents();

@@ -1,5 +1,4 @@
 // teacher-dashboard.js
-var API_BASE = 'http://localhost:5000';
 
 document.addEventListener('DOMContentLoaded', async function () {
   await Promise.all([

@@ -1,4 +1,3 @@
-var API_BASE = 'http://localhost:5000';
 var studentId = localStorage.getItem('userId');
 
 // All attendance records fetched from API

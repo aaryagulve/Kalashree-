@@ -1,5 +1,4 @@
 // student-dashboard.js
-var API_BASE = 'http://localhost:5000';
 
 function toggleHwType(type) {
   const linkSec    = document.getElementById('hwLinkSection');

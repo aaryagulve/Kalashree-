@@ -2,7 +2,6 @@
 // This file connects your Fee Management page with backend APIs (so MongoDB gets updated).
 
 // Backend base url (your backend runs on port 5000)
-var API_BASE = 'http://localhost:5000';
 
 // Helper: format date nicely for the table
 function formatDate(dateValue) {
