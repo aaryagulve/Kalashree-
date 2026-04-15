@@ -1,5 +1,5 @@
 // teacher-homework.js
-const API_BASE = 'http://localhost:5000';
+const API_BASE = 'https://kalashree-3.onrender.com';
 let allHomework = [];
 
 document.addEventListener('DOMContentLoaded', async function () {
