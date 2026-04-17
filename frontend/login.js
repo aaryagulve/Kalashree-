@@ -33,7 +33,7 @@ function handleLogin() {
   btnText.style.display = 'none';
   btnLoader.style.display = 'flex';
 
-  fetch('https://kalashree.onrender.com', {
+  fetch(API_BASE + '/api/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: email, password: password })

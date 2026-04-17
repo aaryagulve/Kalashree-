@@ -53,7 +53,7 @@ function filterStudents() {
    DYNAMIC STUDENT MANAGEMENT
 ───────────────────────────── */
 
-const API_BASE = 'https://kalashree-3.onrender.com';
+
 
 // 1. Load All Students on Page Ready
 document.addEventListener('DOMContentLoaded', () => {

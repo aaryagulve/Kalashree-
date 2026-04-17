@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables (SENSITIVE)
+.env
+.env.*
+*/.env
+*/.env.*
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+*.log
+
+# Project specific
+uploads/
+backend/uploads/
