@@ -13,13 +13,19 @@ const TEACHERS = [
   {
     name:     'Aarya Gulve',
     email:    'apgulve370123@kkwagh.edu.in',
-    password: '98765',   // ← change to your actual teacher password
+    password: '98765',
     role:     'teacher'
   },
   {
-    name:     'Samidha Nimonkar',
-    email:    'samidhanimonkar@gmail.com',
-    password: 'samidha@123',   // ← change to your actual teacher password
+    name:     'Sachin Nimonkar',
+    email:    'sachinnimonkar@gmail.com',
+    password: '98765',
+    role:     'teacher'
+  },
+  {
+    name:     'Ashish Ranade',
+    email:    'ashishranade@gmail.com',
+    password: '98765',
     role:     'teacher'
   }
 ];

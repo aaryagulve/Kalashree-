@@ -35,7 +35,7 @@ router.post('/login', async (req, res) => {
 
     // 3.5) Restrict teacher login
     if (user.role === 'teacher') {
-      const allowedTeacherEmails = ['apgulve370123@kkwagh.edu.in', 'samidhanimonkar@gmail.com'];
+      const allowedTeacherEmails = ['apgulve370123@kkwagh.edu.in', 'sachinnimonkar@gmail.com', 'ashishranade@gmail.com'];
       if (!allowedTeacherEmails.includes(user.email)) {
         return res.status(403).json({ message: 'Unauthorized teacher email address.' });
       }
