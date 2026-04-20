@@ -104,7 +104,18 @@
       <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;color:#1E0A02;">Upload Payment Screenshot</h3>
       <button onclick="closePayModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:#9C7A62;">&#10005;</button>
     </div>
-    <p style="font-size:13px;color:#8C6A52;margin-bottom:20px;">Upload a screenshot of your UPI payment confirmation. The teacher will verify and confirm your payment.</p>
+    <p style="font-size:13px;color:#8C6A52;margin-bottom:20px;">Choose your payment method and upload a screenshot if paying via UPI.</p>
+    
+    <div style="display:flex; gap:12px; margin-bottom:20px;">
+      <label style="flex:1; cursor:pointer;">
+        <input type="radio" name="payMethod" value="UPI" checked onclick="togglePayMethod('UPI')" style="display:none;" />
+        <div id="methodUPI" style="text-align:center; padding:10px; border:1.5px solid #D4A017; border-radius:10px; background:rgba(212,160,23,0.08); color:#7A3210; font-weight:600; font-size:13px;">Online / UPI</div>
+      </label>
+      <label style="flex:1; cursor:pointer;">
+        <input type="radio" name="payMethod" value="Cash" onclick="togglePayMethod('Cash')" style="display:none;" />
+        <div id="methodCash" style="text-align:center; padding:10px; border:1.5px solid #E2CEBC; border-radius:10px; background:#fff; color:#9C7A62; font-size:13px;">Paid in Cash</div>
+      </label>
+    </div>
 
     <!-- Preview area -->
     <div id="screenshotPreviewArea" onclick="document.getElementById('screenshotInput').click()"

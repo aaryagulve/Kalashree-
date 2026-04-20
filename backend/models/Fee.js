@@ -35,6 +35,9 @@ const feeSchema = new mongoose.Schema({
 
   // Screenshot of payment uploaded by student
   screenshotPath: { type: String, default: '' },
+
+  // New: Payment method used (e.g., 'UPI', 'Cash')
+  paymentMethod: { type: String, default: 'UPI' },
 });
 
 module.exports = mongoose.models.Fee || mongoose.model('Fee', feeSchema); // Export Fee model

@@ -90,10 +90,15 @@
           <input type="file" id="posterInput" accept="image/*" style="display:none;" onchange="previewPoster(event)" />
         </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn">
-          <span id="submitText">Create Event</span>
-          <span id="submitLoader" style="display:none;">Creating...</span>
-        </button>
+        <div style="display:flex; gap:10px;">
+          <button type="submit" class="submit-btn" id="submitBtn" style="flex:1;">
+            <span id="submitText">Create Event</span>
+            <span id="submitLoader" style="display:none;">Saving...</span>
+          </button>
+          <button type="button" class="submit-btn" id="cancelEditBtn" onclick="cancelEdit()" style="display:none; flex:0.4; background:#9C7A62;">
+            Cancel
+          </button>
+        </div>
         <p id="formMsg" style="margin-top:10px; font-size:13px; font-weight:600;"></p>
 
       </form>
@@ -147,6 +152,10 @@
       <div class="ev-modal-row" id="evModalFeeRow"><span>💰</span><span id="evModalFee"></span></div>
       <div class="ev-modal-row" id="evModalMandRow" style="display:none;"><span>⚠️</span><span style="color:#E65100;font-weight:600;">Mandatory for all students</span></div>
       <div class="ev-modal-desc" id="evModalDesc" style="display:none;"></div>
+      <p style="font-size:12px; color:#9C7A62; margin-top:20px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px;">Attendees</p>
+      <div id="evModalAttendees" style="margin-top:8px; max-height:150px; overflow-y:auto; background:#FDFAF7; border-radius:8px; padding:8px; border:1px solid #EAD9C8;">
+        <p style="font-size:13px; color:#B0907A; text-align:center;">Loading attendees...</p>
+      </div>
       <div class="ev-modal-actions" id="evModalActions"></div>
     </div>
   </div>

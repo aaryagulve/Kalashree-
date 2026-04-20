@@ -83,6 +83,29 @@ router.delete('/:id', requireTeacher, async (req, res) => {
   }
 });
 
+// ── PUT /api/events/:id ───────────────────────────────────
+router.put('/:id', requireTeacher, upload.single('poster'), async (req, res) => {
+  try {
+    const { title, date, type, description, feeAmount, isMandatory, locationOrLink } = req.body;
+    const updateData = {};
+    if (title)          updateData.title = title;
+    if (date)           updateData.date = new Date(date);
+    if (type)           updateData.type = type;
+    if (description !== undefined) updateData.description = description;
+    if (feeAmount !== undefined)   updateData.feeAmount = Number(feeAmount);
+    if (isMandatory !== undefined) updateData.isMandatory = isMandatory === 'true' || isMandatory === true;
+    if (locationOrLink !== undefined) updateData.locationOrLink = locationOrLink;
+    if (req.file)       updateData.poster = req.file.filename;
+
+    const event = await Event.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    if (!event) return res.status(404).json({ message: 'Event not found' });
+
+    res.json({ message: 'Event updated successfully', event });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
 // ── POST /api/events/:id/attend ───────────────────────────
 // Student RSVPs to an event
 router.post('/:id/attend', async (req, res) => {

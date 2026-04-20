@@ -220,6 +220,7 @@ router.put('/request/:id', screenshotUpload.single('screenshot'), async (req, re
       status: 'Payment Requested',
       paymentStatus: 'Payment Requested',
       paymentRequestDate: new Date(),
+      paymentMethod: req.body.paymentMethod || 'UPI'
     };
     if (req.file) updateData.screenshotPath = req.file.filename;
 

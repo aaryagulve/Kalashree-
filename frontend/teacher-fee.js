@@ -89,6 +89,7 @@ function renderFees(records) {
       '<td>' + studentCellHtml + '</td>' +
       '<td><span class="badge ' + batchBadge + '">' + batchLabel + '</span></td>' +
       '<td class="td-fee">&#8377; ' + (fee.amount || 0) + '</td>' +
+      '<td><span style="font-size:12px;font-weight:600;color:#8C6A52;">' + (fee.paymentMethod || '—') + '</span></td>' +
       '<td class="td-muted">' + formatDate(fee.dueDate) + '</td>' +
       '<td id="status-' + fee._id + '">' + badgeHtml + '</td>' +
       '<td id="action-' + fee._id + '">' + actionHtml + '</td>';
@@ -212,6 +213,7 @@ async function loadRequests() {
         '<td>' + studentCellHtml + '</td>' +
         '<td>' + fee.month + '</td>' +
         '<td class="td-fee">₹ ' + fee.amount + '</td>' +
+        '<td><span style="font-size:12px;font-weight:700;color:#7A3210;">' + (fee.paymentMethod || 'UPI') + '</span></td>' +
         '<td class="td-muted">' + dateHtml + '</td>' +
         '<td>' + screenshotHtml + '</td>' +
         '<td>' + actionHtml + '</td>' +

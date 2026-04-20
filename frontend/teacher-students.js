@@ -11,37 +11,42 @@ function filterStudents() {
   /* Get what teacher typed in search box */
   var input = document.getElementById('searchInput').value.toLowerCase();
 
-  /* Get all rows in the table body */
+  /* 1. Filter the main students table */
   var rows = document.getElementById('studentsBody').getElementsByTagName('tr');
-
-  /* Count visible rows */
   var visibleCount = 0;
 
-  /* Go through each row */
   for (var i = 0; i < rows.length; i++) {
-
-    /* Get the student name from this row */
     var nameCell = rows[i].getElementsByClassName('student-name')[0];
-
     if (nameCell) {
       var name = nameCell.textContent.toLowerCase();
-
-      /* Show row if name matches search */
       if (name.indexOf(input) > -1) {
         rows[i].style.display = '';
         visibleCount++;
       } else {
-        /* Hide row if name does not match */
         rows[i].style.display = 'none';
       }
     }
   }
 
+  /* 2. Filter the raga progress cards */
+  var progressCards = document.querySelectorAll('.progress-card');
+  progressCards.forEach(function(card) {
+    var nameEl = card.querySelector('.student-name');
+    if (nameEl) {
+      var studentName = nameEl.textContent.toLowerCase();
+      if (studentName.indexOf(input) > -1) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    }
+  });
+
   /* Update the count shown */
   document.getElementById('studentCount').textContent = visibleCount + ' Students';
 
-  /* Show no results message if nothing found */
-  if (visibleCount === 0) {
+  /* Show no results message if nothing found in bridge table */
+  if (visibleCount === 0 && input !== '') {
     document.getElementById('noResults').style.display = 'block';
   } else {
     document.getElementById('noResults').style.display = 'none';

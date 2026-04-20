@@ -121,6 +121,44 @@ function openPayModalFor(feeId) {
   document.getElementById('screenshotPlaceholder').style.display = 'block';
   document.getElementById('screenshotInput').value = '';
   document.getElementById('payModalMsg').textContent = '';
+  // Reset method to UPI
+  togglePayMethod('UPI');
+  const radios = document.getElementsByName('payMethod');
+  if (radios.length) radios[0].checked = true;
+}
+
+function togglePayMethod(method) {
+  const upiDiv = document.getElementById('methodUPI');
+  const cashDiv = document.getElementById('methodCash');
+  const uploadArea = document.getElementById('screenshotPreviewArea');
+
+  if (method === 'Cash') {
+    upiDiv.style.border = '1.5px solid #E2CEBC';
+    upiDiv.style.background = '#fff';
+    upiDiv.style.color = '#9C7A62';
+    upiDiv.style.fontWeight = '400';
+
+    cashDiv.style.border = '1.5px solid #D4A017';
+    cashDiv.style.background = 'rgba(212,160,23,0.08)';
+    cashDiv.style.color = '#7A3210';
+    cashDiv.style.fontWeight = '600';
+
+    uploadArea.style.opacity = '0.4';
+    uploadArea.style.pointerEvents = 'none';
+  } else {
+    cashDiv.style.border = '1.5px solid #E2CEBC';
+    cashDiv.style.background = '#fff';
+    cashDiv.style.color = '#9C7A62';
+    cashDiv.style.fontWeight = '400';
+
+    upiDiv.style.border = '1.5px solid #D4A017';
+    upiDiv.style.background = 'rgba(212,160,23,0.08)';
+    upiDiv.style.color = '#7A3210';
+    upiDiv.style.fontWeight = '600';
+
+    uploadArea.style.opacity = '1';
+    uploadArea.style.pointerEvents = 'auto';
+  }
 }
 
 function closePayModal() {
@@ -143,28 +181,30 @@ async function submitPayment() {
   const file = document.getElementById('screenshotInput').files[0];
   const btn  = document.getElementById('submitPayBtn');
   const msg  = document.getElementById('payModalMsg');
+  
+  const methodRadios = document.getElementsByName('payMethod');
+  let selectedMethod = 'UPI';
+  for (const r of methodRadios) { if(r.checked) selectedMethod = r.value; }
+
+  if (selectedMethod === 'UPI' && !file) {
+    msg.style.color = '#D32F2F';
+    msg.textContent = 'Please upload a payment screenshot for UPI.';
+    return;
+  }
 
   btn.disabled = true;
   btn.textContent = 'Submitting...';
   msg.textContent = '';
 
   try {
-    let res;
-    if (file) {
-      // Submit with screenshot
-      const fd = new FormData();
-      fd.append('screenshot', file);
-      res = await fetch(`${API_BASE}/api/fee/request/${_currentFeeId}`, {
-        method: 'PUT',
-        body: fd
-      });
-    } else {
-      // Submit without screenshot (student paid via other method)
-      res = await fetch(`${API_BASE}/api/fee/request/${_currentFeeId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
+    const fd = new FormData();
+    fd.append('paymentMethod', selectedMethod);
+    if (file) fd.append('screenshot', file);
+
+    const res = await fetch(`${API_BASE}/api/fee/request/${_currentFeeId}`, {
+      method: 'PUT',
+      body: fd
+    });
 
     const data = await res.json();
     if (res.ok) {

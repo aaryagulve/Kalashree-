@@ -18,6 +18,8 @@ function previewPoster(e) {
   reader.readAsDataURL(file);
 }
 
+let _editingEventId = null;
+
 async function createEvent(e) {
   e.preventDefault();
   const btn    = document.getElementById('submitBtn');
@@ -43,22 +45,29 @@ async function createEvent(e) {
   if (posterFile) formData.append('poster', posterFile);
 
   try {
-    const res = await fetch(`${API_BASE}/api/events`, {
-      method: 'POST',
+    const url = _editingEventId ? `${API_BASE}/api/events/${_editingEventId}` : `${API_BASE}/api/events`;
+    const method = _editingEventId ? 'PUT' : 'POST';
+
+    const res = await fetch(url, {
+      method,
       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-      body: formData   // NO Content-Type header — browser sets it with boundary
+      body: formData
     });
     const data = await res.json();
     if (res.ok) {
       msg.style.color = '#2E7D32';
-      msg.textContent = '✓ Event created with poster!';
-      document.getElementById('eventForm').reset();
-      document.getElementById('posterPreview').style.display = 'none';
-      document.getElementById('posterPlaceholder').style.display = 'flex';
+      msg.textContent = _editingEventId ? '✓ Event updated successfully!' : '✓ Event created successfuly!';
+      if (!_editingEventId) {
+        document.getElementById('eventForm').reset();
+        document.getElementById('posterPreview').style.display = 'none';
+        document.getElementById('posterPlaceholder').style.display = 'flex';
+      } else {
+        cancelEdit(); // Reset form and mode
+      }
       loadEvents();
     } else {
       msg.style.color = '#D32F2F';
-      msg.textContent = data.message || 'Failed to create event.';
+      msg.textContent = data.message || 'Failed to save event.';
     }
   } catch (err) {
     msg.style.color = '#D32F2F';
@@ -92,9 +101,7 @@ function renderEventCard(ev, isTeacher) {
     : `<div class="event-poster-placeholder">🎵</div>`;
   const mandatoryTag = ev.isMandatory ? '<span class="mandatory-tag">Mandatory</span>' : '';
   const feeText = ev.feeAmount > 0 ? `₹ ${ev.feeAmount}` : 'Free';
-  const deleteBtn = isTeacher
-    ? `<button class="delete-btn" onclick="event.stopPropagation(); deleteEvent('${ev._id}')">Delete</button>`
-    : '';
+  const attendeeCount = ev.attendees ? ev.attendees.length : 0;
 
   // Encode event data for click handler
   const evData = encodeURIComponent(JSON.stringify(ev));
@@ -108,16 +115,15 @@ function renderEventCard(ev, isTeacher) {
         <p class="event-title">${ev.title}</p>
         <p class="event-meta">📅 ${dateStr}</p>
         ${ev.locationOrLink ? `<p class="event-meta">📍 ${ev.locationOrLink}</p>` : ''}
-        ${ev.description ? `<p class="event-desc">${ev.description}</p>` : ''}
         <div class="event-footer">
           <span class="event-fee">${feeText}</span>
-          ${deleteBtn}
+          <span style="font-size:12px;color:#8C6A52;">👥 ${attendeeCount} attending</span>
         </div>
       </div>
     </div>`;
 }
 
-function openEvModal(evJson, isTeacher) {
+async function openEvModal(evJson, isTeacher) {
   const ev = typeof evJson === 'string' ? JSON.parse(evJson) : evJson;
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
@@ -152,32 +158,83 @@ function openEvModal(evJson, isTeacher) {
     descEl.style.display = 'none';
   }
 
+  // Load Attendees
+  const attBox = document.getElementById('evModalAttendees');
+  attBox.innerHTML = '<p style="font-size:13px;color:#B0907A;text-align:center;">Loading...</p>';
+  try {
+    const res = await fetch(`${API_BASE}/api/events/${ev._id}/attendees`);
+    const data = await res.json();
+    if (data.attendees && data.attendees.length > 0) {
+      attBox.innerHTML = data.attendees.map(a => `<div style="padding:6px 10px; border-bottom:1px solid #F5EDE3; font-size:13px; color:#5A3018; display:flex; justify-content:space-between;"><span>${a.studentName}</span><span style="font-size:11px; color:#9C7A62;">RSVP Verified</span></div>`).join('');
+    } else {
+      attBox.innerHTML = '<p style="font-size:12px;color:#9C7A62;text-align:center;padding:10px;">No students have RSVP\'d yet.</p>';
+    }
+  } catch (err) {
+    attBox.innerHTML = '<p style="font-size:12px;color:#D32F2F;text-align:center;padding:10px;">Error loading attendees.</p>';
+  }
+
   // Action buttons
   const actions = document.getElementById('evModalActions');
   if (isTeacher) {
+    const evData = encodeURIComponent(JSON.stringify(ev));
     actions.innerHTML = `
       <button class="ev-modal-btn ev-modal-btn-secondary" onclick="closeEvModal()">Close</button>
-      <button class="ev-modal-btn ev-modal-btn-primary" onclick="closeEvModal(); deleteEvent('${ev._id}')">🗑 Delete Event</button>`;
+      <button class="ev-modal-btn ev-modal-btn-primary" onclick="startEdit('${evData}')" style="background:#4A7CB5;">✎ Edit Event</button>
+      <button class="ev-modal-btn ev-modal-btn-primary" onclick="deleteEvent('${ev._id}')" style="background:#B71C1C;">🗑 Delete</button>`;
   } else {
     actions.innerHTML = `
       <button class="ev-modal-btn ev-modal-btn-secondary" onclick="closeEvModal()">Close</button>
-      <button class="ev-modal-btn ev-modal-btn-primary" onclick="markAttendance('${ev._id}')">✅ I Will Attend</button>`;
+      <button class="ev-modal-btn ev-modal-btn-primary">✅ I Will Attend</button>`;
   }
 
   document.getElementById('evModalBackdrop').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
+function startEdit(evDataEncoded) {
+  const ev = JSON.parse(decodeURIComponent(evDataEncoded));
+  _editingEventId = ev._id;
+
+  // Pre-fill form
+  document.getElementById('evTitle').value = ev.title;
+  document.getElementById('evDate').value = ev.date.split('T')[0];
+  document.getElementById('evType').value = ev.type;
+  document.getElementById('evFee').value = ev.feeAmount || 0;
+  document.getElementById('evLocation').value = ev.locationOrLink || '';
+  document.getElementById('evDesc').value = ev.description || '';
+  document.getElementById('evMandatory').checked = !!ev.isMandatory;
+
+  // Show poster preview if exists
+  if (ev.poster) {
+    const preview = document.getElementById('posterPreview');
+    preview.src = `${API_BASE}/uploads/${ev.poster}`;
+    preview.style.display = 'block';
+    document.getElementById('posterPlaceholder').style.display = 'none';
+  }
+
+  // Update button text
+  document.getElementById('submitText').textContent = 'Save Changes';
+  document.getElementById('cancelEditBtn').style.display = 'block';
+
+  // Scroll to form
+  document.querySelector('.event-form-card').scrollIntoView({ behavior: 'smooth' });
+  closeEvModal();
+}
+
+function cancelEdit() {
+  _editingEventId = null;
+  document.getElementById('eventForm').reset();
+  document.getElementById('submitText').textContent = 'Create Event';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  document.getElementById('posterPreview').style.display = 'none';
+  document.getElementById('posterPlaceholder').style.display = 'flex';
+  document.getElementById('formMsg').textContent = '';
+}
+
 function closeEvModal(e) {
   if (e && e.target !== document.getElementById('evModalBackdrop')) return;
   document.getElementById('evModalBackdrop').classList.remove('open');
   document.body.style.overflow = '';
-}
-
-function markAttendance(eventId) {
-  // Placeholder — can wire to a real RSVP endpoint later
-  alert('Your attendance has been noted! See you at the event 🎵');
-  closeEvModal();
 }
 
 async function deleteEvent(id) {
@@ -187,7 +244,10 @@ async function deleteEvent(id) {
       method: 'DELETE',
       headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
     });
-    if (res.ok) loadEvents();
+    if (res.ok) {
+      closeEvModal();
+      loadEvents();
+    }
     else alert('Failed to delete event.');
   } catch (err) {
     alert('Server error.');
