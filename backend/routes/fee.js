@@ -121,10 +121,13 @@ router.get('/all', async (req, res) => {
     const batchMap  = {};
     activeStudents.forEach(s => { batchMap[s._id.toString()] = s.batchType || 'Regular Class'; });
 
-    const records = await Fee.find({
-      month: month,
-      studentId: { $in: activeIds }
-    }).sort({ dueDate: -1 });
+    const month = req.query.month || getMonthLabel();
+    const query = { studentId: { $in: activeIds } };
+    if (month !== 'all') {
+      query.month = month;
+    }
+
+    const records = await Fee.find(query).sort({ dueDate: -1 });
 
     const enriched = records.map(r => {
       const obj = r.toObject();
