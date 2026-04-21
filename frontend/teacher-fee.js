@@ -301,7 +301,84 @@ async function rejectPayment(feeId) {
   }
 }
 
-// Run when page opens
+
+
+/* ── TRANSACTION HISTORY LOGIC ── */
+var _allHistoryData = [];
+
+async function loadHistory() {
+  try {
+    const res = await fetch(`${API_BASE}/api/fee/all?month=all`);
+    _allHistoryData = await res.json();
+    renderHistory(_allHistoryData);
+  } catch (err) {
+    console.error('History load error', err);
+    document.getElementById('historyTbody').innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#D32F2F;">Failed to load history.</td></tr>';
+  }
+}
+
+function renderHistory(records) {
+  const tbody = document.getElementById('historyTbody');
+  if (!tbody) return;
+
+  if (!records || records.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:#B0907A;">No transaction records found.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = records.map(fee => {
+    const isPaid = fee.status === 'Paid';
+    const isRejected = fee.paymentStatus === 'Rejected';
+    const statusText = isPaid ? 'Approved' : isRejected ? 'Rejected' : (fee.paymentStatus === 'Payment Requested' ? 'Requested' : 'Remaining');
+    const statusClass = isPaid ? 'badge-paid' : isRejected ? 'badge-overdue' : 'badge-unpaid';
+
+    const avatarInit = fee.studentName ? fee.studentName[0].toUpperCase() : 'S';
+    
+    return `
+      <tr>
+        <td>
+          <div class="student-cell">
+            <div class="avatar av-blue" style="width:30px;height:30px;font-size:12px;">${avatarInit}</div>
+            <p class="student-name" style="font-size:13px;">${fee.studentName || ''}</p>
+          </div>
+        </td>
+        <td><span style="font-size:12px;color:#8C6A52;">${fee.month}</span></td>
+        <td class="td-fee" style="font-size:14px;">₹ ${fee.amount || 0}</td>
+        <td><span style="font-size:11px;color:#7A3210;font-weight:600;">${fee.paymentMethod || 'UPI'}</span></td>
+        <td class="td-muted" style="font-size:12px;">${formatDate(fee.paidDate) || '—'}</td>
+        <td><span class="badge ${statusClass}" style="padding:3px 10px;font-size:10px;">${statusText}</span></td>
+      </tr>`;
+  }).join('');
+}
+
+function filterHistory() {
+  const query = document.getElementById('historySearch').value.toLowerCase();
+  const status = document.getElementById('historyStatusFilter').value;
+
+  const filtered = _allHistoryData.filter(fee => {
+    const matchesName = (fee.studentName || '').toLowerCase().includes(query);
+    
+    let matchesStatus = true;
+    if (status !== 'all') {
+      if (status === 'Paid') matchesStatus = fee.status === 'Paid';
+      else if (status === 'Unpaid') matchesStatus = (fee.status === 'Unpaid' || fee.paymentStatus === 'Rejected');
+      else if (status === 'Rejected') matchesStatus = fee.paymentStatus === 'Rejected';
+    }
+    
+    return matchesName && matchesStatus;
+  });
+
+  renderHistory(filtered);
+}
+
+// Update loadFees to also call loadHistory
+const originalLoadFees = loadFees;
+loadFees = async function() {
+  await originalLoadFees();
+  loadHistory();
+};
+
+// Initial load
 loadFees();
 
 // PDF Export logic
