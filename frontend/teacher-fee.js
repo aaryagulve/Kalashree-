@@ -11,7 +11,7 @@ function formatDate(dateValue) {
 }
 
 // Helper: create fee table rows
-function renderFees(records) {
+async function renderFees(records) {
   var tbody = document.querySelector('.fee-table tbody');
   tbody.innerHTML = '';
 
