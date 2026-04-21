@@ -20,82 +20,105 @@ function renderFees(records) {
     return;
   }
 
-  // Calculate summary
-  var totalExpected = 0, totalCollected = 0, paidCount = 0, unpaidCount = 0;
-  records.forEach(function(fee) {
-    totalExpected += fee.amount || 0;
-    if (fee.status === 'Paid') { totalCollected += fee.amount || 0; paidCount++; }
-    else unpaidCount++;
-  });
-  var totalPending = totalExpected - totalCollected;
+    // Calculate summary
+    var totalExpected = 0, totalCollected = 0, paidCount = 0, unpaidCount = 0;
+    records.forEach(function(fee) {
+      totalExpected += fee.amount || 0;
+      if (fee.status === 'Paid') { totalCollected += fee.amount || 0; paidCount++; }
+      else unpaidCount++;
+    });
+    var totalPending = totalExpected - totalCollected;
 
-  var expEl   = document.getElementById('feeExpected');
-  var colEl   = document.getElementById('feeCollected');
-  var penEl   = document.getElementById('feePending');
-  var colHint = document.getElementById('feeCollectedHint');
-  var penHint = document.getElementById('feePendingHint');
+    // Fetch total outstanding per student (for "forgetting" tracking)
+    const [allUnpaidRes] = await Promise.all([
+      fetch(`${API_BASE}/api/fee/defaulters`)
+    ]);
+    const allUnpaid = await allUnpaidRes.json();
+    
+    // Create a map of studentId -> totalOwed
+    const debtMap = {};
+    allUnpaid.forEach(f => {
+      debtMap[f.studentId] = (debtMap[f.studentId] || 0) + f.amount;
+    });
 
-  if (expEl)   expEl.innerHTML  = '&#8377; ' + totalExpected.toLocaleString('en-IN');
-  if (colEl)   colEl.innerHTML  = '&#8377; ' + totalCollected.toLocaleString('en-IN');
-  if (penEl)   penEl.innerHTML  = '&#8377; ' + totalPending.toLocaleString('en-IN');
-  if (colHint) colHint.textContent = paidCount + ' student' + (paidCount !== 1 ? 's' : '') + ' paid';
-  if (penHint) penHint.textContent = unpaidCount + ' student' + (unpaidCount !== 1 ? 's' : '') + ' unpaid';
+    var expEl   = document.getElementById('feeExpected');
+    var colEl   = document.getElementById('feeCollected');
+    var penEl   = document.getElementById('feePending');
+    var colHint = document.getElementById('feeCollectedHint');
+    var penHint = document.getElementById('feePendingHint');
 
-  // Build each row — fetch student details for batch type
-  records.forEach(function(fee) {
-    var row = document.createElement('tr');
-    row.id = 'row-' + fee._id;
+    if (expEl)   expEl.innerHTML  = '&#8377; ' + totalExpected.toLocaleString('en-IN');
+    if (colEl)   colEl.innerHTML  = '&#8377; ' + totalCollected.toLocaleString('en-IN');
+    if (penEl)   penEl.innerHTML  = '&#8377; ' + totalPending.toLocaleString('en-IN');
+    if (colHint) colHint.textContent = paidCount + ' student' + (paidCount !== 1 ? 's' : '') + ' paid';
+    if (penHint) penHint.textContent = unpaidCount + ' student' + (unpaidCount !== 1 ? 's' : '') + ' unpaid';
 
-    var dueDate  = fee.dueDate ? new Date(fee.dueDate) : null;
-    var today    = new Date();
-    var isOverdue = fee.status === 'Unpaid' && dueDate && dueDate < today;
+    // Build each row
+    records.forEach(function(fee) {
+      var row = document.createElement('tr');
+      row.id = 'row-' + fee._id;
 
-    if (isOverdue) row.className = 'row-overdue';
-    else if (fee.status === 'Unpaid') row.className = 'row-unpaid';
+      var dueDate  = fee.dueDate ? new Date(fee.dueDate) : null;
+      var today    = new Date();
+      var isOverdue = fee.status === 'Unpaid' && dueDate && dueDate < today;
 
-    var initial = fee.studentName ? fee.studentName[0].toUpperCase() : 'S';
+      if (isOverdue) row.className = 'row-overdue';
+      else if (fee.status === 'Unpaid') row.className = 'row-unpaid';
 
-    var badgeHtml = '';
-    if (fee.status === 'Paid') {
-      badgeHtml = '<span class="badge badge-paid">Paid</span>';
-    } else if (fee.paymentStatus === 'Payment Requested' || fee.status === 'Payment Requested') {
-      badgeHtml = '<span class="badge" style="background:#FFF3E0;color:#E65100;">Requested</span>';
-    } else {
-      badgeHtml = isOverdue
-        ? '<span class="badge badge-overdue">Overdue</span>'
-        : '<span class="badge badge-unpaid">Unpaid</span>';
-    }
+      var initial = fee.studentName ? fee.studentName[0].toUpperCase() : 'S';
 
-    var actionHtml = '';
-    if (fee.status === 'Paid') {
-      actionHtml = '<span class="td-paid-check">&#10003; Received</span>';
-    } else if (fee.paymentStatus === 'Payment Requested' || fee.status === 'Payment Requested') {
-      actionHtml = '<span style="color:#E65100;font-size:13px;font-weight:500;">Pending Confirmation</span>';
-    } else {
-      actionHtml = '<button class="mark-paid-btn" type="button" onclick="markPaid(\'' + fee._id + '\')">Mark as Paid</button>';
-    }
+      var badgeHtml = '';
+      if (fee.status === 'Paid') {
+        badgeHtml = '<span class="badge badge-paid">Paid</span>';
+      } else if (fee.paymentStatus === 'Payment Requested' || fee.status === 'Payment Requested') {
+        badgeHtml = '<span class="badge" style="background:#FFF3E0;color:#E65100;">Requested</span>';
+      } else {
+        badgeHtml = isOverdue
+          ? '<span class="badge badge-overdue">Overdue</span>'
+          : '<span class="badge badge-unpaid">Unpaid</span>';
+      }
 
-    // Batch type from fee record's student data (populated via studentId)
-    var batchLabel = fee.batchType || 'Regular Class';
-    var batchBadge = batchLabel === 'Gurukul Batch' ? 'badge-gurukul' : 'badge-regular';
+      var actionHtml = '';
+      if (fee.status === 'Paid') {
+        actionHtml = '<span class="td-paid-check">&#10003; Received</span>';
+      } else if (fee.paymentStatus === 'Payment Requested' || fee.status === 'Payment Requested') {
+        actionHtml = '<span style="color:#E65100;font-size:13px;font-weight:500;">Pending Confirmation</span>';
+      } else {
+        actionHtml = '<button class="mark-paid-btn" type="button" onclick="markPaid(\'' + fee._id + '\')">Mark as Paid</button>';
+      }
 
-    var studentCellHtml =
-      '<div class="student-cell">' +
-      '<div class="avatar av-blue">' + initial + '</div>' +
-      '<div><p class="student-name">' + (fee.studentName || '') + '</p></div>' +
-      '</div>';
+      // Batch type and Cumulative debt
+      var batchLabel = fee.batchType || 'Regular Class';
+      var batchBadge = batchLabel === 'Gurukul Batch' ? 'badge-gurukul' : 'badge-regular';
+      
+      const totalOwed = debtMap[fee.studentId] || 0;
+      const debtHtml = totalOwed > fee.amount 
+        ? `<p style="font-size:11px;color:#D32F2F;font-weight:600;margin-top:2px;">Total Owed: ₹${totalOwed}</p>` 
+        : '';
 
-    row.innerHTML =
-      '<td>' + studentCellHtml + '</td>' +
-      '<td><span class="badge ' + batchBadge + '">' + batchLabel + '</span></td>' +
-      '<td class="td-fee">&#8377; ' + (fee.amount || 0) + '</td>' +
-      '<td><span style="font-size:12px;font-weight:600;color:#8C6A52;">' + (fee.paymentMethod || '—') + '</span></td>' +
-      '<td class="td-muted">' + formatDate(fee.dueDate) + '</td>' +
-      '<td id="status-' + fee._id + '">' + badgeHtml + '</td>' +
-      '<td id="action-' + fee._id + '">' + actionHtml + '</td>';
+      var studentCellHtml =
+        '<div class="student-cell">' +
+        '<div class="avatar av-blue">' + initial + '</div>' +
+        '<div><p class="student-name">' + (fee.studentName || '') + '</p>' + debtHtml + '</div>' +
+        '</div>';
 
-    tbody.appendChild(row);
-  });
+      const methodColor = fee.paymentMethod === 'Cash' ? '#D32F2F' : '#8C6A52';
+      const methodWeight = fee.paymentMethod === 'Cash' ? '800' : '600';
+
+      row.innerHTML =
+        '<td>' + studentCellHtml + '</td>' +
+        '<td><span class="badge ' + batchBadge + '">' + batchLabel + '</span></td>' +
+        '<td class="td-fee">&#8377; ' + (fee.amount || 0) + '</td>' +
+        '<td><span style="font-size:12px;font-weight:'+methodWeight+';color:'+methodColor+';">' + (fee.paymentMethod || '—') + '</span></td>' +
+        '<td class="td-muted">' + formatDate(fee.dueDate) + '</td>' +
+        '<td id="status-' + fee._id + '">' + badgeHtml + '</td>' +
+        '<td id="action-' + fee._id + '">' + actionHtml + '</td>';
+
+      tbody.appendChild(row);
+    });
+  } catch (err) {
+    console.error('Render error', err);
+  }
 }
 
 // Mark a fee as paid
@@ -139,7 +162,7 @@ async function loadFees() {
     const response = await fetch(url);
     const data = await response.json();
 
-    renderFees(data);
+    await renderFees(data);
     loadRequests();
   } catch (err) {
     alert('Fee load failed: ' + err.message);
@@ -189,13 +212,18 @@ async function loadRequests() {
       var initial = fee.studentName ? fee.studentName[0].toUpperCase() : 'S';
       var dateHtml = formatDate(fee.paymentRequestDate) || 'Unknown';
 
+      const isCash = fee.paymentMethod === 'Cash';
+      const methodStyle = isCash 
+        ? 'background:#FFEBEE; color:#D32F2F; border:1px solid #FFCDD2; font-weight:800; padding:4px 8px; border-radius:6px;'
+        : 'color:#7A3210; font-weight:700;';
+
       var screenshotHtml = fee.screenshotPath
         ? `<img src="${API_BASE}/uploads/screenshots/${fee.screenshotPath}"
                style="width:48px;height:48px;border-radius:8px;object-fit:cover;cursor:pointer;border:1.5px solid rgba(212,160,23,0.3);transition:transform 0.2s;"
                onclick="window.open('${API_BASE}/uploads/screenshots/${fee.screenshotPath}','_blank')"
                onmouseenter="this.style.transform='scale(1.15)'" onmouseleave="this.style.transform=''"
                title="View full screenshot" />`
-        : '<span style="font-size:12px;color:#C4A88C;">No screenshot</span>';
+        : (isCash ? '<span style="font-size:12px;color:#D32F2F;font-weight:700;">💸 CASH</span>' : '<span style="font-size:12px;color:#C4A88C;">No screenshot</span>');
 
       var studentCellHtml =
         '<div class="student-cell">' +

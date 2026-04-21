@@ -218,3 +218,41 @@
   from { transform: scale(0.85); opacity: 0; }
   to   { transform: scale(1);    opacity: 1; }
 }
+
+/* ── TOTAL BALANCE & TRACKING ── */
+#totalBalanceCard {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#totalBalanceCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(63,26,18,0.25);
+}
+
+.history-overdue {
+  background: rgba(198, 40, 40, 0.03);
+}
+
+.history-overdue:hover {
+  background: rgba(198, 40, 40, 0.06) !important;
+}
+
+.pay-now-action-btn {
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #D4A017, #B5872A);
+  color: #2C1608;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(212,160,23,0.2);
+  transition: all 0.2s ease;
+}
+
+.pay-now-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(212,160,23,0.3);
+  filter: brightness(1.05);
+}
+

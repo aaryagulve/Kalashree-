@@ -15,6 +15,7 @@ async function loadFeeData() {
     if (!res.ok) return;
     const fees = await res.json();
 
+    updateTotalBalance(fees);
     renderCurrentFeeInfo(fees);
     renderFeeHistory(fees);
   } catch (err) {
@@ -22,9 +23,27 @@ async function loadFeeData() {
   }
 }
 
+function updateTotalBalance(fees) {
+  const unpaid = fees.filter(f => f.status === 'Unpaid' || f.paymentStatus === 'Rejected');
+  const total = unpaid.reduce((sum, f) => sum + (f.amount || 0), 0);
+  
+  const card = document.getElementById('totalBalanceCard');
+  const amountEl = document.getElementById('totalBalanceAmount');
+  const countEl = document.getElementById('unpaidMonthsCount');
+
+  if (total > 0) {
+    card.style.display = 'flex';
+    amountEl.textContent = `₹ ${total.toLocaleString('en-IN')}`;
+    countEl.textContent = `${unpaid.length} Month${unpaid.length > 1 ? 's' : ''} Pending`;
+  } else {
+    card.style.display = 'none';
+  }
+}
+
 function renderCurrentFeeInfo(fees) {
   const now = new Date();
   const currentMonth = now.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+  // Find current month or the latest one
   const current = fees.find(f => f.month === currentMonth) || fees[0];
 
   const infoEl = document.getElementById('currentFeeInfo');
@@ -43,7 +62,7 @@ function renderCurrentFeeInfo(fees) {
   infoEl.innerHTML = `
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
       <div>
-        <p style="font-size:15px;font-weight:700;color:#1A0D05;margin:0;">${current.month}</p>
+        <p style="font-size:15px;font-weight:700;color:#1A0D05;margin:0;">Current Bill: ${current.month}</p>
         <p style="font-size:13px;color:#8C6A52;margin:2px 0 0;">Due: ${current.dueDate ? new Date(current.dueDate).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '—'}</p>
       </div>
       <div style="text-align:right;">
@@ -93,11 +112,11 @@ function renderFeeHistory(fees) {
     // Action: show "Pay Now" button for unpaid/rejected
     const canPay = fee.status === 'Unpaid' || fee.paymentStatus === 'Rejected';
     const actionHtml = canPay
-      ? `<button onclick="openPayModalFor('${fee._id}')" style="padding:6px 14px;background:linear-gradient(135deg,#D4A017,#B5872A);color:#2C1608;border:none;border-radius:7px;font-size:12px;font-weight:700;cursor:pointer;">Pay Now</button>`
+      ? `<button onclick="openPayModalFor('${fee._id}')" class="pay-now-action-btn">Pay Now</button>`
       : (paidStr ? `<span style="font-size:12px;color:#2E7D32;">Paid ${paidStr}</span>` : '—');
 
     return `
-      <tr>
+      <tr class="${isOverdue ? 'history-overdue' : ''}">
         <td style="font-weight:600;">${fee.month}</td>
         <td style="font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:700;">₹ ${fee.amount || 0}</td>
         <td style="color:#8C6A52;">${dueStr}</td>
@@ -137,27 +156,33 @@ function togglePayMethod(method) {
     upiDiv.style.background = '#fff';
     upiDiv.style.color = '#9C7A62';
     upiDiv.style.fontWeight = '400';
+    upiDiv.style.boxShadow = 'none';
 
-    cashDiv.style.border = '1.5px solid #D4A017';
-    cashDiv.style.background = 'rgba(212,160,23,0.08)';
+    cashDiv.style.border = '2px solid #D4A017';
+    cashDiv.style.background = 'rgba(212,160,23,0.12)';
     cashDiv.style.color = '#7A3210';
-    cashDiv.style.fontWeight = '600';
+    cashDiv.style.fontWeight = '700';
+    cashDiv.style.boxShadow = '0 4px 12px rgba(212,160,23,0.15)';
 
-    uploadArea.style.opacity = '0.4';
+    uploadArea.style.opacity = '0.3';
     uploadArea.style.pointerEvents = 'none';
+    document.getElementById('screenshotPlaceholder').style.opacity = '0.5';
   } else {
     cashDiv.style.border = '1.5px solid #E2CEBC';
     cashDiv.style.background = '#fff';
     cashDiv.style.color = '#9C7A62';
     cashDiv.style.fontWeight = '400';
+    cashDiv.style.boxShadow = 'none';
 
-    upiDiv.style.border = '1.5px solid #D4A017';
-    upiDiv.style.background = 'rgba(212,160,23,0.08)';
+    upiDiv.style.border = '2px solid #D4A017';
+    upiDiv.style.background = 'rgba(212,160,23,0.12)';
     upiDiv.style.color = '#7A3210';
-    upiDiv.style.fontWeight = '600';
+    upiDiv.style.fontWeight = '700';
+    upiDiv.style.boxShadow = '0 4px 12px rgba(212,160,23,0.15)';
 
     uploadArea.style.opacity = '1';
     uploadArea.style.pointerEvents = 'auto';
+    document.getElementById('screenshotPlaceholder').style.opacity = '1';
   }
 }
 
