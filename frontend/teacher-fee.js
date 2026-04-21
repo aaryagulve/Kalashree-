@@ -19,7 +19,7 @@ async function renderFees(records) {
     tbody.innerHTML = '<tr><td colspan="6">No fee records found for this month.</td></tr>';
     return;
   }
-
+  try {
     // Calculate summary
     var totalExpected = 0, totalCollected = 0, paidCount = 0, unpaidCount = 0;
     records.forEach(function(fee) {
