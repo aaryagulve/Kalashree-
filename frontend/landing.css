@@ -1041,37 +1041,99 @@ ul {
 
 
 /* ══════════════════════════
-   ANIMATIONS & HOVER EFFECTS
+   PREMIUM REVEAL ENGINE
 ══════════════════════════ */
 
-/* Scroll fade-in animation */
-.fade-in {
+.reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  transform: translateY(40px) scale(0.96);
+  filter: blur(5px);
+  transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform, opacity, filter;
 }
 
-.fade-in.visible {
+.reveal.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  filter: blur(0);
 }
 
-/* Button universal transitions */
-.btn-primary, .btn-ghost {
-  transition: all 0.3s ease;
+/* Scroll Progress indicator (optional but cool) */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, #D4A017, #F5EDE3);
+  z-index: 1000;
+  transition: width 0.1s ease-out;
 }
 
-/* Stat box counter animation */
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* ── Floating Swara Decors ── */
+.floating-swara {
+  position: absolute;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px;
+  color: rgba(212, 160, 23, 0.12);
+  pointer-events: none;
+  z-index: 1;
+  animation: floatSway 10s ease-in-out infinite;
+  user-select: none;
 }
 
-.stat-box {
-  animation: countUp 0.6s ease backwards;
+@keyframes floatSway {
+  0%, 100% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.05; }
+  50% { transform: translateY(-40px) translateX(20px) rotate(15deg); opacity: 0.15; }
 }
 
-.stat-box:nth-child(1) { animation-delay: 0.1s; }
-.stat-box:nth-child(2) { animation-delay: 0.2s; }
-.stat-box:nth-child(3) { animation-delay: 0.3s; }
-.stat-box:nth-child(4) { animation-delay: 0.4s; }
+/* ── Staggered Reveal for Grids & Sections ── */
+.courses-grid .course-card:nth-child(1) { transition-delay: 0.1s; }
+.courses-grid .course-card:nth-child(2) { transition-delay: 0.2s; }
+.courses-grid .course-card:nth-child(3) { transition-delay: 0.3s; }
+.courses-grid .course-card:nth-child(4) { transition-delay: 0.4s; }
+
+.why-grid .why-item:nth-child(1) { transition-delay: 0.1s; }
+.why-grid .why-item:nth-child(2) { transition-delay: 0.2s; }
+.why-grid .why-item:nth-child(3) { transition-delay: 0.3s; }
+.why-grid .why-item:nth-child(4) { transition-delay: 0.4s; }
+.why-grid .why-item:nth-child(5) { transition-delay: 0.5s; }
+.why-grid .why-item:nth-child(6) { transition-delay: 0.6s; }
+
+.about-stats .stat-box:nth-child(1) { transition-delay: 0.1s; }
+.about-stats .stat-box:nth-child(2) { transition-delay: 0.2s; }
+.about-stats .stat-box:nth-child(3) { transition-delay: 0.3s; }
+.about-stats .stat-box:nth-child(4) { transition-delay: 0.4s; }
+
+/* Enhanced Hover for Cards */
+.course-card:hover, .why-item:hover {
+  border-color: rgba(212, 160, 23, 0.6) !important;
+  box-shadow: 0 20px 50px rgba(63, 26, 18, 0.15) !important;
+}
+
+/* Button Shimmer Effect */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.btn-primary:hover::after {
+  opacity: 1;
+  animation: shimmerBtn 1.5s infinite;
+}
+
+@keyframes shimmerBtn {
+  0% { transform: scale(0.5) translate(-100%, -100%); }
+  100% { transform: scale(1.5) translate(100%, 100%); }
+}
+
