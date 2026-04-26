@@ -121,7 +121,6 @@ router.get('/all', async (req, res) => {
     const batchMap  = {};
     activeStudents.forEach(s => { batchMap[s._id.toString()] = s.batchType || 'Regular Class'; });
 
-    const month = req.query.month || getMonthLabel();
     const query = { studentId: { $in: activeIds } };
     if (month !== 'all') {
       query.month = month;
