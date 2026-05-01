@@ -1,6 +1,14 @@
 // teacher-dashboard.js
 
 document.addEventListener('DOMContentLoaded', async function () {
+  const dateEl = document.querySelector('.today-date');
+  const dayEl = document.querySelector('.today-day');
+  if (dateEl && dayEl) {
+    const today = new Date();
+    dateEl.textContent = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    dayEl.textContent = today.toLocaleDateString('en-GB', { weekday: 'long' });
+  }
+
   await Promise.all([
     loadOverviewStats(),
     loadPracticeChart(),
@@ -43,6 +51,9 @@ async function loadOverviewStats() {
     const attendance = await attRes.json();
     const presents = attendance.filter(a => a.status === 'Present').length;
     animateValue(document.getElementById('attendanceToday'), 0, presents, 1500);
+
+    const attHint = document.querySelector('#attendanceToday')?.closest('.card')?.querySelector('.card-hint');
+    if (attHint) attHint.textContent = `Present out of ${totalStudents}`;
 
     // 3. Fee Defaulters
     const feeRes = await fetch(API_BASE + '/api/fee/all');

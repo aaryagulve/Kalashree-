@@ -32,6 +32,18 @@ function animateValue(obj, start, end, duration, appendText = '') {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
+  const dateEl = document.querySelector('.today-date');
+  const dayEl = document.querySelector('.today-day');
+  if (dateEl && dayEl) {
+    const today = new Date();
+    dateEl.textContent = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    dayEl.textContent = today.toLocaleDateString('en-GB', { weekday: 'long' });
+  }
+
+  var studentName = localStorage.getItem('userName') || 'Student';
+  var welcomeNameEl = document.getElementById('welcomeName');
+  if (welcomeNameEl) welcomeNameEl.textContent = studentName;
+
   var studentId = localStorage.getItem('userId');
   if (!studentId) return;
 
@@ -90,6 +102,11 @@ document.addEventListener('DOMContentLoaded', async function () {
          document.getElementById('feeStatusText').textContent = 'No Dues';
          document.getElementById('feeBar').style.width = '100%';
          document.getElementById('feeBar').style.background = '#E2CEBC';
+         var hint = document.getElementById('feeStatusText').parentElement.querySelector('.card-hint');
+         if (hint) {
+           var today = new Date();
+           hint.textContent = today.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+         }
       }
     }
 

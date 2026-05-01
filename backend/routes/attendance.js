@@ -10,26 +10,28 @@ router.post('/mark', async (req, res) => {
 
     console.log('Marking attendance for:', studentName);
 
-    const record = new Attendance({
-      studentId,
-      studentName,
-      status,
-      date: date ? new Date(date) : new Date()
-    });
+    const targetDate = date ? new Date(date) : new Date();
+    targetDate.setHours(0, 0, 0, 0);
 
-    await record.save();
+    const record = await Attendance.findOneAndUpdate(
+      { studentId, date: targetDate },
+      { studentName, status, date: targetDate },
+      { new: true, upsert: true }
+    );
+
     return res.json({ message: 'Attendance saved', record });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
 });
 
-// GET /api/attendance/today
+// GET /api/attendance/today (can also pass ?date=YYYY-MM-DD)
 router.get('/today', async (req, res) => {
   try {
-    const start = new Date();
+    const targetDate = req.query.date ? new Date(req.query.date) : new Date();
+    const start = new Date(targetDate);
     start.setHours(0, 0, 0, 0);
-    const end = new Date();
+    const end = new Date(targetDate);
     end.setHours(23, 59, 59, 999);
 
     const records = await Attendance.find({

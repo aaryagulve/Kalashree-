@@ -13,6 +13,10 @@ var allStudents = [];
 
 // Mark attendance in UI and store selection in attendanceData
 function markAttendance(studentId, status, cardEl) {
+  // Clear any existing stored status first
+  if (attendanceData[studentId]) {
+    delete attendanceData[studentId];
+  }
   // Store selection (so Save Attendance can send to backend)
   attendanceData[studentId] = {
     status: status, // "Present" or "Absent"
@@ -141,34 +145,68 @@ async function saveAttendance() {
 }
 
 // Load students and render cards when page opens
-function loadStudentsAndRender() {
-  fetch(API_BASE + '/api/students')
-    .then(function (response) { return response.json(); })
-    .then(function (data) {
-      // Only show Active students for attendance
-      allStudents = (data || []).filter(function(s) {
-        return !s.status || s.status === 'Active';
-      });
-
-      var grid = document.getElementById('attendanceGrid');
-      grid.innerHTML = '';
-
-      if (allStudents.length === 0) {
-        grid.innerHTML = '<p>No active students found. Please add students first.</p>';
-        return;
-      }
-
-      for (var i = 0; i < allStudents.length; i++) {
-        var card = createCard(allStudents[i], i + 1);
-        grid.appendChild(card);
-      }
-    })
-    .catch(function (err) {
-      alert('Attendance load failed: ' + err.message);
+async function loadStudentsAndRender() {
+  try {
+    const response = await fetch(API_BASE + '/api/students');
+    const data = await response.json();
+    
+    // Only show Active students for attendance
+    allStudents = (data || []).filter(function(s) {
+      return !s.status || s.status === 'Active';
     });
+
+    var grid = document.getElementById('attendanceGrid');
+    grid.innerHTML = '';
+
+    if (allStudents.length === 0) {
+      grid.innerHTML = '<p>No active students found. Please add students first.</p>';
+      return;
+    }
+
+    for (var i = 0; i < allStudents.length; i++) {
+      var card = createCard(allStudents[i], i + 1);
+      grid.appendChild(card);
+    }
+    
+    // Check if there's already attendance marked for the default selected date
+    const dateInput = document.getElementById('attendanceDate');
+    if (dateInput && dateInput.value) {
+      await fetchExistingAttendance(dateInput.value);
+    }
+  } catch (err) {
+    alert('Attendance load failed: ' + err.message);
+  }
+}
+
+async function fetchExistingAttendance(dateStr) {
+  try {
+    const res = await fetch(`${API_BASE}/api/attendance/today?date=${dateStr}`);
+    const records = await res.json();
+    
+    // Reset attendance data for new date selection
+    attendanceData = {};
+    
+    // Reset all cards UI
+    document.querySelectorAll('.attend-card').forEach(card => {
+      card.classList.remove('marked-present', 'marked-absent');
+      card.querySelector('.btn-present').classList.remove('selected');
+      card.querySelector('.btn-absent').classList.remove('selected');
+    });
+
+    // Mark existing selections
+    records.forEach(r => {
+      const card = document.querySelector(`.attend-card[data-student-id="${r.studentId}"]`);
+      if (card) {
+        markAttendance(r.studentId, r.status, card);
+      }
+    });
+  } catch (err) {
+    console.error('Failed to fetch existing attendance', err);
+  }
 }
 
 // Run on page open
+initDatePicker();
 loadStudentsAndRender();
 loadAttendanceSummary();
 
@@ -191,13 +229,16 @@ function initDatePicker() {
     if(isNaN(d)) return;
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     textStr.textContent = d.toLocaleDateString('en-GB', options);
+    
+    // When date changes, load existing attendance
+    if (window.allStudents && window.allStudents.length > 0) {
+      fetchExistingAttendance(dateInput.value);
+    }
   }
   
   updateText();
   dateInput.addEventListener('change', updateText);
 }
-
-initDatePicker();
 
 // PDF Export logic
 function exportAttendancePDF() {

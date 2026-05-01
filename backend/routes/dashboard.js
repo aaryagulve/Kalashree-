@@ -34,8 +34,16 @@ router.get('/student-insights', async (req, res) => {
       submittedAt: { $gte: monthStart() }
     });
 
-    // 2. Current streak (already on user model)
-    const streak = student.practiceStreak || 0;
+    // 2. Current streak
+    let streak = 0;
+    if (student.lastPracticeDate) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const lastDate = new Date(student.lastPracticeDate);
+      lastDate.setHours(0, 0, 0, 0);
+      const diffDays = Math.ceil((today - lastDate) / (1000 * 60 * 60 * 24));
+      if (diffDays <= 1) streak = student.practiceStreak || 0;
+    }
 
     // 3. Raga completion %
     const ragaProgress  = student.ragaProgress || [];
@@ -141,12 +149,23 @@ router.get('/teacher-insights', async (req, res) => {
       const sHw = hwRecords.filter(h => h.studentId.toString() === sid).length;
       totalSubmissions += sHw;
 
-      // Needs attention: no submission in last 7 days
-      if (!activeIds.has(sid)) {
-        needsAttention.push({ name: s.name, streak: s.practiceStreak || 0, attPct });
+      // Calculate active streak
+      let actualStreak = 0;
+      if (s.lastPracticeDate) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const lastDate = new Date(s.lastPracticeDate);
+        lastDate.setHours(0, 0, 0, 0);
+        const diffDays = Math.ceil((today - lastDate) / (1000 * 60 * 60 * 24));
+        if (diffDays <= 1) actualStreak = s.practiceStreak || 0;
       }
 
-      studentStats.push({ name: s.name, streak: s.practiceStreak || 0, submissions: sHw });
+      // Needs attention: no submission in last 7 days
+      if (!activeIds.has(sid)) {
+        needsAttention.push({ id: sid, name: s.name, streak: actualStreak, attPct });
+      }
+
+      studentStats.push({ id: sid, name: s.name, streak: actualStreak, submissions: sHw });
     });
 
     const avgAttPct      = Math.round(totalAttPct / total);
