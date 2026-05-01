@@ -89,12 +89,28 @@ router.get('/weekly-progress/:id', async (req, res) => {
 
     const present = records.filter(r => r.status === 'Present').length;
     
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let presentToday = false;
+    let markedToday = false;
+
+    records.forEach(r => {
+      const rDate = new Date(r.date);
+      rDate.setHours(0, 0, 0, 0);
+      if (rDate.getTime() === today.getTime()) {
+        markedToday = true;
+        if (r.status === 'Present') presentToday = true;
+      }
+    });
+
     return res.json({
       batchType: student.batchType || 'Regular Class',
       expectedPerWeek,
       presentThisWeek: present,
       markedThisWeek: records.length,
-      weekStart: monday
+      weekStart: monday,
+      markedToday,
+      presentToday
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });

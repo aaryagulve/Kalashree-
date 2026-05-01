@@ -483,7 +483,16 @@ async function loadWeeklyAttendance(studentId) {
     const pct      = Math.round((present / expected) * 100);
 
     textEl.innerHTML = `<strong>${present} / ${expected}</strong> classes attended this week`;
-    subEl.textContent = `${d.batchType} · ${pct >= 100 ? '✅ Perfect attendance!' : pct >= 50 ? '📈 Good progress' : '⚠️ Try to attend more classes'}`;
+    
+    let subText = `${d.batchType} · ${pct >= 100 ? '✅ Perfect attendance!' : pct >= 50 ? '📈 Good progress' : '⚠️ Try to attend more classes'}`;
+    if (d.markedToday) {
+      if (d.presentToday) {
+        subText = `✅ You were marked <strong>Present</strong> today!`;
+      } else {
+        subText = `❌ You were marked <strong>Absent</strong> today.`;
+      }
+    }
+    subEl.innerHTML = subText;
 
     // Colour the bar based on percentage
     const bar = document.getElementById('weeklyAttBar');

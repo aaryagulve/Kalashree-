@@ -109,10 +109,15 @@ router.get('/teacher-insights', async (req, res) => {
 
     const ids = students.map(s => s._id);
 
-    // Attendance this month — per student
+    // Attendance this month — per student (for class average)
     const attRecords = await Attendance.find({
       studentId: { $in: ids },
       date: { $gte: monthStart() }
+    });
+
+    // Overall attendance for each student
+    const allAttRecords = await Attendance.find({
+      studentId: { $in: ids }
     });
 
     // Homework this month — only audio uploads count as practice
@@ -139,11 +144,16 @@ router.get('/teacher-insights', async (req, res) => {
     students.forEach(s => {
       const sid = s._id.toString();
 
-      // Attendance
+      // Attendance this month (for average)
       const sAtt     = attRecords.filter(r => r.studentId.toString() === sid);
       const present  = sAtt.filter(r => r.status === 'Present').length;
       const attPct   = sAtt.length === 0 ? 0 : Math.round((present / sAtt.length) * 100);
       totalAttPct   += attPct;
+
+      // Overall attendance
+      const sAllAtt = allAttRecords.filter(r => r.studentId.toString() === sid);
+      const allPresent = sAllAtt.filter(r => r.status === 'Present').length;
+      const overallAttPct = sAllAtt.length === 0 ? 0 : Math.round((allPresent / sAllAtt.length) * 100);
 
       // Submissions this month
       const sHw = hwRecords.filter(h => h.studentId.toString() === sid).length;
@@ -162,7 +172,7 @@ router.get('/teacher-insights', async (req, res) => {
 
       // Needs attention: no submission in last 7 days
       if (!activeIds.has(sid)) {
-        needsAttention.push({ id: sid, name: s.name, streak: actualStreak, attPct });
+        needsAttention.push({ id: sid, name: s.name, streak: actualStreak, attPct: overallAttPct });
       }
 
       studentStats.push({ id: sid, name: s.name, streak: actualStreak, submissions: sHw });
