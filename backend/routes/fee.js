@@ -6,18 +6,27 @@ const fs      = require('fs');
 const Fee     = require('../models/Fee');
 const User    = require('../models/user');
 
-// ── Screenshot upload folder ──────────────────────────────
-const screenshotDir = path.join(__dirname, '..', 'uploads', 'screenshots');
-if (!fs.existsSync(screenshotDir)) fs.mkdirSync(screenshotDir, { recursive: true });
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+
+// ── Cloudinary Config ─────────────────────────────────────
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// ── Multer Config (Cloudinary) ────────────────────────────
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'kalashree/screenshots',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp']
+  }
+});
 
 const screenshotUpload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => cb(null, screenshotDir),
-    filename:    (req, file, cb) => {
-      const ext = path.extname(file.originalname).toLowerCase() || '.jpg';
-      cb(null, 'pay-' + Date.now() + ext);
-    }
-  }),
+  storage: storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) cb(null, true);
@@ -224,7 +233,7 @@ router.put('/request/:id', screenshotUpload.single('screenshot'), async (req, re
       paymentRequestDate: new Date(),
       paymentMethod: req.body.paymentMethod || 'UPI'
     };
-    if (req.file) updateData.screenshotPath = req.file.filename;
+    if (req.file) updateData.screenshotPath = req.file.path;
 
     const updated = await Fee.findByIdAndUpdate(feeId, updateData, { new: true });
     return res.json(updated);

@@ -5,20 +5,28 @@ const path     = require('path');
 const fs       = require('fs');
 const Homework = require('../models/Homework');
 
-// ── Audio folder: backend/uploads/audio ──────────────────
-// __dirname = backend/routes, so go up one level
-const audioDir = path.join(__dirname, '..', 'uploads', 'audio');
-if (!fs.existsSync(audioDir)) fs.mkdirSync(audioDir, { recursive: true });
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// ── Multer ────────────────────────────────────────────────
+// ── Cloudinary Config ─────────────────────────────────────
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// ── Multer Config (Cloudinary) ────────────────────────────
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'kalashree/audio',
+    resource_type: 'video', // Cloudinary uses 'video' for audio files
+    allowed_formats: ['mp3', 'wav', 'm4a', 'mp4']
+  }
+});
+
 const audioUpload = multer({
-  storage: multer.diskStorage({
-    destination: (req, file, cb) => cb(null, audioDir),
-    filename:    (req, file, cb) => {
-      const ext = path.extname(file.originalname).toLowerCase() || '.mp3';
-      cb(null, 'audio-' + Date.now() + ext);
-    }
-  }),
+  storage: storage,
   limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB
   fileFilter: (req, file, cb) => {
     // Accept anything the browser labels as audio or video/mp4
@@ -51,7 +59,7 @@ router.post('/submit', audioUpload.single('audioFile'), async (req, res) => {
       studentId,
       title,
       fileUrl:        type === 'link'   ? (fileUrl || '') : '',
-      audioFilePath:  type === 'upload' ? req.file.filename : '',
+      audioFilePath:  type === 'upload' ? req.file.path : '',
       submissionType: type
     });
 

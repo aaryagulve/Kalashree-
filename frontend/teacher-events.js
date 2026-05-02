@@ -97,9 +97,11 @@ async function loadEvents() {
 function renderEventCard(ev, isTeacher) {
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   // TASK 4 & 5: Backward Compatibility for Poster Paths
-  // Try /uploads/posters/ first (new). If it fails (404), fallback to /uploads/ (old).
-  const posterUrlNew = `${API_BASE}/uploads/posters/${ev.poster}`;
-  const posterUrlOld = `${API_BASE}/uploads/${ev.poster}`;
+  // Check if it's a Cloudinary URL (starts with http)
+  const isCloudinary = ev.poster && ev.poster.startsWith('http');
+  const posterUrlNew = isCloudinary ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
+  const posterUrlOld = isCloudinary ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
+
   const posterHtml = ev.poster
     ? `<img src="${posterUrlNew}" onerror="this.onerror=null; this.src='${posterUrlOld}'; this.setAttribute('onclick', 'event.stopPropagation(); openPosterLightbox(\\'${posterUrlOld}\\')');" alt="Event Poster" class="event-poster-img" onclick="event.stopPropagation(); openPosterLightbox('${posterUrlNew}')" />`
     : `<div class="event-poster-placeholder">🎵</div>`;
@@ -132,13 +134,14 @@ async function openEvModal(evJson, isTeacher) {
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   // TASK 4 & 5: Backward Compatibility for Poster Paths in Modal
-  const posterUrlNew = `${API_BASE}/uploads/posters/${ev.poster}`;
-  const posterUrlOld = `${API_BASE}/uploads/${ev.poster}`;
+  const isCloudinaryModal = ev.poster && ev.poster.startsWith('http');
+  const posterUrlNewModal = isCloudinaryModal ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
+  const posterUrlOldModal = isCloudinaryModal ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
 
   // Poster
   const posterEl = document.getElementById('evModalPoster');
   posterEl.innerHTML = ev.poster
-    ? `<img src="${posterUrlNew}" onerror="this.onerror=null; this.src='${posterUrlOld}'; this.setAttribute('onclick', 'openPosterLightbox(\\'${posterUrlOld}\\')');" alt="Poster" class="ev-modal-poster" onclick="openPosterLightbox('${posterUrlNew}')" />`
+    ? `<img src="${posterUrlNewModal}" onerror="this.onerror=null; this.src='${posterUrlOldModal}'; this.setAttribute('onclick', 'openPosterLightbox(\\'${posterUrlOldModal}\\')');" alt="Poster" class="ev-modal-poster" onclick="openPosterLightbox('${posterUrlNewModal}')" />`
     : `<div class="ev-modal-poster-placeholder">🎵</div>`;
 
   document.getElementById('evModalType').textContent  = ev.type;
@@ -217,13 +220,14 @@ function startEdit(evDataEncoded) {
     const preview = document.getElementById('posterPreview');
     
     // TASK 4 & 5: Backward Compatibility
-    const posterUrlNew = `${API_BASE}/uploads/posters/${ev.poster}`;
-    const posterUrlOld = `${API_BASE}/uploads/${ev.poster}`;
+    const isCloudinaryPreview = ev.poster && ev.poster.startsWith('http');
+    const posterUrlNewPreview = isCloudinaryPreview ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
+    const posterUrlOldPreview = isCloudinaryPreview ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
     
-    preview.src = posterUrlNew;
+    preview.src = posterUrlNewPreview;
     preview.onerror = function() {
       this.onerror = null;
-      this.src = posterUrlOld;
+      this.src = posterUrlOldPreview;
     };
     
     preview.style.display = 'block';

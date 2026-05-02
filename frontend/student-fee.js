@@ -105,8 +105,11 @@ function renderFeeHistory(fees) {
     const dueStr  = fee.dueDate  ? new Date(fee.dueDate).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}) : '—';
     const paidStr = fee.paidDate ? new Date(fee.paidDate).toLocaleDateString('en-GB',{day:'numeric',month:'short'}) : '';
 
+    const isCloudinary = fee.screenshotPath && fee.screenshotPath.startsWith('http');
+    const screenshotUrl = isCloudinary ? fee.screenshotPath : `${API_BASE}/uploads/screenshots/${fee.screenshotPath}`;
+
     const screenshotHtml = fee.screenshotPath
-      ? `<img src="${API_BASE}/uploads/screenshots/${fee.screenshotPath}" class="screenshot-thumb" onclick="viewScreenshot('${API_BASE}/uploads/screenshots/${fee.screenshotPath}')" title="View screenshot" />`
+      ? `<img src="${screenshotUrl}" class="screenshot-thumb" onclick="viewScreenshot('${screenshotUrl}')" title="View screenshot" />`
       : '<span style="color:#C4A88C;font-size:12px;">—</span>';
 
     // Action: show "Pay Now" button for unpaid/rejected

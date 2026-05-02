@@ -306,7 +306,10 @@ async function loadHomework(studentId) {
 
         let mediaHtml = '';
         if (hw.submissionType === 'upload' && hw.audioFilePath) {
-          mediaHtml = `<audio controls style="width:100%;margin-top:4px;border-radius:6px;"><source src="${API_BASE}/uploads/audio/${hw.audioFilePath}"></audio>`;
+          const audioUrl = hw.audioFilePath.startsWith('http') 
+            ? hw.audioFilePath 
+            : `${API_BASE}/uploads/audio/${hw.audioFilePath}`;
+          mediaHtml = `<audio controls style="width:100%;margin-top:4px;border-radius:6px;"><source src="${audioUrl}"></audio>`;
         } else if (hw.fileUrl) {
           mediaHtml = `<a href="${hw.fileUrl}" target="_blank" class="hw-link">🔗 View Submission</a>`;
         }

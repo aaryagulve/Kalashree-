@@ -102,9 +102,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     container.innerHTML = events.map(ev => {
       const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
       // TASK 4 & 5: Backward Compatibility for Poster Paths
-      // Try /uploads/posters/ first (new). If it fails (404), fallback to /uploads/ (old).
-      const posterUrlNew = `${API_BASE}/uploads/posters/${ev.poster}`;
-      const posterUrlOld = `${API_BASE}/uploads/${ev.poster}`;
+      // Check if it's a Cloudinary URL (starts with http)
+      const isCloudinary = ev.poster && ev.poster.startsWith('http');
+      const posterUrlNew = isCloudinary ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
+      const posterUrlOld = isCloudinary ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
+      
       const posterHtml = ev.poster
         ? `<img src="${posterUrlNew}" onerror="this.onerror=null; this.src='${posterUrlOld}'; this.setAttribute('onclick', 'event.stopPropagation(); openPosterLightbox(\\'${posterUrlOld}\\')');" alt="Event Poster" class="event-poster-img" onclick="event.stopPropagation(); openPosterLightbox('${posterUrlNew}')" />`
         : `<div class="event-poster-placeholder">🎵</div>`;
@@ -141,8 +143,9 @@ function openEvModal(evJson, studentId, studentName) {
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
   // TASK 4 & 5: Backward Compatibility for Poster Paths in Modal
-  const posterUrlNew = `${API_BASE}/uploads/posters/${ev.poster}`;
-  const posterUrlOld = `${API_BASE}/uploads/${ev.poster}`;
+  const isCloudinary = ev.poster && ev.poster.startsWith('http');
+  const posterUrlNew = isCloudinary ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
+  const posterUrlOld = isCloudinary ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
   
   document.getElementById('evModalPoster').innerHTML = ev.poster
     ? `<img src="${posterUrlNew}" onerror="this.onerror=null; this.src='${posterUrlOld}'; this.setAttribute('onclick', 'openPosterLightbox(\\'${posterUrlOld}\\')');" alt="Poster" class="ev-modal-poster" onclick="openPosterLightbox('${posterUrlNew}')" />`

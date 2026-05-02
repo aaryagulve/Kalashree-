@@ -217,10 +217,13 @@ async function loadRequests() {
         ? 'background:#FFEBEE; color:#D32F2F; border:1px solid #FFCDD2; font-weight:800; padding:4px 8px; border-radius:6px;'
         : 'color:#7A3210; font-weight:700;';
 
+      const isCloudinary = fee.screenshotPath && fee.screenshotPath.startsWith('http');
+      const screenshotUrl = isCloudinary ? fee.screenshotPath : `${API_BASE}/uploads/screenshots/${fee.screenshotPath}`;
+
       var screenshotHtml = fee.screenshotPath
-        ? `<img src="${API_BASE}/uploads/screenshots/${fee.screenshotPath}"
+        ? `<img src="${screenshotUrl}"
                style="width:48px;height:48px;border-radius:8px;object-fit:cover;cursor:pointer;border:1.5px solid rgba(212,160,23,0.3);transition:transform 0.2s;"
-               onclick="window.open('${API_BASE}/uploads/screenshots/${fee.screenshotPath}','_blank')"
+               onclick="window.open('${screenshotUrl}','_blank')"
                onmouseenter="this.style.transform='scale(1.15)'" onmouseleave="this.style.transform=''"
                title="View full screenshot" />`
         : (isCash ? '<span style="font-size:12px;color:#D32F2F;font-weight:700;">💸 CASH</span>' : '<span style="font-size:12px;color:#C4A88C;">No screenshot</span>');

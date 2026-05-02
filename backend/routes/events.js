@@ -8,16 +8,22 @@ const Event   = require('../models/Event');
 
 const JWT_SECRET = 'kalashree_secret_key';
 
-// ── Poster upload folder ──────────────────────────────────
-const posterDir = path.join(__dirname, '..', 'uploads', 'posters');
-if (!fs.existsSync(posterDir)) fs.mkdirSync(posterDir, { recursive: true });
+const cloudinary = require('cloudinary').v2;
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
-// ── Multer config ─────────────────────────────────────────
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, posterDir),
-  filename:    (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, 'poster-' + Date.now() + ext);
+// ── Cloudinary Config ─────────────────────────────────────
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// ── Multer Config (Cloudinary) ────────────────────────────
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'kalashree/posters',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp']
   }
 });
 const upload = multer({
@@ -57,7 +63,7 @@ router.post('/', requireTeacher, upload.single('poster'), async (req, res) => {
       feeAmount:      Number(feeAmount) || 0,
       isMandatory:    isMandatory === 'true' || isMandatory === true,
       locationOrLink: locationOrLink || '',
-      poster:         req.file ? req.file.filename : '',
+      poster:         req.file ? req.file.path : '',
       createdBy:      req.teacher.userId
     });
 
@@ -100,7 +106,7 @@ router.put('/:id', requireTeacher, upload.single('poster'), async (req, res) => 
     if (feeAmount !== undefined)   updateData.feeAmount = Number(feeAmount);
     if (isMandatory !== undefined) updateData.isMandatory = isMandatory === 'true' || isMandatory === true;
     if (locationOrLink !== undefined) updateData.locationOrLink = locationOrLink;
-    if (req.file)       updateData.poster = req.file.filename;
+    if (req.file)       updateData.poster = req.file.path;
 
     const event = await Event.findByIdAndUpdate(req.params.id, updateData, { new: true });
     if (!event) return res.status(404).json({ message: 'Event not found' });

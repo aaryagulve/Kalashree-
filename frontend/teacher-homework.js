@@ -64,11 +64,14 @@ function renderHomework(filterStr) {
     // Build the media section — inline audio player for uploads, link for external
     let mediaSection = '';
     if (hw.submissionType === 'upload' && hw.audioFilePath) {
+      const audioUrl = hw.audioFilePath.startsWith('http') 
+        ? hw.audioFilePath 
+        : `${API_BASE}/uploads/audio/${hw.audioFilePath}`;
       mediaSection = `
         <div class="hw-actions">
-          <p style="font-size:12px;color:#8C6A52;margin-bottom:6px;">🎵 ${hw.audioFilePath}</p>
+          <p style="font-size:12px;color:#8C6A52;margin-bottom:6px;">🎵 ${hw.audioFilePath.split('/').pop()}</p>
           <audio controls style="width:100%;border-radius:8px;">
-            <source src="${API_BASE}/uploads/audio/${hw.audioFilePath}">
+            <source src="${audioUrl}">
             Your browser does not support the audio element.
           </audio>
         </div>`;
