@@ -121,9 +121,15 @@ function renderEventCard(ev, isTeacher) {
         <p class="event-title">${ev.title}</p>
         <p class="event-meta">📅 ${dateStr}</p>
         ${ev.locationOrLink ? `<p class="event-meta">📍 ${ev.locationOrLink}</p>` : ''}
-        <div class="event-footer">
-          <span class="event-fee">${feeText}</span>
-          <span style="font-size:12px;color:#8C6A52;">👥 ${attendeeCount} attending</span>
+        <div class="event-footer" style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; flex-direction:column; gap:2px;">
+            <span class="event-fee">${feeText}</span>
+            <span style="font-size:12px;color:#8C6A52;">👥 ${attendeeCount} attending</span>
+          </div>
+          <div class="event-card-actions" style="display:flex; gap:8px;">
+            <button onclick="event.stopPropagation(); startEdit('${encodeURIComponent(JSON.stringify(ev))}')" style="background:#4A7CB5; color:#fff; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600;">✎ Edit</button>
+            <button onclick="event.stopPropagation(); deleteEvent('${ev._id}')" style="background:#B71C1C; color:#fff; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600;">🗑 Delete</button>
+          </div>
         </div>
       </div>
     </div>`;
@@ -205,6 +211,7 @@ async function openEvModal(evJson, isTeacher) {
 function startEdit(evDataEncoded) {
   const ev = JSON.parse(decodeURIComponent(evDataEncoded));
   _editingEventId = ev._id;
+  document.getElementById('posterInput').value = ''; // Clear previous file selection
 
   // Pre-fill form
   document.getElementById('evTitle').value = ev.title;
