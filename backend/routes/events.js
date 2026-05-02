@@ -3,13 +3,18 @@ const router  = express.Router();
 const multer  = require('multer');
 const path    = require('path');
 const jwt     = require('jsonwebtoken');
+const fs      = require('fs');
 const Event   = require('../models/Event');
 
 const JWT_SECRET = 'kalashree_secret_key';
 
+// ── Poster upload folder ──────────────────────────────────
+const posterDir = path.join(__dirname, '..', 'uploads', 'posters');
+if (!fs.existsSync(posterDir)) fs.mkdirSync(posterDir, { recursive: true });
+
 // ── Multer config ─────────────────────────────────────────
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, path.join(__dirname, '../uploads')),
+  destination: (req, file, cb) => cb(null, posterDir),
   filename:    (req, file, cb) => {
     const ext = path.extname(file.originalname).toLowerCase();
     cb(null, 'poster-' + Date.now() + ext);

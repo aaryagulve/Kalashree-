@@ -96,8 +96,12 @@ async function loadEvents() {
 
 function renderEventCard(ev, isTeacher) {
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  // TASK 4 & 5: Backward Compatibility for Poster Paths
+  // Try /uploads/posters/ first (new). If it fails (404), fallback to /uploads/ (old).
+  const posterUrlNew = `${API_BASE}/uploads/posters/${ev.poster}`;
+  const posterUrlOld = `${API_BASE}/uploads/${ev.poster}`;
   const posterHtml = ev.poster
-    ? `<img src="${API_BASE}/uploads/${ev.poster}" alt="Event Poster" class="event-poster-img" onclick="event.stopPropagation(); openPosterLightbox('${API_BASE}/uploads/${ev.poster}')" />`
+    ? `<img src="${posterUrlNew}" onerror="this.onerror=null; this.src='${posterUrlOld}'; this.setAttribute('onclick', 'event.stopPropagation(); openPosterLightbox(\\'${posterUrlOld}\\')');" alt="Event Poster" class="event-poster-img" onclick="event.stopPropagation(); openPosterLightbox('${posterUrlNew}')" />`
     : `<div class="event-poster-placeholder">🎵</div>`;
   const mandatoryTag = ev.isMandatory ? '<span class="mandatory-tag">Mandatory</span>' : '';
   const feeText = ev.feeAmount > 0 ? `₹ ${ev.feeAmount}` : 'Free';
@@ -127,10 +131,14 @@ async function openEvModal(evJson, isTeacher) {
   const ev = typeof evJson === 'string' ? JSON.parse(evJson) : evJson;
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
+  // TASK 4 & 5: Backward Compatibility for Poster Paths in Modal
+  const posterUrlNew = `${API_BASE}/uploads/posters/${ev.poster}`;
+  const posterUrlOld = `${API_BASE}/uploads/${ev.poster}`;
+
   // Poster
   const posterEl = document.getElementById('evModalPoster');
   posterEl.innerHTML = ev.poster
-    ? `<img src="${API_BASE}/uploads/${ev.poster}" alt="Poster" class="ev-modal-poster" onclick="openPosterLightbox('${API_BASE}/uploads/${ev.poster}')" />`
+    ? `<img src="${posterUrlNew}" onerror="this.onerror=null; this.src='${posterUrlOld}'; this.setAttribute('onclick', 'openPosterLightbox(\\'${posterUrlOld}\\')');" alt="Poster" class="ev-modal-poster" onclick="openPosterLightbox('${posterUrlNew}')" />`
     : `<div class="ev-modal-poster-placeholder">🎵</div>`;
 
   document.getElementById('evModalType').textContent  = ev.type;
@@ -207,7 +215,17 @@ function startEdit(evDataEncoded) {
   // Show poster preview if exists
   if (ev.poster) {
     const preview = document.getElementById('posterPreview');
-    preview.src = `${API_BASE}/uploads/${ev.poster}`;
+    
+    // TASK 4 & 5: Backward Compatibility
+    const posterUrlNew = `${API_BASE}/uploads/posters/${ev.poster}`;
+    const posterUrlOld = `${API_BASE}/uploads/${ev.poster}`;
+    
+    preview.src = posterUrlNew;
+    preview.onerror = function() {
+      this.onerror = null;
+      this.src = posterUrlOld;
+    };
+    
     preview.style.display = 'block';
     document.getElementById('posterPlaceholder').style.display = 'none';
   }
