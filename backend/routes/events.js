@@ -1,10 +1,9 @@
 const express = require('express');
-const router  = express.Router();
+const router  = require('express').Router();
 const multer  = require('multer');
-const path    = require('path');
 const jwt     = require('jsonwebtoken');
-const fs      = require('fs');
 const Event   = require('../models/Event');
+
 
 const JWT_SECRET = 'kalashree_secret_key';
 

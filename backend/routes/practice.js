@@ -17,7 +17,6 @@ router.put('/mark-done', async (req, res) => {
       return res.status(404).json({ message: 'Student not found' });
     }
 
-    // Use provided date or today
     const practiceDate = date ? new Date(date) : new Date();
     practiceDate.setHours(0, 0, 0, 0);
 
@@ -37,7 +36,6 @@ router.put('/mark-done', async (req, res) => {
 
     let streak = user.practiceStreak || 0;
     
-    // Check last practice date
     if (user.lastPracticeDate) {
       const lastDate = new Date(user.lastPracticeDate);
       lastDate.setHours(0, 0, 0, 0);
@@ -70,8 +68,49 @@ router.put('/mark-done', async (req, res) => {
   }
 });
 
+// ── IMPORTANT: /stats/weekly MUST come BEFORE /:studentId ──
+// Otherwise Express will match "stats" as a studentId param and crash.
+
+// @route   GET /api/practice/stats/weekly
+// @desc    Get practice counts for the last 7 days across all students
+router.get('/stats/weekly', async (req, res) => {
+  try {
+    const students = await User.find({ role: 'student' });
+
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date();
+      d.setHours(0, 0, 0, 0);
+      d.setDate(d.getDate() - i);
+      days.push(d);
+    }
+
+    const labels = days.map(d =>
+      d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' })
+    );
+
+    const dayCounts = new Array(7).fill(0);
+
+    students.forEach(student => {
+      if (!student.practiceHistory) return;
+      student.practiceHistory.forEach(date => {
+        const d = new Date(date);
+        d.setHours(0, 0, 0, 0);
+        days.forEach((day, idx) => {
+          if (d.getTime() === day.getTime()) dayCounts[idx]++;
+        });
+      });
+    });
+
+    res.json({ labels, dayCounts });
+  } catch (error) {
+    console.error('Error getting weekly stats:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // @route   GET /api/practice/:studentId
-// @desc    Get current practice streak
+// @desc    Get current practice streak for a student
 router.get('/:studentId', async (req, res) => {
   try {
     const user = await User.findById(req.params.studentId);
@@ -79,7 +118,6 @@ router.get('/:studentId', async (req, res) => {
       return res.status(404).json({ message: 'Student not found' });
     }
     
-    // Calculate if streak is still active
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     
@@ -101,57 +139,15 @@ router.get('/:studentId', async (req, res) => {
       }
     }
     
-    // If they missed more than 1 day, actual streak is 0 visually
     const currentStreak = isStreakActive ? (user.practiceStreak || 0) : 0;
     
     res.json({ 
       streak: currentStreak, 
-      didPracticeToday: didPracticeToday,
+      didPracticeToday,
       totalRecord: user.practiceStreak || 0 
     });
   } catch (error) {
     console.error('Error getting practice streak:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// @route   GET /api/practice/stats/weekly
-// @desc    Get practice counts for the last 7 days across all students
-router.get('/stats/weekly', async (req, res) => {
-  try {
-    const students = await User.find({ role: 'student' });
-
-    // Build last 7 days array (oldest → newest)
-    const days = [];
-    for (let i = 6; i >= 0; i--) {
-      const d = new Date();
-      d.setHours(0, 0, 0, 0);
-      d.setDate(d.getDate() - i);
-      days.push(d);
-    }
-
-    // Label each day as "Mon 30", "Tue 31" etc.
-    const labels = days.map(d =>
-      d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric' })
-    );
-
-    // Count practices per day
-    const dayCounts = new Array(7).fill(0);
-
-    students.forEach(student => {
-      if (!student.practiceHistory) return;
-      student.practiceHistory.forEach(date => {
-        const d = new Date(date);
-        d.setHours(0, 0, 0, 0);
-        days.forEach((day, idx) => {
-          if (d.getTime() === day.getTime()) dayCounts[idx]++;
-        });
-      });
-    });
-
-    res.json({ labels, dayCounts });
-  } catch (error) {
-    console.error('Error getting weekly stats:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
