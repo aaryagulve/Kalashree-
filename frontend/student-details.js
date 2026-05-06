@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
   loadAttendance();
   loadStudentFees();
   loadGuruNotes(studentId);
+  loadPracticeHistory();
 });
 
 
@@ -229,7 +230,11 @@ function buildPaySection(feeId) {
   return `
     <div id="pay-section-${feeId}" style="margin-top:12px;padding:14px 16px;background:rgba(253,248,242,0.9);border-radius:10px;border:1px solid rgba(212,160,23,0.2);">
       <p style="font-size:12.5px;color:#5A3018;font-weight:600;margin-bottom:8px;">📸 Upload payment screenshot (optional)</p>
-      <input type="file" id="ss-${feeId}" accept="image
+      <input type="file" id="ss-${feeId}" accept="image/*" style="font-size:12px;color:#8C6A52;margin-bottom:12px;width:100%;">
+      <button onclick="requestPaymentWithScreenshot('${feeId}')" data-fee="${feeId}" style="width:100%;padding:10px;background:#D4A017;color:#2C1608;border:none;border-radius:8px;font-weight:600;cursor:pointer;">📤 I Have Paid</button>
+    </div>`;
+}
+
 async function loadGuruNotes(studentId) {
   const container = document.getElementById('detailsNotesContainer');
   if (!container) return;
@@ -265,5 +270,44 @@ async function loadGuruNotes(studentId) {
     }).join('');
   } catch (err) {
     container.innerHTML = '<p style="padding:20px;color:#D32F2F;">Error loading notes.</p>';
+  }
+}
+async function loadPracticeHistory() {
+  const container = document.getElementById('detailsPracticeContainer');
+  if (!container) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/homework/student/${studentId}`);
+    if (!res.ok) { container.innerHTML = '<p style="padding:20px;color:#D32F2F;">Failed to load recordings.</p>'; return; }
+    const submissions = await res.json();
+    if (submissions.length === 0) { container.innerHTML = '<p style="padding:20px;color:#666;">No practice recordings yet.</p>'; return; }
+    
+    container.innerHTML = submissions.map((hw, i) => {
+      const dateStr = new Date(hw.submittedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      const audioSrc = hw.audioFilePath 
+        ? (hw.audioFilePath.startsWith('http') ? hw.audioFilePath : `${API_BASE}/uploads/audio/${hw.audioFilePath}`)
+        : null;
+      
+      let mediaHtml = '';
+      if (audioSrc) {
+        mediaHtml = `
+          <audio controls style="width:100%;margin-top:10px;border-radius:8px;height:36px;outline:none;">
+            <source src="${audioSrc}" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>`;
+      } else if (hw.fileUrl) {
+        mediaHtml = `<a href="${hw.fileUrl}" target="_blank" style="display:inline-block;margin-top:10px;font-size:13px;color:#D4A017;text-decoration:none;font-weight:600;">▶ View External Recording</a>`;
+      }
+
+      return `
+        <div style="background:rgba(255,255,255,0.6);border-radius:12px;padding:16px;margin-bottom:12px;border:1px solid rgba(212,160,23,0.15);box-shadow:0 4px 12px rgba(0,0,0,0.02);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <p style="font-weight:700;font-size:14px;color:#2C1608;margin:0;">${hw.title}</p>
+            <p style="font-size:11px;color:#8C6A52;margin:0;">${dateStr}</p>
+          </div>
+          ${mediaHtml}
+        </div>`;
+    }).join('');
+  } catch (err) {
+    container.innerHTML = '<p style="padding:20px;color:#D32F2F;">Error loading recordings.</p>';
   }
 }

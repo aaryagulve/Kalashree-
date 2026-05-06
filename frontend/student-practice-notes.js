@@ -31,11 +31,16 @@ async function loadSubmissions(studentId) {
       
       let mediaHtml = '';
       if (hw.submissionType === 'upload' && hw.audioFilePath) {
+        // If it's a full Cloudinary URL, use it directly. Otherwise, prefix with local upload path.
+        const audioSrc = hw.audioFilePath.startsWith('http') 
+          ? hw.audioFilePath 
+          : `${API_BASE}/uploads/audio/${hw.audioFilePath}`;
+
         mediaHtml = `
-          <audio controls style="width:100%;margin-top:6px;border-radius:6px;">
-            <source src="${API_BASE}/uploads/audio/${hw.audioFilePath}">
-          </audio>
-          <p style="font-size:11px;color:#B0907A;margin-top:2px;">📁 ${hw.audioFilePath}</p>`;
+          <audio controls style="width:100%;margin-top:6px;border-radius:6px;outline:none;">
+            <source src="${audioSrc}" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>`;
       } else if (hw.fileUrl) {
         mediaHtml = `<a href="${hw.fileUrl}" target="_blank" style="font-size:12px;color:#B5572A;font-weight:600;text-decoration:none;">🔗 View Recording</a>`;
       }

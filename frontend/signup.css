@@ -217,7 +217,8 @@ body {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 44px 40px;
+  padding: 60px 60px;
+  text-align: right; /* Right align the content */
 }
 
 .brand {
@@ -226,18 +227,18 @@ body {
 
 .brand-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 700;
   color: #F8F1E3;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 }
 
 .brand-sub {
-  font-size: 10px;
+  font-size: 11px;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   color: rgba(212, 160, 23, 0.6);
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .brand-center {
@@ -246,22 +247,24 @@ body {
 }
 
 .clef-bg {
-  font-size: 200px;
-  color: rgba(212, 160, 23, 0.04);
+  font-size: 380px;
+  color: rgba(212, 160, 23, 0.03);
   position: absolute;
-  top: -70px;
-  left: -30px;
+  top: 50%;
+  left: -10%;
+  transform: translateY(-50%);
   line-height: 1;
   pointer-events: none;
   user-select: none;
+  z-index: -1;
 }
 
 .brand-heading {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 48px;
+  font-size: 54px;
   font-weight: 700;
   color: #F8F1E3;
-  line-height: 1.15;
+  line-height: 1.1;
   position: relative;
 }
 
@@ -269,39 +272,53 @@ body {
   font-style: italic;
   font-weight: 400;
   color: #D4A017;
+  text-shadow: 0 0 40px rgba(212, 160, 23, 0.2);
 }
 
 .short-line {
-  width: 40px;
+  width: 50px;
   height: 2px;
-  background: linear-gradient(90deg, #D4A017, rgba(212, 160, 23, 0.2));
-  margin: 18px 0 14px;
+  background: linear-gradient(270deg, #D4A017, transparent);
+  margin: 24px 0 20px auto; /* Move line to the right */
 }
 
 .brand-sub-text {
-  font-size: 13px;
-  color: rgba(248, 241, 227, 0.4);
-  letter-spacing: 0.3px;
+  font-size: 14px;
+  color: rgba(248, 241, 227, 0.5);
+  letter-spacing: 0.5px;
   line-height: 1.6;
 }
 
 .raga-names {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: 12px;
-  color: rgba(212, 160, 23, 0.2);
-  letter-spacing: 1px;
+  font-size: 13px;
+  color: rgba(212, 160, 23, 0.25);
+  letter-spacing: 1.2px;
+  margin-top: auto;
 }
+
 
 /* Responsive */
 @media (max-width: 1000px) {
   .page { flex-direction: column-reverse; } /* Brand on top in mobile */
-  .brand-side { width: 100%; min-height: 220px; }
-  .brand-inner { padding: 32px 28px; min-height: 220px; }
-  .brand-heading { font-size: 34px; }
-  .clef-bg { font-size: 100px; }
+  .brand-side { width: 100%; min-height: 300px; }
+  .brand-inner { 
+    padding: 40px 32px; 
+    min-height: 300px;
+    text-align: center; /* Center align on mobile */
+  }
+  .brand-heading { font-size: 38px; }
+  .clef-bg { 
+    font-size: 180px; 
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .short-line { margin: 16px auto; }
   .form-side { width: 100%; padding: 40px 20px 60px; }
   .back-link { top: 16px; left: 20px; }
   .form-card { padding: 32px 24px; }
   .input-grid { grid-template-columns: 1fr; }
 }
+
