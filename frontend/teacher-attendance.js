@@ -105,17 +105,22 @@ function createCard(student, index) {
 
 
 async function saveAttendance() {
+  var btn = document.getElementById('saveBtn'); // Assuming ID is saveBtn
+  if (!btn) btn = document.querySelector('button[onclick="saveAttendance()"]');
+  
   try {
-    
     var markedCount = Object.keys(attendanceData).length;
 
-    
     if (markedCount < allStudents.length) {
       alert('Please mark attendance for all students before saving.');
       return;
     }
 
-    
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+    }
+
     for (var studentId in attendanceData) {
       var item = attendanceData[studentId];
 
@@ -131,16 +136,20 @@ async function saveAttendance() {
       });
     }
 
-    
     var successMsg = document.getElementById('saveSuccess');
-    successMsg.style.display = 'block';
+    if (successMsg) successMsg.style.display = 'block';
 
-    
     setTimeout(function () {
-      successMsg.style.display = 'none';
+      if (successMsg) successMsg.style.display = 'none';
     }, 4000);
+
   } catch (err) {
     alert('Attendance save failed: ' + err.message);
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = 'Save Attendance';
+    }
   }
 }
 

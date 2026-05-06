@@ -7,19 +7,21 @@ router.post('/mark', async (req, res) => {
   try {
     const { studentId, studentName, status, date } = req.body;
 
-    console.log('Marking attendance for:', studentName);
-
+    // Normalize date: Always use YYYY-MM-DD at 00:00:00.000
     const targetDate = date ? new Date(date) : new Date();
     targetDate.setHours(0, 0, 0, 0);
 
+    // Using findOneAndUpdate with upsert:true is the standard way to prevent duplicates
+    // combined with the Unique Index in the model, this is foolproof.
     const record = await Attendance.findOneAndUpdate(
       { studentId, date: targetDate },
       { studentName, status, date: targetDate },
-      { new: true, upsert: true }
+      { new: true, upsert: true, setDefaultsOnInsert: true }
     );
 
     return res.json({ message: 'Attendance saved', record });
   } catch (err) {
+    console.error('Mark attendance error:', err);
     return res.status(500).json({ message: err.message });
   }
 });
@@ -27,16 +29,21 @@ router.post('/mark', async (req, res) => {
 router.get('/today', async (req, res) => {
   try {
     const targetDate = req.query.date ? new Date(req.query.date) : new Date();
-    const start = new Date(targetDate);
-    start.setHours(0, 0, 0, 0);
-    const end = new Date(targetDate);
-    end.setHours(23, 59, 59, 999);
+    targetDate.setHours(0, 0, 0, 0);
 
-    const records = await Attendance.find({
-      date: { $gte: start, $lte: end },
-    }).sort({ date: -1 });
+    const records = await Attendance.find({ date: targetDate }).sort({ studentName: 1 });
 
-    return res.json(records);
+    // Deduplicate in memory just in case legacy duplicates exist
+    const uniqueRecords = [];
+    const seen = new Set();
+    records.forEach(r => {
+      if (!seen.has(r.studentId.toString())) {
+        seen.add(r.studentId.toString());
+        uniqueRecords.push(r);
+      }
+    });
+
+    return res.json(uniqueRecords);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
@@ -45,7 +52,19 @@ router.get('/today', async (req, res) => {
 router.get('/student/:id', async (req, res) => {
   try {
     const records = await Attendance.find({ studentId: req.params.id }).sort({ date: -1 });
-    return res.json(records);
+    
+    // Deduplicate by date string to hide duplicates from student side
+    const uniqueByDate = [];
+    const seenDates = new Set();
+    records.forEach(r => {
+      const dStr = new Date(r.date).toDateString();
+      if (!seenDates.has(dStr)) {
+        seenDates.add(dStr);
+        uniqueByDate.push(r);
+      }
+    });
+
+    return res.json(uniqueByDate);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
