@@ -22,7 +22,7 @@ const feeSchema = new mongoose.Schema({
   dueDate: { type: Date }, 
 
   
-  status: { type: String, default: 'Unpaid' }, /
+  status: { type: String, default: 'Unpaid' }, 
 
   
   paidDate: { type: Date }, 
