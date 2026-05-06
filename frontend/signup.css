@@ -1,279 +1,319 @@
-/* Signup Page Styles - Kalashree Sangeet Gurukul */
-
-:root {
-  --color-cream: #F9F7F2;
-  --color-maroon: #5C2D18;
-  --color-orange: #A3421C;
-  --color-gold: #C9974D;
-  --color-text-dark: #2D1B14;
-  --color-text-muted: #8C6A52;
-  --font-serif: 'Cormorant Garamond', serif;
-  --font-sans: 'Source Sans 3', sans-serif;
-}
+/* Signup Page Refinement - Kalashree Sangeet Gurukul */
 
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
-  font-family: var(--font-sans);
-  background-color: var(--color-cream);
-  color: var(--color-text-dark);
-  overflow-x: hidden;
+  font-family: 'Source Sans 3', sans-serif;
+  background: #FAF6F0;
+  min-height: 100vh;
 }
 
-.page-container {
+.page {
   display: flex;
   min-height: 100vh;
 }
 
-/* Left Section: Form */
-.form-section {
-  flex: 1.2;
-  background-color: var(--color-cream);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-}
-
-.form-wrapper {
-  width: 100%;
-  max-width: 540px;
-}
-
-.form-header {
-  margin-bottom: 40px;
-}
-
-.main-title {
-  font-family: var(--font-serif);
-  font-size: 3.2rem;
-  font-weight: 500;
-  color: var(--color-text-dark);
-  margin-bottom: 8px;
-}
-
-.sub-title {
-  font-size: 1.1rem;
-  color: var(--color-text-muted);
-  margin-bottom: 30px;
-}
-
-.header-divider {
-  width: 100%;
-  height: 1px;
-  background-color: rgba(0, 0, 0, 0.08);
-}
-
-.input-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-bottom: 40px;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.form-group label {
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: var(--color-text-muted);
-}
-
-.form-group input {
-  padding: 14px 16px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.5);
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  color: var(--color-text-dark);
-  transition: all 0.2s ease;
-}
-
-.form-group input::placeholder {
-  color: #C2B0A3;
-}
-
-/* Notice Box */
-.notice-box {
-  background: linear-gradient(135deg, rgba(201, 151, 77, 0.05) 0%, rgba(201, 151, 77, 0.02) 100%);
-  border-left: 4px solid var(--color-gold);
-  border-radius: 8px;
-  padding: 32px;
-  text-align: center;
-  margin-bottom: 40px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-}
-
-.notice-title {
-  font-family: var(--font-serif);
-  font-size: 2rem;
-  color: var(--color-text-dark);
-  margin-bottom: 12px;
-}
-
-.notice-line {
-  width: 40px;
-  height: 2px;
-  background-color: var(--color-gold);
-  margin: 0 auto 20px;
-}
-
-.notice-text {
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: var(--color-text-muted);
-}
-
-.cta-button {
-  display: block;
-  width: 100%;
-  padding: 18px;
-  background-color: var(--color-orange);
-  color: white;
-  text-align: center;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  box-shadow: 0 10px 30px rgba(163, 66, 28, 0.2);
-}
-
-.cta-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(163, 66, 28, 0.3);
-  background-color: #8E3917;
-}
-
-.form-footer {
-  margin-top: 60px;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #B29E91;
-}
-
-/* Right Section: Brand */
-.brand-section {
-  flex: 0.8;
-  background-color: var(--color-maroon);
+/* Left Section: Match Login Page precisely */
+.left {
+  width: 44%;
+  min-height: 100vh;
+  background: linear-gradient(-45deg, #3F1A12, #2C1608, #5A2810, #3F1A12);
+  background-size: 400% 400%;
+  animation: gradientShift 18s ease infinite;
   position: relative;
   overflow: hidden;
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.left::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(212, 160, 23, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.left-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 80px;
-  color: white;
+  padding: 44px 40px;
 }
 
-.dots-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
-  pointer-events: none;
+.brand {
+  margin-bottom: auto;
 }
 
-.brand-tag {
-  font-size: 0.9rem;
-  letter-spacing: 0.2em;
-  font-weight: 500;
-  margin-bottom: 40px;
-  opacity: 0.8;
-}
-
-.brand-heading {
-  font-family: var(--font-serif);
-  font-size: 4.5rem;
-  line-height: 1.1;
-  font-weight: 500;
-  margin-bottom: 30px;
-}
-
-.italic-text {
-  font-style: italic;
-  opacity: 0.8;
-}
-
-.brand-line {
-  width: 60px;
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.3);
-  margin-bottom: 30px;
+.brand-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: #F8F1E3;
+  letter-spacing: 1px;
 }
 
 .brand-sub {
-  font-size: 1.1rem;
-  opacity: 0.6;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: rgba(212, 160, 23, 0.6);
+  margin-top: 3px;
 }
 
-.clef-watermark {
+.left-center {
+  position: relative;
+  margin: auto 0;
+}
+
+.clef-bg {
+  font-size: 200px;
+  color: rgba(212, 160, 23, 0.04);
   position: absolute;
-  right: -5%;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 40rem;
-  color: rgba(255, 255, 255, 0.03);
-  user-select: none;
+  top: -70px;
+  left: -30px;
+  line-height: 1;
   pointer-events: none;
+  user-select: none;
 }
 
-.raga-footer {
+.left-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px;
+  font-weight: 700;
+  color: #F8F1E3;
+  line-height: 1.15;
+  position: relative;
+}
+
+.left-heading em {
+  font-style: italic;
+  font-weight: 400;
+  color: #D4A017;
+}
+
+.short-line {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, #D4A017, rgba(212, 160, 23, 0.2));
+  margin: 18px 0 14px;
+}
+
+.left-sub {
+  font-size: 13px;
+  color: rgba(248, 241, 227, 0.4);
+  letter-spacing: 0.3px;
+  line-height: 1.6;
+}
+
+.raga-names {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: rgba(212, 160, 23, 0.2);
+  letter-spacing: 1px;
+}
+
+/* Right Section: Match Login Page precisely */
+.right {
+  width: 56%;
+  min-height: 100vh;
+  background: #FAF6F0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 32px;
+  position: relative;
+}
+
+.back-link {
   position: absolute;
-  bottom: 40px;
-  left: 80px;
-  font-family: var(--font-serif);
-  font-size: 1.2rem;
-  opacity: 0.3;
+  top: 28px;
+  left: 36px;
+  font-size: 12px;
+  color: #D4A017;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: color 0.2s;
+}
+
+.back-link:hover { color: #B5572A; }
+
+.form-card {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 44px 38px;
+  box-shadow: 
+    0 12px 36px rgba(63, 26, 18, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    inset 0 0 0 1px rgba(212, 160, 23, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #D4A017, transparent);
+}
+
+.form-top {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.form-icon {
+  font-size: 32px;
+  color: #D4A017;
+  line-height: 1;
+  margin-bottom: 12px;
+  text-shadow: 0 0 20px rgba(212, 160, 23, 0.2);
+}
+
+.form-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #2C1608;
+  letter-spacing: -0.3px;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  font-size: 12.5px;
+  color: #8C6A52;
+}
+
+/* Signup specific input grid */
+.input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.field {
+  margin-bottom: 0px; /* Gap handled by grid */
+}
+
+.field label {
+  display: block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #3F1A12;
+  margin-bottom: 6px;
+}
+
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(248, 241, 227, 0.6);
+  border: 1.5px solid rgba(212, 160, 23, 0.15);
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  color: #2C1608;
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.field input:focus {
+  border-color: #D4A017;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.field input::placeholder {
+  color: #C4AA96;
+}
+
+/* Notice Card - Refined & Compact */
+.notice-card {
+  background: rgba(212, 160, 23, 0.04);
+  border: 1px solid rgba(212, 160, 23, 0.1);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.notice-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+  color: #2C1608;
+  margin-bottom: 8px;
+}
+
+.notice-text {
+  font-size: 12px;
+  color: #8C6A52;
+  line-height: 1.5;
+}
+
+/* CTA Button - Match Login Button Precisely */
+.cta-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #D4A017, #B5872A);
+  color: #2C1608;
+  text-decoration: none;
+  border-radius: 10px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(212, 160, 23, 0.3);
+}
+
+.cta-button:hover {
+  background: linear-gradient(135deg, #E0B020, #C4962E);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(212, 160, 23, 0.4);
+}
+
+.footer-text {
+  position: absolute;
+  bottom: 20px;
+  font-size: 11px;
+  color: rgba(212, 160, 23, 0.35);
 }
 
 /* Responsive */
-@media (max-width: 1100px) {
-  .brand-heading {
-    font-size: 3.5rem;
-  }
-}
-
 @media (max-width: 900px) {
-  .page-container {
-    flex-direction: column-reverse;
-  }
-  
-  .brand-section {
-    padding: 60px 40px;
-    min-height: 300px;
-  }
-  
-  .form-section {
-    padding: 60px 20px;
-  }
-  
-  .clef-watermark {
-    font-size: 20rem;
-    bottom: -10%;
-    top: auto;
-    right: 10%;
-  }
-}
-
-@media (max-width: 500px) {
-  .input-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .main-title {
-    font-size: 2.5rem;
-  }
+  .page { flex-direction: column; }
+  .left { width: 100%; min-height: 220px; }
+  .left-inner { padding: 32px 28px; min-height: 220px; }
+  .left-heading { font-size: 34px; }
+  .clef-bg { font-size: 100px; }
+  .right { width: 100%; padding: 40px 20px 60px; }
+  .back-link { top: 16px; left: 20px; }
+  .form-card { padding: 32px 24px; }
+  .input-grid { grid-template-columns: 1fr; }
 }

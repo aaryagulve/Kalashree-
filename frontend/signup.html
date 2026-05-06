@@ -6,85 +6,89 @@
   <title>Student Registration | Kalashree Sangeet Gurukul</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="signup.css" />
 </head>
 <body>
 
-  <div class="page-container">
+  <div class="page">
 
-    <!-- Left Section: Registration Form -->
-    <main class="form-section">
-      <div class="form-wrapper">
-        <header class="form-header">
-          <h1 class="main-title">Student Registration</h1>
-          <p class="sub-title">Enrollment in Kalashree Sangeet Gurukul</p>
-          <div class="header-divider"></div>
-        </header>
+    <!-- Left Section: Decorative Brand Area -->
+    <div class="left">
+      <div class="left-inner">
+        
+        <div class="brand">
+          <p class="brand-name">Kalashree</p>
+          <p class="brand-sub">Sangeet Gurukul</p>
+        </div>
+
+        <div class="left-center">
+          <div class="clef-bg">𝄞</div>
+          <h1 class="left-heading">
+            Your raga<br />
+            <em>awaits you.</em>
+          </h1>
+          <div class="short-line"></div>
+          <p class="left-sub">Indian Classical Music Academy · Nashik</p>
+        </div>
+
+        <p class="raga-names">Raag Darbari &nbsp;·&nbsp; Raag Bhoopali &nbsp;·&nbsp; Raag Yaman</p>
+      </div>
+    </div>
+
+    <!-- Right Section: Registration Form Area -->
+    <div class="right">
+
+      <a href="login.html" class="back-link">&#8592; Back to Login</a>
+
+      <div class="form-card">
+        
+        <div class="form-top">
+          <div class="form-icon">𝄢</div>
+          <h2 class="form-title">Registration</h2>
+          <p class="form-subtitle">Enrollment in Kalashree Sangeet Gurukul</p>
+        </div>
 
         <form class="registration-form">
           <div class="input-grid">
-            <div class="form-group">
+            <div class="field">
               <label for="fullname">FULL NAME</label>
               <input type="text" id="fullname" placeholder="Your full name" readonly />
             </div>
-            <div class="form-group">
+            <div class="field">
               <label for="email">EMAIL ADDRESS</label>
               <input type="email" id="email" placeholder="you@example.com" readonly />
             </div>
-            <div class="form-group">
+            <div class="field">
               <label for="password">PASSWORD</label>
               <input type="password" id="password" placeholder="Create password" readonly />
             </div>
-            <div class="form-group">
+            <div class="field">
               <label for="confirm">CONFIRM PASSWORD</label>
               <input type="password" id="confirm" placeholder="Repeat password" readonly />
             </div>
           </div>
 
           <!-- Registration Closed Notice -->
-          <div class="notice-box">
-            <h2 class="notice-title">Registration Closed</h2>
-            <div class="notice-line"></div>
+          <div class="notice-card">
+            <h3 class="notice-title">Registration Closed</h3>
             <p class="notice-text">
-              Student registration is closed.<br>
-              Your Guru will personally provide your login credentials.<br>
-              Please contact your teacher to get an account.
+              Contact your teacher to receive your personal login credentials.
             </p>
           </div>
 
           <a href="login.html" class="cta-button">Back to Login</a>
         </form>
 
-        <footer class="form-footer">
-          <p>Kalashree Sangeet Gurukul &copy; 2025</p>
-        </footer>
-      </div>
-    </main>
-
-    <!-- Right Section: Decorative Brand Area -->
-    <aside class="brand-section">
-      <div class="dots-overlay"></div>
-      
-      <div class="brand-content">
-        <p class="brand-tag">KALASHREE SANGEET GURUKUL</p>
-        <h2 class="brand-heading">
-          Your raga<br>
-          <span class="italic-text">awaits you.</span>
-        </h2>
-        <div class="brand-line"></div>
-        <p class="brand-sub">Indian Classical Music Academy</p>
       </div>
 
-      <div class="clef-watermark">𝄞</div>
+      <p class="footer-text">Kalashree Sangeet Gurukul &copy; 2025</p>
 
-      <div class="raga-footer">
-        <p>Raag Darbari &nbsp; · &nbsp; Raag Bhoopali</p>
-      </div>
-    </aside>
+    </div>
 
   </div>
 
 </body>
 </html>
+
 
