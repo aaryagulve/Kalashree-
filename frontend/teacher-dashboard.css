@@ -1,8 +1,8 @@
-/* teacher-dashboard.css */
-/* Kalashree Sangeet Gurukul — Premium Teacher Dashboard */
 
 
-/* Date on right side of topbar */
+
+
+
 .topbar-right {
   text-align: right;
 }
@@ -21,9 +21,7 @@
 }
 
 
-/* ══════════════════════════════════════════
-   OVERVIEW CARDS — Premium Glass
-   ══════════════════════════════════════════ */
+
 
 .cards-row {
   display: flex;
@@ -50,7 +48,7 @@
   overflow: hidden;
 }
 
-/* Subtle gold shimmer on top */
+
 .card::before {
   content: '';
   position: absolute;
@@ -88,7 +86,7 @@
     inset 0 0 0 1px rgba(212, 160, 23, 0.15);
 }
 
-/* Card accent colors */
+
 .card-blue   { border-left-color: #4A7CB5; }
 .card-green  { border-left-color: #4A9B6F; }
 .card-orange { border-left-color: #D4A017; }
@@ -111,7 +109,7 @@
   margin-bottom: 10px;
 }
 
-/* Progress bar */
+
 .card-bar {
   width: 100%;
   height: 4px;
@@ -140,9 +138,7 @@
 }
 
 
-/* ══════════════════════════════════════════
-   QUICK ACTION CARDS — Gold Accent
-   ══════════════════════════════════════════ */
+
 
 .quick-links {
   display: flex;
@@ -169,7 +165,7 @@
   overflow: hidden;
 }
 
-/* Animated gold top-border on hover */
+
 .quick-card::before {
   content: '';
   position: absolute;
@@ -220,9 +216,7 @@
 }
 
 
-/* ══════════════════════════════════════════
-   ANALYTICS CHART
-   ══════════════════════════════════════════ */
+
 
 .chart-container {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
@@ -251,9 +245,7 @@
 }
 
 
-/* ══════════════════════════════════════════
-   TWO COLUMN LAYOUT
-   ══════════════════════════════════════════ */
+
 
 .two-col {
   display: flex;
@@ -265,9 +257,7 @@
   flex: 1;
 }
 
-/* ══════════════════════════════════════════
-   CLASS PERFORMANCE INSIGHTS
-   ══════════════════════════════════════════ */
+
 
 .insights-grid {
   display: grid;
@@ -334,9 +324,7 @@
 }
 
 
-/* ══════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════ */
+
 
 @media (max-width: 900px) {
   .cards-row {
@@ -392,7 +380,7 @@
   }
 }
 
-/* ── INSIGHT ICON ANIMATION ── */
+
 .insight-icon {
   font-size: 30px;
   margin-bottom: 10px;
@@ -405,7 +393,7 @@
   filter: drop-shadow(0 4px 12px rgba(212, 160, 23, 0.35));
 }
 
-/* ── TOPBAR GOLD ACCENT ── */
+
 .topbar {
   position: relative;
 }

@@ -1,4 +1,4 @@
-// teacher-dashboard.js
+
 
 document.addEventListener('DOMContentLoaded', async function () {
   const dateEl = document.querySelector('.today-date');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   ]);
 });
 
-// Animation function to count up numbers
+
 function animateValue(obj, start, end, duration) {
   let startTimestamp = null;
   const step = (timestamp) => {
@@ -27,26 +27,26 @@ function animateValue(obj, start, end, duration) {
     if (progress < 1) {
       window.requestAnimationFrame(step);
     } else {
-      obj.innerHTML = end; // Ensure exact final number
+      obj.innerHTML = end; 
     }
   };
   window.requestAnimationFrame(step);
 }
 
-// Fetch dynamic overview stats
+
 async function loadOverviewStats() {
   try {
-    // 1. Total Students (Active only)
+    
     const studentRes = await fetch(API_BASE + '/api/students');
     const students = await studentRes.json();
     const activeStudents = students.filter(s => !s.status || s.status === 'Active');
     const totalStudents = activeStudents.length;
     animateValue(document.getElementById('totalStudents'), 0, totalStudents, 1500);
-    // Update hint to show active count
+    
     const totalHint = document.querySelector('#totalStudents')?.closest('.card')?.querySelector('.card-hint');
     if (totalHint) totalHint.textContent = `${totalStudents} active in class`;
 
-    // 2. Attendance Today
+    
     const attRes = await fetch(API_BASE + '/api/attendance/today');
     const attendance = await attRes.json();
     const presents = attendance.filter(a => a.status === 'Present').length;
@@ -55,7 +55,7 @@ async function loadOverviewStats() {
     const attHint = document.querySelector('#attendanceToday')?.closest('.card')?.querySelector('.card-hint');
     if (attHint) attHint.textContent = `Present out of ${totalStudents}`;
 
-    // 3. Fee Defaulters
+    
     const feeRes = await fetch(API_BASE + '/api/fee/all');
     const feeRecords = await feeRes.json();
     let defaulters = 0;
@@ -68,7 +68,7 @@ async function loadOverviewStats() {
     const feeQuickSub = document.getElementById('feeQuickSub');
     if (feeQuickSub) feeQuickSub.textContent = defaulters === 0 ? 'All fees up to date' : `${defaulters} defaulter${defaulters !== 1 ? 's' : ''} this month`;
 
-    // 4. Total Submissions (Pending Review)
+    
     const hwRes = await fetch(API_BASE + '/api/homework?filter=pending');
     const homework = await hwRes.json();
     animateValue(document.getElementById('ragasMastered'), 0, homework.length, 1500);
@@ -129,7 +129,7 @@ function renderChart(labels, dataArr) {
           }
         },
         ...(hasData ? {} : {
-          // Show "no data" annotation when all zeros
+          
         })
       },
       scales: {
@@ -155,7 +155,7 @@ function renderChart(labels, dataArr) {
     }
   });
 
-  // Show "no data yet" message if all zeros
+  
   if (!hasData) {
     const container = document.querySelector('.chart-container');
     const msg = document.createElement('p');
@@ -181,7 +181,7 @@ async function loadTeacherInsights() {
     set('tiAvgSub',     d.avgSubmissions);
     set('tiNeedsCount', d.needsAttention.length);
 
-    // Needs attention list
+    
     const needsList = document.getElementById('tiNeedsList');
     if (needsList) {
       if (d.needsAttention.length === 0) {
@@ -198,7 +198,7 @@ async function loadTeacherInsights() {
       }
     }
 
-    // Top students list
+    
     const topList = document.getElementById('tiTopList');
     if (topList) {
       if (d.topStudents.length === 0) {

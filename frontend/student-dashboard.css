@@ -1,7 +1,4 @@
-/* Kalashree Sangeet Gurukul — Premium Student Dashboard */
 
-
-/* ── TOPBAR RIGHT ── */
 
 .topbar-right {
   text-align: right;
@@ -21,9 +18,7 @@
 }
 
 
-/* ── WELCOME BAR ── */
 
-/* Warm banner below topbar */
 .welcome-bar {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(253, 248, 242, 0.9) 100%);
   backdrop-filter: blur(20px);
@@ -62,7 +57,7 @@
   text-shadow: 0 1px 4px rgba(63, 26, 18, 0.06);
 }
 
-/* Student name highlighted */
+
 .welcome-greeting span {
   font-weight: 700;
   color: #D4A017;
@@ -74,7 +69,7 @@
   font-style: italic;
 }
 
-/* Right side tags - level and joining date */
+
 .welcome-right {
   display: flex;
   gap: 16px;
@@ -109,7 +104,7 @@
 }
 
 
-/* ── OVERVIEW CARDS ── */
+
 
 .cards-row {
   display: flex;
@@ -118,7 +113,7 @@
   flex-wrap: wrap;
 }
 
-/* Base card */
+
 .card {
   flex: 1;
   min-width: 150px;
@@ -162,7 +157,7 @@
   transform: scale(1.1) rotate(5deg);
 }
 
-/* Card border colors */
+
 .card-blue   { border-left-color: #4A7CB5; }
 .card-green  { border-left-color: #4A9B6F; }
 .card-orange { border-left-color: #B5572A; }
@@ -177,7 +172,7 @@
   letter-spacing: 1.5px;
 }
 
-/* Big number */
+
 .card-number {
   font-family: 'Cormorant Garamond', serif;
   font-size: 50px;
@@ -188,20 +183,20 @@
   text-shadow: 0 2px 8px rgba(63, 26, 18, 0.08);
 }
 
-/* % sign smaller than the number */
+
 .card-percent {
   font-size: 24px;
   font-weight: 400;
   color: #8C6A52;
 }
 
-/* Fee card shows Paid as text not number */
+
 .card-fee-paid {
   font-size: 28px;
   color: #2E7D32;
 }
 
-/* Progress bar track */
+
 .card-bar {
   width: 100%;
   height: 4px;
@@ -211,7 +206,7 @@
   overflow: hidden;
 }
 
-/* Filled portion */
+
 .card-bar-fill {
   height: 100%;
   border-radius: 2px;
@@ -220,7 +215,7 @@
   transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Each card fill matches border color */
+
 .card-blue   .card-bar-fill { background: #4A7CB5; }
 .card-green  .card-bar-fill { background: #4A9B6F; }
 .card-orange .card-bar-fill { background: #B5572A; }
@@ -232,11 +227,9 @@
 }
 
 
-/* ── PRACTICE STREAK BAR ── */
 
-/* ── PRACTICE STREAK BAR ── */
 
-/* Highlighted streak message */
+
 .streak-bar {
   display: flex;
   align-items: center;
@@ -274,9 +267,9 @@
 }
 
 
-/* ── TWO COLUMN LAYOUT ── */
 
-/* Raga progress on left, Guru notes on right */
+
+
 .two-col {
   display: flex;
   gap: 24px;
@@ -296,7 +289,7 @@
   position: relative;
 }
 
-/* Override section title inside col-box */
+
 .col-box .section-title {
   font-size: 18px;
   margin-bottom: 6px;
@@ -305,7 +298,7 @@
 }
 
 
-/* ── RAGA PROGRESS LIST ── */
+
 
 .raga-list {
   display: flex;
@@ -313,7 +306,7 @@
   gap: 0;
 }
 
-/* Each raga row */
+
 .raga-item {
   display: flex;
   justify-content: space-between;
@@ -322,7 +315,7 @@
   border-bottom: 1px solid #F5EDE0;
 }
 
-/* Remove border from last item */
+
 .raga-item:last-child {
   border-bottom: none;
 }
@@ -339,7 +332,7 @@
   color: #B0907A;
 }
 
-/* Status badges */
+
 .raga-badge {
   font-size: 11px;
   font-weight: 600;
@@ -348,28 +341,27 @@
   flex-shrink: 0;
 }
 
-/* Green = Mastered */
+
 .badge-mastered {
   background: #E6F4EA;
   color: #2E7D32;
 }
 
-/* Blue = Practicing */
+
 .badge-practicing {
   background: #E3F0FB;
   color: #1565C0;
 }
 
-/* Yellow = Learning */
+
 .badge-learning {
   background: #FFF8E1;
   color: #F57F17;
 }
 
 
-/* ── GURU NOTES ── */
 
-/* Small subtitle below section title */
+
 .notes-sub {
   font-size: 12px;
   color: #8C6A52;
@@ -384,7 +376,7 @@
   margin-bottom: 16px;
 }
 
-/* Each note card */
+
 .note-card {
   background: #FDFBF7;
   border-radius: 8px;
@@ -392,12 +384,12 @@
   border-left: 3px solid #E8D5BC;
 }
 
-/* Most recent note has terracotta border */
+
 .note-recent {
   border-left-color: #D4A017;
 }
 
-/* Top of note - date and new badge */
+
 .note-top {
   display: flex;
   justify-content: space-between;
@@ -412,7 +404,7 @@
   letter-spacing: 0.8px;
 }
 
-/* New badge on most recent note */
+
 .note-new {
   font-size: 10px;
   font-weight: 600;
@@ -429,7 +421,7 @@
   line-height: 1.65;
 }
 
-/* View all link at bottom */
+
 .view-all-link {
   font-size: 13px;
   color: #D4A017;
@@ -443,14 +435,14 @@
   color: #B5872A;
 }
 
-/* ── NEW PRACTICE UI ── */
+
 .streak-subtext {
   font-size: 12px;
   color: #8C6A52;
   margin-top: 2px;
 }
 
-/* ── HOMEWORK SECTION ── */
+
 .homework-section {
   display: flex;
   gap: 24px;
@@ -627,7 +619,7 @@
   font-style: italic;
 }
 
-/* ── STREAK BADGES (GAMIFICATION) ── */
+
 .streak-badge {
   display: inline-flex;
   align-items: center;
@@ -649,7 +641,7 @@
 
 .badge-emoji { font-size: 12px; }
 
-/* ── DYNAMIC HOVER EFFECTS ── */
+
 .card, .raga-item, .note-card, .homework-form-card, .homework-list-card {
   transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }
@@ -663,7 +655,7 @@
   background: #FAFAFA;
 }
 
-/* ── PERFORMANCE INSIGHTS ── */
+
 .insights-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -774,9 +766,7 @@
 }
 
 
-/* ══════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════ */
+
 
 @media (max-width: 900px) {
   .cards-row {
@@ -836,7 +826,7 @@
   }
 }
 
-/* ── INSIGHT ICON ANIMATION ── */
+
 .insight-icon {
   transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
   filter: drop-shadow(0 2px 6px rgba(212, 160, 23, 0.2));
@@ -847,7 +837,7 @@
   filter: drop-shadow(0 4px 12px rgba(212, 160, 23, 0.35));
 }
 
-/* ── TOPBAR GOLD ACCENT ── */
+
 .topbar {
   position: relative;
 }
@@ -861,7 +851,7 @@
   border-radius: 2px;
 }
 
-/* ── RAGA ITEM HOVER ── */
+
 .raga-item {
   transition: transform 0.2s ease, background 0.2s ease;
   border-radius: 8px;

@@ -31,7 +31,7 @@
 
   </div>
 
-  <!-- SIDEBAR -->
+  
   <div class="sidebar">
     <div class="sidebar-logo">
       <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
@@ -57,7 +57,7 @@
   </div>
 </div>
 
-<!-- Poster Lightbox -->
+
 <div class="poster-lightbox" id="posterLightbox" onclick="closePosterLightbox()">
   <button class="poster-lightbox-close" onclick="closePosterLightbox()">&#10005;</button>
   <img id="posterLightboxImg" src="" alt="Event Poster" onclick="event.stopPropagation()" />
@@ -66,7 +66,7 @@
 <script src="config.js"></script>
 <script src="auth-ui.js"></script>
 
-<!-- Event Detail Modal -->
+
 <div class="ev-modal-backdrop" id="evModalBackdrop" onclick="closeEvModal(event)">
   <div class="ev-modal ev-modal-wrap" id="evModal">
     <button class="ev-modal-close" onclick="closeEvModal()">&#10005;</button>
@@ -101,8 +101,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
     container.innerHTML = events.map(ev => {
       const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-      // TASK 4 & 5: Backward Compatibility for Poster Paths
-      // Check if it's a Cloudinary URL (starts with http)
+      
+      
       const isCloudinary = ev.poster && ev.poster.startsWith('http');
       const posterUrlNew = isCloudinary ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
       const posterUrlOld = isCloudinary ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
@@ -142,7 +142,7 @@ function openEvModal(evJson, studentId, studentName) {
   const ev = typeof evJson === 'string' ? JSON.parse(evJson) : evJson;
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  // TASK 4 & 5: Backward Compatibility for Poster Paths in Modal
+  
   const isCloudinary = ev.poster && ev.poster.startsWith('http');
   const posterUrlNew = isCloudinary ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
   const posterUrlOld = isCloudinary ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
@@ -209,7 +209,7 @@ async function toggleRSVP(eventId, studentId, studentName, isCurrentlyAttending)
         btn.style.background = nowAttending ? 'linear-gradient(135deg,#2E7D32,#1B5E20)' : '';
         btn.onclick = () => toggleRSVP(eventId, studentId, studentName, nowAttending);
       }
-      // Update count
+      
       const countEl = btn ? btn.nextElementSibling : null;
       if (countEl) countEl.textContent = `👥 ${count} student${count !== 1 ? 's' : ''} attending`;
     }

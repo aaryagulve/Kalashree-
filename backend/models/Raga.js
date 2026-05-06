@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-// Global raga list shared across all students
+
 const ragaSchema = new mongoose.Schema({
   ragas: {
     type: [String],

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
   loadNotes(studentId);
 });
 
-/* ── SUBMISSIONS ── */
+
 
 async function loadSubmissions(studentId) {
   const hwList = document.getElementById('hwList');
@@ -28,7 +28,7 @@ async function loadSubmissions(studentId) {
         ? `<p style="font-size:12.5px;color:#5A3018;margin-top:6px;padding:8px 10px;background:#FDF6EE;border-radius:6px;"><strong>Guru ji:</strong> ${hw.teacherFeedback}</p>`
         : '';
 
-      // Build the media link — uploaded file or external link
+      
       let mediaHtml = '';
       if (hw.submissionType === 'upload' && hw.audioFilePath) {
         mediaHtml = `
@@ -131,7 +131,7 @@ async function submitPractice() {
       document.getElementById('hwTitle').value = '';
       if (document.getElementById('hwLink')) document.getElementById('hwLink').value = '';
       if (document.getElementById('hwNotes')) document.getElementById('hwNotes').value = '';
-      // Reset file input
+      
       document.getElementById('audioFileInput').value = '';
       document.getElementById('audioPlaceholder').style.display = 'block';
       document.getElementById('audioFileName').style.display = 'none';
@@ -150,7 +150,7 @@ async function submitPractice() {
   }
 }
 
-/* ── GURU NOTES ── */
+
 
 async function loadNotes(studentId) {
   const container = document.getElementById('notesContainer');
@@ -166,7 +166,7 @@ async function loadNotes(studentId) {
 }
 
 function filterNotes(range, btn) {
-  // Update active button
+  
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 

@@ -62,7 +62,7 @@ async function createEvent(e) {
         document.getElementById('posterPreview').style.display = 'none';
         document.getElementById('posterPlaceholder').style.display = 'flex';
       } else {
-        cancelEdit(); // Reset form and mode
+        cancelEdit(); 
       }
       loadEvents();
     } else {
@@ -96,8 +96,8 @@ async function loadEvents() {
 
 function renderEventCard(ev, isTeacher) {
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  // TASK 4 & 5: Backward Compatibility for Poster Paths
-  // Check if it's a Cloudinary URL (starts with http)
+  
+  
   const isCloudinary = ev.poster && ev.poster.startsWith('http');
   const posterUrlNew = isCloudinary ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
   const posterUrlOld = isCloudinary ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
@@ -109,7 +109,7 @@ function renderEventCard(ev, isTeacher) {
   const feeText = ev.feeAmount > 0 ? `₹ ${ev.feeAmount}` : 'Free';
   const attendeeCount = ev.attendees ? ev.attendees.length : 0;
 
-  // Encode event data for click handler
+  
   const evData = encodeURIComponent(JSON.stringify(ev));
 
   return `
@@ -139,12 +139,12 @@ async function openEvModal(evJson, isTeacher) {
   const ev = typeof evJson === 'string' ? JSON.parse(evJson) : evJson;
   const dateStr = new Date(ev.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  // TASK 4 & 5: Backward Compatibility for Poster Paths in Modal
+  
   const isCloudinaryModal = ev.poster && ev.poster.startsWith('http');
   const posterUrlNewModal = isCloudinaryModal ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
   const posterUrlOldModal = isCloudinaryModal ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
 
-  // Poster
+  
   const posterEl = document.getElementById('evModalPoster');
   posterEl.innerHTML = ev.poster
     ? `<img src="${posterUrlNewModal}" onerror="this.onerror=null; this.src='${posterUrlOldModal}'; this.setAttribute('onclick', 'openPosterLightbox(\\'${posterUrlOldModal}\\')');" alt="Poster" class="ev-modal-poster" onclick="openPosterLightbox('${posterUrlNewModal}')" />`
@@ -175,7 +175,7 @@ async function openEvModal(evJson, isTeacher) {
     descEl.style.display = 'none';
   }
 
-  // Load Attendees
+  
   const attBox = document.getElementById('evModalAttendees');
   attBox.innerHTML = '<p style="font-size:13px;color:#B0907A;text-align:center;">Loading...</p>';
   try {
@@ -190,7 +190,7 @@ async function openEvModal(evJson, isTeacher) {
     attBox.innerHTML = '<p style="font-size:12px;color:#D32F2F;text-align:center;padding:10px;">Error loading attendees.</p>';
   }
 
-  // Action buttons
+  
   const actions = document.getElementById('evModalActions');
   if (isTeacher) {
     const evData = encodeURIComponent(JSON.stringify(ev));
@@ -211,9 +211,9 @@ async function openEvModal(evJson, isTeacher) {
 function startEdit(evDataEncoded) {
   const ev = JSON.parse(decodeURIComponent(evDataEncoded));
   _editingEventId = ev._id;
-  document.getElementById('posterInput').value = ''; // Clear previous file selection
+  document.getElementById('posterInput').value = ''; 
 
-  // Pre-fill form
+  
   document.getElementById('evTitle').value = ev.title;
   document.getElementById('evDate').value = ev.date.split('T')[0];
   document.getElementById('evType').value = ev.type;
@@ -222,11 +222,11 @@ function startEdit(evDataEncoded) {
   document.getElementById('evDesc').value = ev.description || '';
   document.getElementById('evMandatory').checked = !!ev.isMandatory;
 
-  // Show poster preview if exists
+  
   if (ev.poster) {
     const preview = document.getElementById('posterPreview');
     
-    // TASK 4 & 5: Backward Compatibility
+    
     const isCloudinaryPreview = ev.poster && ev.poster.startsWith('http');
     const posterUrlNewPreview = isCloudinaryPreview ? ev.poster : `${API_BASE}/uploads/posters/${ev.poster}`;
     const posterUrlOldPreview = isCloudinaryPreview ? ev.poster : `${API_BASE}/uploads/${ev.poster}`;
@@ -241,11 +241,11 @@ function startEdit(evDataEncoded) {
     document.getElementById('posterPlaceholder').style.display = 'none';
   }
 
-  // Update button text
+  
   document.getElementById('submitText').textContent = 'Save Changes';
   document.getElementById('cancelEditBtn').style.display = 'block';
 
-  // Scroll to form
+  
   document.querySelector('.event-form-card').scrollIntoView({ behavior: 'smooth' });
   closeEvModal();
 }
@@ -283,7 +283,7 @@ async function deleteEvent(id) {
   }
 }
 
-/* ── POSTER LIGHTBOX ── */
+
 function openPosterLightbox(src) {
   const lb  = document.getElementById('posterLightbox');
   const img = document.getElementById('posterLightboxImg');
@@ -299,7 +299,7 @@ function closePosterLightbox() {
   document.body.style.overflow = '';
 }
 
-// Close with Escape key
+
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
     closePosterLightbox();

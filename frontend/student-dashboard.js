@@ -1,4 +1,4 @@
-// student-dashboard.js
+
 
 function toggleHwType(type) {
   const linkSec    = document.getElementById('hwLinkSection');
@@ -14,7 +14,7 @@ function toggleHwType(type) {
   if (uploadSpan) uploadSpan.style.cssText = type === 'upload' ? activeStyle : inactiveStyle;
 }
 
-// Animation function for counting numbers
+
 function animateValue(obj, start, end, duration, appendText = '') {
   let startTimestamp = null;
   const step = (timestamp) => {
@@ -25,7 +25,7 @@ function animateValue(obj, start, end, duration, appendText = '') {
     if (progress < 1) {
       window.requestAnimationFrame(step);
     } else {
-      obj.innerHTML = end + appendText; // Ensure exact final number
+      obj.innerHTML = end + appendText; 
     }
   };
   window.requestAnimationFrame(step);
@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (!studentId) return;
 
   try {
-    // 1. Fetch Student Details
+    
     var studentRes = await fetch(API_BASE + '/api/students/' + studentId);
     if (studentRes.ok) {
       var studentData = await studentRes.json();
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     }
 
-    // 2. Fetch Attendance Percentage
+    
     var attRes = await fetch(API_BASE + '/api/attendance/percentage/' + studentId);
     if (attRes.ok) {
       var attData = await attRes.json();
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     }
 
-    // 3. Fetch Fee Status for current month
+    
     var feeRes = await fetch(API_BASE + '/api/fee/student/' + studentId);
     if (feeRes.ok) {
       var feeRecords = await feeRes.json();
@@ -110,40 +110,40 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     }
 
-    // 4. Fetch Recent Attendance History AND Practice Streak
+    
     var histRes = await fetch(API_BASE + '/api/attendance/student/' + studentId);
     if (histRes.ok) {
-      // (Old logic for recent attendance removed to make way for Practice Streak)
-      // Now replaced by Streak Logic
+      
+      
     }
 
-    // 5. Fetch Practice Streak
+    
     loadPracticeStreak(studentId);
 
-    // Set practice date picker to today by default
+    
     const dateInput = document.getElementById('practiceDate');
     if (dateInput) {
       const now = new Date();
       dateInput.value = now.toISOString().split('T')[0];
-      dateInput.max   = now.toISOString().split('T')[0]; // can't mark future dates
+      dateInput.max   = now.toISOString().split('T')[0]; 
     }
     
-    // 6. Fetch Guru Notes
+    
     loadGuruNotes(studentId);
 
-    // 6.5 Fetch Raga Progress
+    
     loadRagaProgress(studentId);
 
-    // 6.6 Fetch Performance Insights
+    
     loadStudentInsights(studentId);
 
-    // 6.7 Fetch Weekly Attendance Progress
+    
     loadWeeklyAttendance(studentId);
 
-    // 6.8 Event Alerts
+    
     loadEventAlerts();
 
-    // 6. Handle Mark Practice Done
+    
     document.getElementById('markPracticeBtn').addEventListener('click', async function() {
       try {
         const dateInput = document.getElementById('practiceDate');
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     });
 
-    // 7. Handle Homework Submission
+    
     document.getElementById('homeworkForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', async function () {
           msgDiv.textContent = '✓ Practice submitted successfully!';
           document.getElementById('homeworkForm').reset();
           document.getElementById('hwAudioName').textContent = '🎵 Click to choose audio file';
-          toggleHwType('upload'); // reset to upload mode
+          toggleHwType('upload'); 
           loadHomework(studentId);
         } else {
           msgDiv.style.color = '#D32F2F';
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     });
 
-    // 8. Fetch student homework
+    
     loadHomework(studentId);
 
   } catch (err) {
@@ -403,7 +403,7 @@ async function loadRagaProgress(studentId) {
     const total = ragas.length;
     const mastered = ragas.filter(r => statusMap[r] === 'Mastered').length;
 
-    // Update overview cards
+    
     const assignedEl = document.getElementById('ragasAssignedNum');
     const masteredEl = document.getElementById('ragasMasteredNum');
     const masteredHint = document.getElementById('ragasMasteredHint');
@@ -416,7 +416,7 @@ async function loadRagaProgress(studentId) {
     if (assignedBar) assignedBar.style.width = '100%';
     if (masteredBar) masteredBar.style.width = total > 0 ? (mastered / total * 100) + '%' : '0%';
 
-    // Render raga list
+    
     const listEl = document.getElementById('ragaProgressList');
     if (!listEl) return;
 
@@ -461,7 +461,7 @@ async function loadStudentInsights(studentId) {
     set('insightAttPct',   d.attPct + '%');
     set('motivationText',  d.motivation);
 
-    // Colour the streak icon based on value
+    
     const fireEl = document.getElementById('insightSessions');
     if (fireEl && d.submissionsThisMonth >= 4) fireEl.style.color = '#2E7D32';
     else if (fireEl && d.submissionsThisMonth === 0) fireEl.style.color = '#D32F2F';
@@ -497,7 +497,7 @@ async function loadWeeklyAttendance(studentId) {
     }
     subEl.innerHTML = subText;
 
-    // Colour the bar based on percentage
+    
     const bar = document.getElementById('weeklyAttBar');
     if (bar) {
       bar.style.borderLeft = pct >= 100 ? '4px solid #2E7D32' : pct >= 50 ? '4px solid #1565C0' : '4px solid #E65100';

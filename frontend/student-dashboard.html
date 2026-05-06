@@ -6,16 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Dashboard | Kalashree Sangeet Gurukul</title>
 
-  <!-- Google Fonts -->
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Student common styles - sidebar -->
-  <!-- Student common styles - sidebar -->
+ 
   <link rel="stylesheet" href="student-common.css" />
 
-  <!-- This page only styles -->
+ 
   <link rel="stylesheet" href="student-dashboard.css" />
 
 </head>
@@ -23,10 +22,10 @@
 
 <div class="page">
 
-  <!-- MAIN CONTENT -->
+ 
   <div class="main">
 
-    <!-- Top bar -->
+   
     <div class="topbar">
       <div>
         <h1 class="page-title">My Dashboard</h1>
@@ -37,12 +36,12 @@
         <p class="today-day">Tuesday</p>
       </div>
     </div>
-    <!-- end topbar -->
+    
 
-    <!-- EVENT ALERT BANNER -->
+    
     <div id="eventAlertBanner" style="display:none; margin-bottom:16px;"></div>
 
-    <!-- WELCOME BAR -->
+    
     <div class="welcome-bar">
       <div class="welcome-left">
         <p class="welcome-greeting">Welcome back, <span id="welcomeName">Aarya</span> 🎵</p>
@@ -64,7 +63,7 @@
       </div>
     </div>
 
-    <!-- PERFORMANCE INSIGHTS -->
+    
     <h2 class="section-title" style="margin-top:8px;">My Performance Insights</h2>
     <div class="insights-grid" id="studentInsights">
       <div class="insight-card glass-card">
@@ -95,12 +94,12 @@
       <p class="motivation-text" id="motivationText">Loading your insights...</p>
     </div>
 
-    <!-- OVERVIEW CARDS -->
+    
     <h2 class="section-title">My Overview</h2>
 
     <div class="cards-row">
 
-      <!-- Card 1 - My Attendance -->
+      
       <a href="student-details.html#attendance" class="card card-blue" style="text-decoration: none; color: inherit;">
         <p class="card-label">My Attendance</p>
         <p class="card-number" id="attendanceNum">84<span class="card-percent">%</span></p>
@@ -110,7 +109,7 @@
         <p class="card-hint">Overall</p>
       </a>
 
-      <!-- Card 2 - Ragas Assigned -->
+      
       <a href="#raga-progress" class="card card-purple" style="text-decoration: none; color: inherit;">
         <p class="card-label">Ragas Assigned</p>
         <p class="card-number" id="ragasAssignedNum">—</p>
@@ -120,7 +119,7 @@
         <p class="card-hint">By Guru</p>
       </a>
 
-      <!-- Card 3 - Ragas Mastered -->
+      
       <a href="#raga-progress" class="card card-green" style="text-decoration: none; color: inherit;">
         <p class="card-label">Ragas Mastered</p>
         <p class="card-number" id="ragasMasteredNum">—</p>
@@ -130,10 +129,10 @@
         <p class="card-hint" id="ragasMasteredHint">Out of — assigned</p>
       </a>
 
-      <!-- Card 4 - Fee Status -->
+      
       <a href="student-details.html#fees" class="card card-orange" style="text-decoration: none; color: inherit;">
         <p class="card-label">Fee Status</p>
-        <!-- Shows Paid or Unpaid as big text -->
+        
         <p class="card-number card-fee-paid" id="feeStatusText">Paid</p>
         <div class="card-bar">
           <div class="card-bar-fill" id="feeBar" style="width: 100%"></div>
@@ -142,9 +141,9 @@
       </a>
 
     </div>
-    <!-- end cards row -->
+    
 
-    <!-- PRACTICE STREAK -->
+    
     <div class="streak-bar" id="practiceStreakContainer">
       <span class="streak-fire" id="streakFireIcon">📅</span>
       <div style="flex: 1;">
@@ -157,7 +156,7 @@
       </div>
     </div>
 
-    <!-- WEEKLY ATTENDANCE PROGRESS -->
+    
     <div class="streak-bar" id="weeklyAttBar" style="margin-top:10px;">
       <span class="streak-fire">📊</span>
       <div style="flex:1;">
@@ -166,7 +165,7 @@
       </div>
     </div>
 
-    <!-- HOMEWORK SUBMISSION SECTION -->
+    
     <h2 class="section-title" style="margin-top: 24px;">Practice Audio / Homework</h2>
     <div class="homework-section">
       <div class="homework-form-card">
@@ -178,7 +177,7 @@
             <input type="text" id="hwTitle" placeholder="e.g. Raag Yaman Alap" required>
           </div>
 
-          <!-- Toggle — default to Upload since it counts for streak -->
+          
           <div class="form-group">
             <div style="display:flex;gap:8px;background:#F5EDE3;border-radius:10px;padding:4px;margin-bottom:4px;">
               <label style="flex:1;cursor:pointer;">
@@ -218,10 +217,10 @@
       </div>
     </div>
 
-    <!-- TWO COLUMN SECTION -->
+    
     <div class="two-col">
 
-      <!-- LEFT - Raga Progress -->
+      
       <div class="col-box">
         <h2 class="section-title" id="raga-progress">My Raga Progress</h2>
         <div class="raga-list" id="ragaProgressList">
@@ -229,7 +228,7 @@
         </div>
       </div>
 
-      <!-- RIGHT - Guru Notes -->
+      
       <div class="col-box">
         <h2 class="section-title">Guru Notes</h2>
         <p class="notes-sub"></p>
@@ -237,27 +236,27 @@
         <div class="notes-list" id="dashboardNotesContainer">
           <p class="loading-text">Loading notes...</p>
         </div>
-        <!-- end notes list -->
+        
 
       </div>
-      <!-- end right col -->
+      
 
     </div>
-    <!-- end two col -->
+    
 
   </div>
-  <!-- end main -->
+  
 
-  <!-- RIGHT SIDEBAR -->
+  
   <div class="sidebar">
 
-    <!-- Academy logo -->
+    
     <div class="sidebar-logo">
       <img src="logo-img.avif" alt="Kalashree Sangeet Gurukul" class="logo-img" />
       <p class="logo-name">Kalashree Sangeet Gurukul</p>
     </div>
 
-    <!-- Student profile -->
+    
     <div class="sidebar-profile">
       <div class="profile-avatar">A</div>
       <div>
@@ -266,7 +265,7 @@
       </div>
     </div>
 
-    <!-- Navigation links -->
+    
     <nav class="sidebar-nav">
       <a href="student-dashboard.html" class="nav-link active">Dashboard</a>
       <a href="student-details.html" class="nav-link">My Details</a>
@@ -275,16 +274,16 @@
       <a href="student-events.html" class="nav-link">Events</a>
     </nav>
 
-    <!-- Logout -->
+    
     <div class="sidebar-bottom">
       <a href="login.html" class="logout-btn">Logout</a>
     </div>
 
   </div>
-  <!-- end sidebar -->
+  
 
 </div>
-<!-- end page -->
+
 
 <script src="config.js"></script>
 <script src="auth-ui.js"></script>

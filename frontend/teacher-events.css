@@ -10,7 +10,7 @@
     inset 0 0 0 1px rgba(212, 160, 23, 0.1);
 }
 
-/* ── FORM ── */
+
 .event-form-card { padding: 32px; margin-bottom: 12px; }
 
 .form-row {
@@ -59,7 +59,7 @@
 
 .form-group textarea { resize: vertical; }
 
-/* Poster upload area */
+
 .poster-upload-area {
   border: 2px dashed #E2CEBC;
   border-radius: 12px;
@@ -101,7 +101,7 @@
 
 .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
-/* ── EVENTS GRID ── */
+
 .events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -243,7 +243,7 @@
   border-radius: 10px;
 }
 
-/* ── EVENT DETAIL MODAL ── */
+
 .ev-modal-backdrop {
   display: none;
   position: fixed;
@@ -397,10 +397,10 @@
 
 .ev-modal-btn-secondary:hover { background: #EAD9C8; }
 
-/* Make cards clickable */
+
 .event-card { cursor: pointer; }
 
-/* ── POSTER LIGHTBOX ── */
+
 .poster-lightbox {
   display: none;
   position: fixed;
@@ -457,6 +457,6 @@
 
 .poster-lightbox-close:hover { background: rgba(255,255,255,0.28); }
 
-/* Make poster images show zoom cursor */
+
 .ev-modal-poster,
 .event-poster-img { cursor: zoom-in; }

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function loadFeeData() {
   try {
-    // Generate fees for current month first
+    
     await fetch(`${API_BASE}/api/fee/generate`, { method: 'POST' });
 
     const res = await fetch(`${API_BASE}/api/fee/student/${studentId}`);
@@ -43,7 +43,7 @@ function updateTotalBalance(fees) {
 function renderCurrentFeeInfo(fees) {
   const now = new Date();
   const currentMonth = now.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
-  // Find current month or the latest one
+  
   const current = fees.find(f => f.month === currentMonth) || fees[0];
 
   const infoEl = document.getElementById('currentFeeInfo');
@@ -71,7 +71,7 @@ function renderCurrentFeeInfo(fees) {
       </div>
     </div>`;
 
-  // Enable button only if unpaid or rejected
+  
   const canPay = current.status === 'Unpaid' || current.paymentStatus === 'Rejected';
   btn.disabled = !canPay;
   if (current.paymentStatus === 'Payment Requested') {
@@ -112,7 +112,7 @@ function renderFeeHistory(fees) {
       ? `<img src="${screenshotUrl}" class="screenshot-thumb" onclick="viewScreenshot('${screenshotUrl}')" title="View screenshot" />`
       : '<span style="color:#C4A88C;font-size:12px;">—</span>';
 
-    // Action: show "Pay Now" button for unpaid/rejected
+    
     const canPay = fee.status === 'Unpaid' || fee.paymentStatus === 'Rejected';
     const actionHtml = canPay
       ? `<button onclick="openPayModalFor('${fee._id}')" class="pay-now-action-btn">Pay Now</button>`
@@ -130,7 +130,7 @@ function renderFeeHistory(fees) {
   }).join('');
 }
 
-/* ── MODAL ── */
+
 function openPayModal() {
   if (!_currentFeeId) return;
   openPayModalFor(_currentFeeId);
@@ -143,7 +143,7 @@ function openPayModalFor(feeId) {
   document.getElementById('screenshotPlaceholder').style.display = 'block';
   document.getElementById('screenshotInput').value = '';
   document.getElementById('payModalMsg').textContent = '';
-  // Reset method to UPI
+  
   togglePayMethod('UPI');
   const radios = document.getElementsByName('payMethod');
   if (radios.length) radios[0].checked = true;
@@ -256,16 +256,16 @@ function viewScreenshot(url) {
   window.open(url, '_blank');
 }
 
-// Close modal on backdrop click
+
 document.getElementById('payModal').addEventListener('click', function(e) {
   if (e.target === this) closePayModal();
 });
 
-/* ── QR LIGHTBOX ── */
+
 function openQRLightbox() {
   const lb  = document.getElementById('qrLightbox');
   const img = document.getElementById('qrLightboxImg');
-  // Sync src from the small QR image
+  
   const src = document.getElementById('teacher-qr-code').src;
   if (img && src) img.src = src;
   if (lb) {
@@ -280,7 +280,7 @@ function closeQRLightbox() {
   document.body.style.overflow = '';
 }
 
-// Close with Escape key
+
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeQRLightbox();
 });

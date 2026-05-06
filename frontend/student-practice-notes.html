@@ -5,24 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Practice & Notes | Kalashree Sangeet Gurukul</title>
 
-  <!-- Google Fonts -->
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,700;1,400&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
 
-  <!-- Shared Sidebar and Premium Layout Styles -->
+  
   <link rel="stylesheet" href="student-common.css" />
-  <!-- Specific Page Styles -->
+  
   <link rel="stylesheet" href="student-practice-notes.css" />
 </head>
 <body>
 
 <div class="page">
   
-  <!-- MAIN CONTENT -->
+  
   <div class="main">
     
-    <!-- Top bar -->
+    
     <div class="topbar">
       <div>
         <h1 class="page-title">Practice & Notes</h1>
@@ -34,13 +34,13 @@
       </div>
     </div>
 
-    <!-- SECTION 1: PRACTICE SUBMISSION -->
+    
     <div class="section-block">
       <h2 class="section-title">Submit Practice</h2>
       
       <div class="submission-layout">
         
-        <!-- LEFT: Submit Form -->
+        
         <div class="submit-form-card premium-glass staggered-1">
           <h3 class="card-heading">New Submission</h3>
           <p class="card-sub">Upload your audio to count towards your streak. Links are saved but don't count.</p>
@@ -50,7 +50,7 @@
             <input type="text" id="hwTitle" placeholder="e.g. Raga Yaman Alap" />
           </div>
 
-          <!-- Toggle: Upload vs Link — Upload is default (counts for streak) -->
+          
           <div class="form-field">
             <label>Submission Type</label>
             <div class="submit-toggle">
@@ -65,7 +65,7 @@
             </div>
           </div>
 
-          <!-- File upload input — shown by default -->
+          
           <div class="form-field" id="uploadSection">
             <label>Audio File (MP3, WAV, M4A — max 50MB)</label>
             <div class="audio-upload-area" onclick="document.getElementById('audioFileInput').click()">
@@ -79,7 +79,7 @@
             <input type="file" id="audioFileInput" accept="audio/*" style="display:none;" onchange="previewAudioFile(event)" />
           </div>
 
-          <!-- Link input — hidden by default -->
+          
           <div class="form-field" id="linkSection" style="display:none;">
             <label>Audio or Video Link</label>
             <input type="url" id="hwLink" placeholder="Paste Google Drive or YouTube link" />
@@ -94,7 +94,7 @@
           <p id="submitMsg" style="margin-top:10px; font-size:13px; font-weight:600;"></p>
         </div>
 
-        <!-- RIGHT: Recent Submissions -->
+        
         <div class="recent-hw-card premium-glass staggered-2">
           <h3 class="card-heading">Recent Submissions</h3>
           <div class="hw-list" id="hwList">
@@ -105,28 +105,28 @@
       </div>
     </div>
 
-    <!-- SECTION 2: GURU NOTES -->
+    
     <div class="section-block">
       <h2 class="section-title">Guru Notes</h2>
       <p class="italic-subtitle">Personal feedback from your Guru</p>
       
-      <!-- Filter Buttons -->
+      
       <div class="filter-row staggered-3">
         <button class="filter-btn active" onclick="filterNotes('all', this)">All</button>
         <button class="filter-btn" onclick="filterNotes('month', this)">This Month</button>
         <button class="filter-btn" onclick="filterNotes('week', this)">This Week</button>
       </div>
 
-      <!-- Notes List -->
+      
       <div class="notes-container" id="notesContainer">
         <p style="color:#B0907A; font-size:13px;">Loading notes...</p>
       </div>
     </div>
 
     </div>
-    <!-- end main -->
+    
 
-  <!-- RIGHT SIDEBAR -->
+  
   <div class="sidebar">
     <div class="sidebar-logo">
       <img src="logo-img.avif" alt="Kalashree" class="logo-img" />
@@ -156,7 +156,7 @@
 
 </div>
 
-<!-- Scripts -->
+
 <script src="config.js"></script>
 <script src="auth-ui.js"></script>
 <script src="student-practice-notes.js"></script>

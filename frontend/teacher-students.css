@@ -1,14 +1,14 @@
-/* Kalashree Sangeet Gurukul — Student Management */
 
 
-/* ── TOPBAR RIGHT ── */
+
+
 
 .topbar-right { text-align: right; }
 .today-date { font-size: 14px; font-weight: 600; color: #3F1A12; }
 .today-day { font-size: 12px; color: #D4A017; margin-top: 2px; font-weight: 500; }
 
 
-/* ── TOOLBAR ── */
+
 
 .students-toolbar {
   display: flex;
@@ -68,7 +68,7 @@
 }
 
 
-/* ── STUDENTS TABLE ── */
+
 
 .students-table {
   width: 100%;
@@ -103,7 +103,7 @@ tbody tr:hover { background: #FFFAF6; }
 .td-fee { font-weight: 600; color: #3D1A08; }
 
 
-/* ── STUDENT CELL ── */
+
 
 .student-cell { display: flex; align-items: center; gap: 12px; }
 
@@ -129,7 +129,7 @@ tbody tr:hover { background: #FFFAF6; }
 .student-email { font-size: 11.5px; color: #B0907A; }
 
 
-/* ── BADGES ── */
+
 
 .badge {
   font-size: 11px;
@@ -145,9 +145,9 @@ tbody tr:hover { background: #FFFAF6; }
 .badge-inactive { background: #FEEBEE; color: #C62828; }
 
 
-/* ── VIEW PROGRESS LINK ── */
 
-/* Simple anchor link - no button needed */
+
+
 .progress-link {
   font-size: 12.5px;
   font-weight: 600;
@@ -169,7 +169,7 @@ tbody tr:hover { background: #FFFAF6; }
 }
 
 
-/* ── ADD STUDENT CARD ── */
+
 
 .add-student-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
@@ -274,7 +274,7 @@ tbody tr:hover { background: #FFFAF6; }
 }
 
 
-/* ── NO RESULTS ── */
+
 
 .no-results {
   padding: 36px;
@@ -285,9 +285,9 @@ tbody tr:hover { background: #FFFAF6; }
 }
 
 
-/* ── PROGRESS CARDS ── */
 
-/* Stack all student progress cards vertically */
+
+
 .progress-cards {
   display: flex;
   flex-direction: column;
@@ -295,7 +295,7 @@ tbody tr:hover { background: #FFFAF6; }
   margin-bottom: 32px;
 }
 
-/* Each student progress card */
+
 .progress-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
   backdrop-filter: blur(20px);
@@ -317,14 +317,14 @@ tbody tr:hover { background: #FFFAF6; }
     inset 0 0 0 1px rgba(212, 160, 23, 0.15);
 }
 
-/* Header of progress card - student name and batch */
+
 .progress-card-header {
   background: #FDF6EE;
   padding: 14px 20px;
   border-bottom: 1px solid #E8D5BC;
 }
 
-/* Raga list inside card */
+
 .raga-list {
   padding: 14px 20px;
   display: flex;
@@ -332,7 +332,7 @@ tbody tr:hover { background: #FFFAF6; }
   gap: 8px;
 }
 
-/* Each raga row */
+
 .raga-row {
   display: flex;
   align-items: center;
@@ -347,12 +347,12 @@ tbody tr:hover { background: #FFFAF6; }
   box-shadow: 0 2px 10px rgba(63, 26, 18, 0.03);
 }
 
-/* Background color per status */
+
 .raga-row.mastered   { background: #EAF3DE; }
 .raga-row.practicing { background: #E3F0FB; }
 .raga-row.learning   { background: #FFF8E1; }
 
-/* Colored dot */
+
 .raga-dot {
   width: 9px;
   height: 9px;
@@ -388,9 +388,7 @@ tbody tr:hover { background: #FFFAF6; }
 .status-amber { color: #E65100; }
 
 
-/* ══════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════ */
+
 
 @media (max-width: 900px) {
   .students-toolbar {

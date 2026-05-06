@@ -1,4 +1,4 @@
-// teacher-homework.js
+
 
 let allHomework = [];
 
@@ -9,12 +9,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     return;
   }
 
-  // Set today's date in header
+  
   const today = new Date();
   document.getElementById('headerDate').textContent = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   document.getElementById('headerDay').textContent = today.toLocaleDateString('en-GB', { weekday: 'long' });
 
-  // Filter Buttons Setup
+  
   const filterBtns = document.querySelectorAll('.filter-btn');
   filterBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
@@ -47,7 +47,7 @@ function renderHomework(filterStr) {
   const grid = document.getElementById('hwGrid');
   grid.innerHTML = '';
 
-  // Data already filtered by API — just render all
+  
   const filtered = allHomework;
 
   if (filtered.length === 0) {
@@ -61,7 +61,7 @@ function renderHomework(filterStr) {
     const dateStr = new Date(hw.submittedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
     const isReviewed = hw.status === 'Reviewed';
 
-    // Build the media section — inline audio player for uploads, link for external
+    
     let mediaSection = '';
     if (hw.submissionType === 'upload' && hw.audioFilePath) {
       const audioUrl = hw.audioFilePath.startsWith('http') 
@@ -119,7 +119,7 @@ function renderHomework(filterStr) {
     grid.insertAdjacentHTML('beforeend', html);
   });
   
-  // Attach form listeners
+  
   document.querySelectorAll('.feedback-form').forEach(form => {
     form.addEventListener('submit', handleFeedbackSubmit);
   });

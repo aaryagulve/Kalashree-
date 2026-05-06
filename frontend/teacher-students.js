@@ -1,17 +1,17 @@
-// teacher-students.js
-// Search filter for students table
-// Anchor links handle the scroll to progress cards - no JS needed for that
 
-/* Add smooth scrolling to the whole page */
+
+
+
+
 document.documentElement.style.scrollBehavior = 'smooth';
 
 
 function filterStudents() {
 
-  /* Get what teacher typed in search box */
+  
   var input = document.getElementById('searchInput').value.toLowerCase();
 
-  /* 1. Filter the main students table */
+  
   var rows = document.getElementById('studentsBody').getElementsByTagName('tr');
   var visibleCount = 0;
 
@@ -28,7 +28,7 @@ function filterStudents() {
     }
   }
 
-  /* 2. Filter the raga progress cards */
+  
   var progressCards = document.querySelectorAll('.progress-card');
   progressCards.forEach(function(card) {
     var nameEl = card.querySelector('.student-name');
@@ -42,10 +42,10 @@ function filterStudents() {
     }
   });
 
-  /* Update the count shown */
+  
   document.getElementById('studentCount').textContent = visibleCount + ' Students';
 
-  /* Show no results message if nothing found in bridge table */
+  
   if (visibleCount === 0 && input !== '') {
     document.getElementById('noResults').style.display = 'block';
   } else {
@@ -54,13 +54,11 @@ function filterStudents() {
 
 }
 
-/* ─────────────────────────────
-   DYNAMIC STUDENT MANAGEMENT
-───────────────────────────── */
 
 
 
-// 1. Load All Students on Page Ready
+
+
 document.addEventListener('DOMContentLoaded', () => {
   loadStudents();
   loadGlobalRagas();
@@ -72,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// 2. Fetch Students from DB
+
 async function loadStudents() {
   try {
     const res = await fetch(`${API_BASE}/api/students`);
@@ -92,7 +90,7 @@ async function loadStudents() {
     document.getElementById('studentCount').textContent = `${students.length} Students (${activeCount} Active)`;
     
     students.forEach(s => {
-      // Pick random avatar color purely for UI aesthetics
+      
       const colors = ['blue', 'amber', 'green', 'purple', 'coral'];
       const color = colors[Math.floor(Math.random() * colors.length)];
       const firstLetter = s.name.charAt(0).toUpperCase();
@@ -136,7 +134,7 @@ async function loadStudents() {
   }
 }
 
-// 3. Handle Add Student POST
+
 async function handleAddStudent(e) {
   e.preventDefault();
   
@@ -177,7 +175,7 @@ async function handleAddStudent(e) {
   }
 }
 
-// 4. Toggle Password Visibility
+
 function togglePassword() {
   const pwdInput = document.getElementById('newStudentPassword');
   const toggleBtn = document.querySelector('.toggle-password');
@@ -191,9 +189,7 @@ function togglePassword() {
   }
 }
 
-/* ─────────────────────────────
-   GLOBAL RAGA LIST
-───────────────────────────── */
+
 
 async function loadGlobalRagas() {
   try {
@@ -224,9 +220,7 @@ async function saveGlobalRagas() {
   }
 }
 
-/* ─────────────────────────────
-   RAGA PROGRESS MODAL
-───────────────────────────── */
+
 
 let _currentStudentId = null;
 
@@ -308,14 +302,12 @@ async function saveRagaProgress() {
   }
 }
 
-// Close modal on backdrop click
+
 document.getElementById('ragaModal').addEventListener('click', function(e) {
   if (e.target === this) closeRagaModal();
 });
 
-/* ─────────────────────────────
-   ALL STUDENTS RAGA PROGRESS
-───────────────────────────── */
+
 
 async function loadAllProgress() {
   const container = document.getElementById('progressCards');
@@ -329,7 +321,7 @@ async function loadAllProgress() {
     const students = await studentsRes.json();
     const { ragas } = await ragaRes.json();
 
-    // Only show active students in progress cards
+    
     const activeStudents = students.filter(s => !s.status || s.status === 'Active');
 
     if (activeStudents.length === 0) {
@@ -343,7 +335,7 @@ async function loadAllProgress() {
     const statusIcon = { Mastered: '&#10003; Mastered', Practicing: '&#9679; Practicing', Learning: '&#9675; Learning' };
     const statusCls  = { Mastered: 'status-green', Practicing: 'status-blue', Learning: 'status-amber' };
 
-    // Fetch all progress in parallel (active students only)
+    
     const progressResults = await Promise.all(
       activeStudents.map(s => fetch(`${API_BASE}/api/ragas/${s._id}/progress`).then(r => r.json()))
     );
@@ -391,9 +383,7 @@ async function loadAllProgress() {
   }
 }
 
-/* ─────────────────────────────
-   CREDENTIALS MODAL
-───────────────────────────── */
+
 
 function showCredentialsModal(name, email, password) {
   document.getElementById('credEmail').textContent    = email;
@@ -416,9 +406,7 @@ function copyCredentials() {
   });
 }
 
-/* ─────────────────────────────
-   EDIT STUDENT MODAL
-───────────────────────────── */
+
 
 let _editStudentId = null;
 
@@ -466,14 +454,12 @@ async function saveEditStudent() {
   }
 }
 
-// Close edit modal on backdrop click
+
 document.getElementById('editModal').addEventListener('click', function(e) {
   if (e.target === this) closeEditModal();
 });
 
-/* ─────────────────────────────
-   DELETE STUDENT
-───────────────────────────── */
+
 
 async function deleteStudent(id, name) {
   if (!confirm(`Delete student "${name}"?\n\nThis will permanently remove their account and all data.`)) return;
@@ -495,14 +481,12 @@ async function deleteStudent(id, name) {
   }
 }
 
-/* ─────────────────────────────
-   AUTO-SET FEE BASED ON STATUS
-───────────────────────────── */
+
 function autoSetFee(status) {
   const feeInput = document.getElementById('editFee');
   if (!feeInput) return;
-  // Only auto-set if teacher hasn't manually typed a custom value
-  // We auto-set: Active → 800, anything else → 0
+  
+  
   if (status === 'Active') {
     feeInput.value = 800;
   } else {

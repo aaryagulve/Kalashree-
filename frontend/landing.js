@@ -1,8 +1,8 @@
-// landing.js - Premium Experience Engine
+
 
 document.addEventListener("DOMContentLoaded", function () {
   
-  // 1. Navbar Solidify on Scroll
+ 
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
@@ -11,12 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
       navbar.classList.remove('scrolled');
     }
     
-    // Update Scroll Progress bar if it exists
+    
     updateScrollProgress();
   });
 
-  // 2. Premium Reveal Observer
-  // Target almost everything meaningful for reveal
+
   const revealTargets = document.querySelectorAll(
     '.course-card, .why-item, .stat-box, .section-heading, .about-text, .section-line, .hero-text, .hero-visual, .contact-card, .section-tag'
   );
@@ -27,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('active');
-        // Once animated, we can stop observing
+        
         revealObserver.unobserve(entry.target);
       }
     });
@@ -38,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   revealTargets.forEach(target => revealObserver.observe(target));
 
-  // 3. Generate Floating Swara Notations
+  
   function createFloatingElements() {
     const hero = document.querySelector('.hero');
     if (!hero) return;
@@ -51,11 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
       span.className = 'floating-swara';
       span.innerText = swaras[Math.floor(Math.random() * swaras.length)];
       
-      // Random positioning
+      
       span.style.left = Math.random() * 100 + '%';
       span.style.top = Math.random() * 100 + '%';
       
-      // Random animation delay & duration
+      
       span.style.animationDelay = Math.random() * 5 + 's';
       span.style.animationDuration = (8 + Math.random() * 10) + 's';
       
@@ -64,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   createFloatingElements();
 
-  // 4. Parallax Effect for Hero
+
   window.addEventListener('mousemove', (e) => {
     const visual = document.querySelector('.hero-visual');
     const text = document.querySelector('.hero-text');
@@ -77,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
     text.style.transform = `translate(${moveX * -0.5}px, ${moveY * -0.5}px)`;
   });
 
-  // 5. Scroll Progress Bar
+ 
   const progressBar = document.createElement('div');
   progressBar.className = 'scroll-progress';
   document.body.appendChild(progressBar);
@@ -89,4 +88,4 @@ document.addEventListener("DOMContentLoaded", function () {
     progressBar.style.width = scrolled + "%";
   }
 
-});
+});

@@ -1,9 +1,9 @@
 var studentId = localStorage.getItem('userId');
 
-// All attendance records fetched from API
+
 var allAttendanceRecords = [];
 
-/* ── LOAD EVERYTHING ON PAGE OPEN ── */
+
 document.addEventListener('DOMContentLoaded', function () {
   if (!studentId) return;
   loadStudentProfile();
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   loadGuruNotes(studentId);
 });
 
-/* ── STUDENT PROFILE (fee info bar) ── */
+
 async function loadStudentProfile() {
   try {
     const res = await fetch(`${API_BASE}/api/students/${studentId}`);
@@ -27,7 +27,7 @@ async function loadStudentProfile() {
   } catch (err) { console.error('Profile load error', err); }
 }
 
-/* ── ATTENDANCE ── */
+
 async function loadAttendance() {
   try {
     const res = await fetch(`${API_BASE}/api/attendance/student/${studentId}`);
@@ -42,7 +42,7 @@ function populateMonthDropdown() {
   const select = document.getElementById('monthSelect');
   if (!select) return;
 
-  // Collect unique year-month combos from records
+  
   const seen = new Set();
   const months = [];
   allAttendanceRecords.forEach(r => {
@@ -54,7 +54,7 @@ function populateMonthDropdown() {
     }
   });
 
-  // If no records, keep a default option
+  
   if (months.length === 0) {
     const now = new Date();
     months.push({ year: now.getFullYear(), month: now.getMonth(), label: now.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }) });
@@ -117,7 +117,7 @@ function buildDotList(records) {
   }).join('');
 }
 
-/* ── FEE HISTORY ── */
+
 async function loadStudentFees() {
   if (!studentId) return;
   const container = document.getElementById('feeTimelineContainer');
@@ -135,7 +135,7 @@ async function loadStudentFees() {
       const isOverdue = fee.status === 'Unpaid' && fee.dueDate && new Date(fee.dueDate) < new Date();
       const dotColor  = fee.status === 'Paid' ? '#4CAF50' : '#F44336';
 
-      // Badge styles
+      
       const badges = {
         paid:      'background:#E6F4EA;color:#2E7D32;border:1px solid #C8E6C9;',
         requested: 'background:#FFF3E0;color:#E65100;border:1px solid #FFE0B2;',
@@ -210,7 +210,7 @@ async function requestPaymentWithScreenshot(feeId) {
       });
     }
     if (res.ok) {
-      // Show success inline
+      
       const wrapper = document.getElementById('pay-section-' + feeId);
       if (wrapper) wrapper.innerHTML = '<p style="font-size:13px;color:#2E7D32;font-weight:600;margin-top:8px;">✓ Payment submitted! Awaiting teacher confirmation.</p>';
       setTimeout(() => loadStudentFees(), 2000);
@@ -229,16 +229,7 @@ function buildPaySection(feeId) {
   return `
     <div id="pay-section-${feeId}" style="margin-top:12px;padding:14px 16px;background:rgba(253,248,242,0.9);border-radius:10px;border:1px solid rgba(212,160,23,0.2);">
       <p style="font-size:12.5px;color:#5A3018;font-weight:600;margin-bottom:8px;">📸 Upload payment screenshot (optional)</p>
-      <input type="file" id="ss-${feeId}" accept="image/*"
-             style="font-size:12px;margin-bottom:10px;display:block;color:#5A3018;width:100%;" />
-      <button data-fee="${feeId}" onclick="requestPaymentWithScreenshot('${feeId}')"
-              style="background:linear-gradient(135deg,#D4A017,#B5872A);color:#2C1608;border:none;padding:10px 22px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;box-shadow:0 4px 12px rgba(212,160,23,0.25);width:100%;">
-        📤 I Have Paid
-      </button>
-    </div>`;
-}
-
-/* ── GURU NOTES ── */
+      <input type="file" id="ss-${feeId}" accept="image
 async function loadGuruNotes(studentId) {
   const container = document.getElementById('detailsNotesContainer');
   if (!container) return;

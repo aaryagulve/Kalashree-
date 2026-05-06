@@ -1,7 +1,7 @@
-/* Kalashree Sangeet Gurukul — Attendance Page */
 
 
-/* ── TOPBAR RIGHT ── */
+
+
 
 .topbar-right {
   text-align: right;
@@ -21,16 +21,16 @@
 }
 
 
-/* ── MONTHLY SUMMARY CARDS ── */
 
-/* Three cards in a row */
+
+
 .summary-row {
   display: flex;
   gap: 18px;
   margin-bottom: 22px;
 }
 
-/* Each summary card */
+
 .summary-card {
   flex: 1;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
@@ -91,14 +91,14 @@
   line-height: 1;
 }
 
-/* Smaller % sign next to number */
+
 .summary-percent {
   font-size: 20px;
   font-weight: 400;
   color: #8C6A52;
 }
 
-/* Smaller word next to number like "students" */
+
 .summary-small {
   font-size: 16px;
   font-weight: 400;
@@ -106,9 +106,9 @@
 }
 
 
-/* ── INFO BAR ── */
 
-/* Highlighted strip showing today's date */
+
+
 .info-bar {
   display: flex;
   align-items: center;
@@ -130,9 +130,9 @@
 }
 
 
-/* ── ATTENDANCE CARD GRID ── */
 
-/* 3 cards per row */
+
+
 .attendance-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -140,7 +140,7 @@
   margin-bottom: 28px;
 }
 
-/* Each student card */
+
 .attend-card {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(253, 248, 242, 0.85));
   backdrop-filter: blur(20px);
@@ -162,7 +162,7 @@
     inset 0 0 0 1px rgba(212, 160, 23, 0.15);
 }
 
-/* Top section - avatar and name side by side */
+
 .card-top {
   display: flex;
   align-items: center;
@@ -172,7 +172,7 @@
   border-bottom: 1px solid #F5EDE0;
 }
 
-/* Avatar circle with initial */
+
 .avatar {
   width: 40px;
   height: 40px;
@@ -185,7 +185,7 @@
   flex-shrink: 0;
 }
 
-/* Avatar colors */
+
 .av-blue   { background: #E3F0FB; color: #1565C0; }
 .av-green  { background: #E6F4EA; color: #2E7D32; }
 .av-amber  { background: #FFF8E1; color: #E65100; }
@@ -205,14 +205,14 @@
 }
 
 
-/* ── ATTENDANCE PERCENTAGE ── */
+
 
 .card-percent {
   text-align: center;
   margin-bottom: 16px;
 }
 
-/* Big percentage number */
+
 .percent-num {
   font-family: 'Cormorant Garamond', serif;
   font-size: 42px;
@@ -221,13 +221,13 @@
   margin-bottom: 4px;
 }
 
-/* Color coding - green above 80% */
+
 .percent-green { color: #2E7D32; }
 
-/* Orange for 60-79% */
+
 .percent-orange { color: #E65100; }
 
-/* Red for below 60% */
+
 .percent-red { color: #C62828; }
 
 .percent-label {
@@ -238,15 +238,15 @@
 }
 
 
-/* ── PRESENT / ABSENT BUTTONS ── */
 
-/* Row with two buttons side by side */
+
+
 .card-btns {
   display: flex;
   gap: 8px;
 }
 
-/* Base style for both buttons */
+
 .btn-present,
 .btn-absent {
   flex: 1;
@@ -259,48 +259,48 @@
   border: 1.5px solid;
 }
 
-/* Present button - green outline by default */
+
 .btn-present {
   background: #ffffff;
   color: #2E7D32;
   border-color: #2E7D32;
 }
 
-/* Present button - filled when selected */
+
 .btn-present.selected {
   background: #2E7D32;
   color: #ffffff;
 }
 
-/* Absent button - red outline by default */
+
 .btn-absent {
   background: #ffffff;
   color: #C62828;
   border-color: #C62828;
 }
 
-/* Absent button - filled when selected */
+
 .btn-absent.selected {
   background: #C62828;
   color: #ffffff;
 }
 
-/* Card highlight when present is selected */
+
 .attend-card.marked-present {
   border-color: #A5D6A7;
   background: #F9FFF9;
 }
 
-/* Card highlight when absent is selected */
+
 .attend-card.marked-absent {
   border-color: #EF9A9A;
   background: #FFF9F9;
 }
 
 
-/* ── SAVE BUTTON ROW ── */
 
-/* Row at bottom - success message left, button right */
+
+
 .save-row {
   display: flex;
   justify-content: flex-end;
@@ -308,7 +308,7 @@
   gap: 20px;
 }
 
-/* Success message shown after saving */
+
 .save-success {
   font-size: 13.5px;
   color: #2E7D32;
@@ -350,9 +350,7 @@
 }
 
 
-/* ══════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════ */
+
 
 @media (max-width: 900px) {
   .summary-row {

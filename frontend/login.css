@@ -1,5 +1,4 @@
-/* login.css */
-/* Kalashree Sangeet Gurukul — Premium Login Page */
+
 
 * {
   box-sizing: border-box;
@@ -13,13 +12,13 @@ body {
   min-height: 100vh;
 }
 
-/* ── LAYOUT ── */
+
 .page {
   display: flex;
   min-height: 100vh;
 }
 
-/* ── LEFT PANEL — Deep Maroon with Mandala ── */
+
 .left {
   width: 44%;
   min-height: 100vh;
@@ -36,7 +35,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Mandala pattern overlay */
+
 .left::before {
   content: '';
   position: absolute;
@@ -45,7 +44,7 @@ body {
   background-size: 28px 28px;
 }
 
-/* Warm vignette */
+
 .left::after {
   content: '';
   position: absolute;
@@ -155,7 +154,7 @@ body {
   letter-spacing: 1px;
 }
 
-/* ── RIGHT PANEL ── */
+
 .right {
   width: 56%;
   min-height: 100vh;
@@ -168,7 +167,7 @@ body {
   position: relative;
 }
 
-/* Subtle decorative element */
+
 .right::before {
   content: '';
   position: absolute;
@@ -213,7 +212,7 @@ body {
   overflow: hidden;
 }
 
-/* Decorative gold corner line */
+
 .form-card::before {
   content: '';
   position: absolute;
@@ -259,7 +258,7 @@ body {
   color: #8C6A52;
 }
 
-/* ── ROLE TABS ── */
+
 .role-tabs {
   display: flex;
   gap: 8px;
@@ -303,7 +302,7 @@ body {
   color: #D4A017;
 }
 
-/* ── FIELDS ── */
+
 .field {
   margin-bottom: 20px;
 }
@@ -369,7 +368,7 @@ body {
 
 .eye-btn:hover { color: #D4A017; }
 
-/* ── LOGIN BUTTON — Saffron Gold Gradient ── */
+
 .login-btn {
   width: 100%;
   margin-top: 10px;
@@ -414,7 +413,7 @@ body {
   animation: spin 0.8s linear infinite;
 }
 
-/* ── HINT ── */
+
 .signup-hint {
   text-align: center;
   margin-top: 22px;
@@ -423,7 +422,7 @@ body {
   line-height: 1.5;
 }
 
-/* ── FOOTER ── */
+
 .footer-text {
   position: absolute;
   bottom: 20px;
@@ -431,7 +430,7 @@ body {
   color: rgba(212, 160, 23, 0.35);
 }
 
-/* ── RESPONSIVE ── */
+
 @media (max-width: 768px) {
   .page { flex-direction: column; }
   .left { width: 100%; min-height: 220px; }

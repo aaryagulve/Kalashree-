@@ -1,33 +1,33 @@
-// teacher-attendance.js
-// This file saves attendance using your backend APIs.
 
-// Backend base url (your backend runs on port 5000)
 
-// This stores teacher selection
-// Key: studentId
-// Value: { status: 'Present' or 'Absent', studentName: '...' }
+
+
+
+
+
+
 var attendanceData = {};
 
-// Keep students list so we know how many must be marked
+
 var allStudents = [];
 
-// Mark attendance in UI and store selection in attendanceData
+
 function markAttendance(studentId, status, cardEl) {
-  // Clear any existing stored status first
+  
   if (attendanceData[studentId]) {
     delete attendanceData[studentId];
   }
-  // Store selection (so Save Attendance can send to backend)
+  
   attendanceData[studentId] = {
-    status: status, // "Present" or "Absent"
+    status: status, 
     studentName: cardEl.getAttribute('data-student-name'),
   };
 
-  // Find both buttons inside this card
+  
   var presentBtn = cardEl.querySelector('.btn-present');
   var absentBtn = cardEl.querySelector('.btn-absent');
 
-  // Highlight selected button and card border
+  
   if (status === 'Present') {
     presentBtn.classList.add('selected');
     absentBtn.classList.remove('selected');
@@ -43,31 +43,31 @@ function markAttendance(studentId, status, cardEl) {
   }
 }
 
-// Create one student card (so we can remove static dummy cards)
+
 function createCard(student, index) {
-  // Create the card wrapper
+  
   var card = document.createElement('div');
   card.className = 'attend-card';
   card.id = 'card-' + index;
 
-  // Store student info on the element
+  
   card.setAttribute('data-student-id', student._id);
   card.setAttribute('data-student-name', student.name);
 
-  // Make avatar letter
+  
   var initial = 'S';
   if (student.name && student.name.length > 0) {
     initial = student.name[0].toUpperCase();
   }
 
-  // Show batch type on card
+  
   var levelText = student.batchType || 'Regular Class';
   const expectedPerWeek = levelText === 'Gurukul Batch' ? 6 : 2;
 
-  // Keep it simple: always blue avatar
+  
   var avatarClass = 'av-blue';
 
-  // Fill card HTML
+  
   card.innerHTML = `
     <div class="card-top">
       <div class="avatar ${avatarClass}">${initial}</div>
@@ -88,7 +88,7 @@ function createCard(student, index) {
     </div>
   `;
 
-  // Add click events
+  
   var presentBtn = card.querySelector('.btn-present');
   var absentBtn = card.querySelector('.btn-absent');
 
@@ -103,19 +103,19 @@ function createCard(student, index) {
   return card;
 }
 
-// Save Attendance button (sends all marked students to backend)
+
 async function saveAttendance() {
   try {
-    // How many students teacher marked
+    
     var markedCount = Object.keys(attendanceData).length;
 
-    // If not all students are marked - stop
+    
     if (markedCount < allStudents.length) {
       alert('Please mark attendance for all students before saving.');
       return;
     }
 
-    // Send each marked record to backend
+    
     for (var studentId in attendanceData) {
       var item = attendanceData[studentId];
 
@@ -123,19 +123,19 @@ async function saveAttendance() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          studentId: studentId, // required by backend
-          studentName: item.studentName, // for display
-          status: item.status, // "Present" or "Absent"
-          date: document.getElementById('attendanceDate').value // selected date
+          studentId: studentId, 
+          studentName: item.studentName, 
+          status: item.status, 
+          date: document.getElementById('attendanceDate').value 
         }),
       });
     }
 
-    // Show success message
+    
     var successMsg = document.getElementById('saveSuccess');
     successMsg.style.display = 'block';
 
-    // Hide after 4 seconds
+    
     setTimeout(function () {
       successMsg.style.display = 'none';
     }, 4000);
@@ -144,13 +144,13 @@ async function saveAttendance() {
   }
 }
 
-// Load students and render cards when page opens
+
 async function loadStudentsAndRender() {
   try {
     const response = await fetch(API_BASE + '/api/students');
     const data = await response.json();
     
-    // Only show Active students for attendance
+    
     allStudents = (data || []).filter(function(s) {
       return !s.status || s.status === 'Active';
     });
@@ -168,7 +168,7 @@ async function loadStudentsAndRender() {
       grid.appendChild(card);
     }
     
-    // Check if there's already attendance marked for the default selected date
+    
     const dateInput = document.getElementById('attendanceDate');
     if (dateInput && dateInput.value) {
       await fetchExistingAttendance(dateInput.value);
@@ -183,17 +183,17 @@ async function fetchExistingAttendance(dateStr) {
     const res = await fetch(`${API_BASE}/api/attendance/today?date=${dateStr}`);
     const records = await res.json();
     
-    // Reset attendance data for new date selection
+    
     attendanceData = {};
     
-    // Reset all cards UI
+    
     document.querySelectorAll('.attend-card').forEach(card => {
       card.classList.remove('marked-present', 'marked-absent');
       card.querySelector('.btn-present').classList.remove('selected');
       card.querySelector('.btn-absent').classList.remove('selected');
     });
 
-    // Mark existing selections
+    
     records.forEach(r => {
       const card = document.querySelector(`.attend-card[data-student-id="${r.studentId}"]`);
       if (card) {
@@ -205,19 +205,19 @@ async function fetchExistingAttendance(dateStr) {
   }
 }
 
-// Run on page open
+
 initDatePicker();
 loadStudentsAndRender();
 loadAttendanceSummary();
 
-// Initialize date picker to today and setup text update
+
 function initDatePicker() {
   var dateInput = document.getElementById('attendanceDate');
   var textStr = document.getElementById('selectedDateText');
   
   if(!dateInput) return;
   
-  // Set today as default
+  
   var today = new Date();
   var yyyy = today.getFullYear();
   var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -230,7 +230,7 @@ function initDatePicker() {
     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     textStr.textContent = d.toLocaleDateString('en-GB', options);
     
-    // When date changes, load existing attendance
+    
     if (window.allStudents && window.allStudents.length > 0) {
       fetchExistingAttendance(dateInput.value);
     }
@@ -240,7 +240,7 @@ function initDatePicker() {
   dateInput.addEventListener('change', updateText);
 }
 
-// PDF Export logic
+
 function exportAttendancePDF() {
   const element = document.getElementById('attendanceGrid');
   const opt = {
@@ -253,40 +253,40 @@ function exportAttendancePDF() {
   html2pdf().set(opt).from(element).save();
 }
 
-// Load and calculate attendance summary stats for this month
+
 async function loadAttendanceSummary() {
   try {
     const [studentsRes, allAttRes] = await Promise.all([
       fetch(API_BASE + '/api/students'),
-      fetch(API_BASE + '/api/attendance/today') // we'll use all records instead
+      fetch(API_BASE + '/api/attendance/today') 
     ]);
 
     const students = await studentsRes.json();
     const activeStudents = students.filter(s => !s.status || s.status === 'Active');
     if (activeStudents.length === 0) return;
 
-    // Fetch attendance for all students this month
+    
     const now = new Date();
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
-    // Fetch per-student attendance in parallel (active only)
+    
     const allRecords = await Promise.all(
       activeStudents.map(s => fetch(`${API_BASE}/api/attendance/student/${s._id}`).then(r => r.json()))
     );
 
-    // Filter to this month only
+    
     const thisMonthRecords = allRecords.map(recs =>
       recs.filter(r => new Date(r.date) >= monthStart)
     );
 
-    // Classes this month = unique dates across all students
+    
     const uniqueDates = new Set();
     thisMonthRecords.forEach(recs => recs.forEach(r => {
       uniqueDates.add(new Date(r.date).toDateString());
     }));
     const classesThisMonth = uniqueDates.size;
 
-    // Average attendance % across all active students this month
+    
     let totalPct = 0;
     let fullAttendanceCount = 0;
     thisMonthRecords.forEach(recs => {
@@ -298,7 +298,7 @@ async function loadAttendanceSummary() {
     });
     const avgPct = activeStudents.length > 0 ? Math.round(totalPct / activeStudents.length) : 0;
 
-    // Update per-student attendance % on cards
+    
     activeStudents.forEach((s, i) => {
       const recs = allRecords[i];
       const total = recs.length;
@@ -311,7 +311,7 @@ async function loadAttendanceSummary() {
       }
     });
 
-    // Update summary cards
+    
     const classesEl = document.getElementById('summaryClassesMonth');
     const avgEl     = document.getElementById('summaryAvgAttendance');
     const fullEl    = document.getElementById('summaryFullAttendance');

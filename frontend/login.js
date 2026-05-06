@@ -28,7 +28,7 @@ function handleLogin() {
     return;
   }
 
-  // Show loading state
+  
   btn.disabled = true;
   btnText.style.display = 'none';
   btnLoader.style.display = 'flex';
@@ -46,7 +46,7 @@ function handleLogin() {
       localStorage.setItem('userRole', data.role);
       if (data.userId) localStorage.setItem('userId', data.userId);
 
-      // First login → force password change
+      
       if (data.isFirstLogin && data.role === 'student') {
         window.location.href = 'change-password.html';
         return;

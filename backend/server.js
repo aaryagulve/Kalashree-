@@ -13,7 +13,7 @@ app.use(cors({
     'https://kalashreemusic.in',
     'http://localhost:3000',
     'http://localhost:5000',
-    'http://127.0.0.1:5500',  // Live Server (VS Code)
+    'http://127.0.0.1:5500',  
     'http://localhost:5500'
   ],
   credentials: true,
@@ -28,10 +28,10 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // 3. Database
 const mongoURI = process.env.MONGO_URL;
 mongoose.connect(mongoURI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch((err) => console.error('❌ MongoDB error:', err.message));
+  .then(() => console.log(' MongoDB connected'))
+  .catch((err) => console.error(' MongoDB error:', err.message));
 
-// 4. Routes (Cleanly imported to avoid PathErrors)
+// 4. Routes 
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/students', require('./routes/students'));
 app.use('/api/attendance', require('./routes/attendance'));
@@ -43,13 +43,13 @@ app.use('/api/feedback', require('./routes/feedback'));
 app.use('/api/dashboard', require('./routes/dashboard'));
 app.use('/api/events', require('./routes/events'));
 
-// 5. Root Route (The fix for your PathError)
+// 5. Root Route 
 app.get('/', (req, res) => {
   res.send('Kalashree API is running...');
 });
 
-// 6. Port (The fix for Render Timeout)
+// 6. Port 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 Server listening on port ${PORT}`);
+  console.log(` Server listening on port ${PORT}`);
 });

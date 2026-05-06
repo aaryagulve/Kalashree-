@@ -1,16 +1,16 @@
-// teacher-fee.js
-// This file connects your Fee Management page with backend APIs (so MongoDB gets updated).
 
-// Backend base url (your backend runs on port 5000)
 
-// Helper: format date nicely for the table
+
+
+
+
 function formatDate(dateValue) {
   if (!dateValue) return '';
   var d = new Date(dateValue);
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
 }
 
-// Helper: create fee table rows
+
 async function renderFees(records) {
   var tbody = document.querySelector('.fee-table tbody');
   tbody.innerHTML = '';
@@ -20,7 +20,7 @@ async function renderFees(records) {
     return;
   }
   try {
-    // Calculate summary
+    
     var totalExpected = 0, totalCollected = 0, paidCount = 0, unpaidCount = 0;
     records.forEach(function(fee) {
       totalExpected += fee.amount || 0;
@@ -29,13 +29,13 @@ async function renderFees(records) {
     });
     var totalPending = totalExpected - totalCollected;
 
-    // Fetch total outstanding per student (for "forgetting" tracking)
+    
     const [allUnpaidRes] = await Promise.all([
       fetch(`${API_BASE}/api/fee/defaulters`)
     ]);
     const allUnpaid = await allUnpaidRes.json();
     
-    // Create a map of studentId -> totalOwed
+    
     const debtMap = {};
     allUnpaid.forEach(f => {
       debtMap[f.studentId] = (debtMap[f.studentId] || 0) + f.amount;
@@ -53,7 +53,7 @@ async function renderFees(records) {
     if (colHint) colHint.textContent = paidCount + ' student' + (paidCount !== 1 ? 's' : '') + ' paid';
     if (penHint) penHint.textContent = unpaidCount + ' student' + (unpaidCount !== 1 ? 's' : '') + ' unpaid';
 
-    // Build each row
+    
     records.forEach(function(fee) {
       var row = document.createElement('tr');
       row.id = 'row-' + fee._id;
@@ -87,7 +87,7 @@ async function renderFees(records) {
         actionHtml = '<button class="mark-paid-btn" type="button" onclick="markPaid(\'' + fee._id + '\')">Mark as Paid</button>';
       }
 
-      // Batch type and Cumulative debt
+      
       var batchLabel = fee.batchType || 'Regular Class';
       var batchBadge = batchLabel === 'Gurukul Batch' ? 'badge-gurukul' : 'badge-regular';
       
@@ -121,41 +121,41 @@ async function renderFees(records) {
   }
 }
 
-// Mark a fee as paid
+
 async function markPaid(feeId) {
   try {
-    // Call backend to update this fee record
+    
     await fetch(API_BASE + '/api/fee/pay/' + feeId, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({}),
     });
 
-    // Reload table
+    
     loadFees();
   } catch (err) {
     alert('Payment failed: ' + err.message);
   }
 }
 
-// Generate fees (safe - backend will skip if already generated) and load current month fees
+
 async function loadFees() {
   try {
-    // Generate fees for current month
+    
     await fetch(API_BASE + '/api/fee/generate', { method: 'POST' });
 
-    // Load available months for dropdown
+    
     await loadMonthDropdown();
 
-    // Get selected month from dropdown
+    
     const monthFilter = document.getElementById('monthFilter');
     const selectedMonth = monthFilter ? monthFilter.value : '';
 
-    // Update label
+    
     const label = document.getElementById('currentMonthLabel');
     if (label) label.textContent = selectedMonth || 'current month';
 
-    // Load fee records for selected month
+    
     const url = selectedMonth
       ? `${API_BASE}/api/fee/all?month=${encodeURIComponent(selectedMonth)}`
       : `${API_BASE}/api/fee/all`;
@@ -306,7 +306,7 @@ async function rejectPayment(feeId) {
 
 
 
-/* ── TRANSACTION HISTORY LOGIC ── */
+
 var _allHistoryData = [];
 
 async function loadHistory() {
@@ -374,17 +374,17 @@ function filterHistory() {
   renderHistory(filtered);
 }
 
-// Update loadFees to also call loadHistory
+
 const originalLoadFees = loadFees;
 loadFees = async function() {
   await originalLoadFees();
   loadHistory();
 };
 
-// Initial load
+
 loadFees();
 
-// PDF Export logic
+
 function exportFeePDF() {
   const element = document.querySelector('.table-wrap');
   const opt = {

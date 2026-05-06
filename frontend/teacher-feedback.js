@@ -1,4 +1,4 @@
-// teacher-feedback.js
+
 var teacherId = localStorage.getItem('userId');
 
 document.addEventListener('DOMContentLoaded', async function() {
