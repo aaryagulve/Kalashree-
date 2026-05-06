@@ -19,16 +19,15 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'kalashree/audio',
-    resource_type: 'video', // Cloudinary uses 'video' for audio files
+    resource_type: 'video',
     allowed_formats: ['mp3', 'wav', 'm4a', 'mp4']
   }
 });
 
 const audioUpload = multer({
   storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 }, // 50 MB
+  limits: { fileSize: 50 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    // Accept anything the browser labels as audio or video/mp4
     if (file.mimetype.startsWith('audio/') || file.mimetype === 'video/mp4') {
       cb(null, true);
     } else {
@@ -38,7 +37,6 @@ const audioUpload = multer({
 });
 
 // ── POST /api/homework/submit ─────────────────────────────
-// Handles both file upload (FormData) and link (JSON)
 router.post('/submit', audioUpload.single('audioFile'), async (req, res) => {
   try {
     const { studentId, title, fileUrl, submissionType } = req.body;
@@ -47,7 +45,6 @@ router.post('/submit', audioUpload.single('audioFile'), async (req, res) => {
       return res.status(400).json({ message: 'studentId and title are required' });
     }
 
-    // Determine type: if a file was received → upload, else → link
     const type = req.file ? 'upload' : (submissionType || 'link');
 
     if (type === 'link' && !fileUrl) {
@@ -64,7 +61,6 @@ router.post('/submit', audioUpload.single('audioFile'), async (req, res) => {
 
     await homework.save();
 
-    // Only count as a practice session if an actual audio file was uploaded
     if (type === 'upload' && req.file) {
       const User = require('../models/user');
       const student = await User.findById(studentId);
@@ -75,7 +71,6 @@ router.post('/submit', audioUpload.single('audioFile'), async (req, res) => {
           return pd.getTime() === today.getTime();
         });
         if (!alreadyToday) {
-          // Update streak
           let streak = student.practiceStreak || 0;
           if (student.lastPracticeDate) {
             const last = new Date(student.lastPracticeDate); last.setHours(0,0,0,0);
@@ -111,7 +106,6 @@ router.get('/student/:studentId', async (req, res) => {
 });
 
 // ── GET /api/homework ─────────────────────────────────────
-// Teacher view — ?filter=pending|reviewed|all
 router.get('/', async (req, res) => {
   try {
     const filter = req.query.filter || 'pending';

@@ -27,7 +27,7 @@ const storage = new CloudinaryStorage({
 });
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB max
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) cb(null, true);
     else cb(new Error('Only image files allowed'));
@@ -117,7 +117,6 @@ router.put('/:id', requireTeacher, upload.single('poster'), async (req, res) => 
 });
 
 // ── POST /api/events/:id/attend ───────────────────────────
-// Student RSVPs to an event
 router.post('/:id/attend', async (req, res) => {
   try {
     const { studentId, studentName } = req.body;
@@ -126,7 +125,6 @@ router.post('/:id/attend', async (req, res) => {
     const event = await Event.findById(req.params.id);
     if (!event) return res.status(404).json({ message: 'Event not found' });
 
-    // Prevent duplicate RSVP
     const already = event.attendees.find(a => a.studentId.toString() === studentId);
     if (already) return res.json({ message: 'Already registered', attendees: event.attendees });
 
@@ -139,7 +137,6 @@ router.post('/:id/attend', async (req, res) => {
 });
 
 // ── DELETE /api/events/:id/attend ─────────────────────────
-// Student cancels RSVP
 router.delete('/:id/attend', async (req, res) => {
   try {
     const { studentId } = req.body;
@@ -155,7 +152,6 @@ router.delete('/:id/attend', async (req, res) => {
 });
 
 // ── GET /api/events/:id/attendees ─────────────────────────
-// Teacher views who is attending
 router.get('/:id/attendees', async (req, res) => {
   try {
     const event = await Event.findById(req.params.id).select('title date attendees');

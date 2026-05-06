@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Feedback = require('../models/Feedback');
 
-// POST /api/feedback/send
-// Send a new feedback/guru note
 router.post('/send', async (req, res) => {
   try {
     const { teacherId, studentId, noteText, isGlobal } = req.body;
@@ -27,8 +25,6 @@ router.post('/send', async (req, res) => {
   }
 });
 
-// GET /api/feedback/teacher
-// Get all feedback sent by a teacher
 router.get('/teacher', async (req, res) => {
   try {
     const records = await Feedback.find()
@@ -41,8 +37,6 @@ router.get('/teacher', async (req, res) => {
   }
 });
 
-// GET /api/feedback/student/:id
-// Get all feedback for a specific student (including global)
 router.get('/student/:id', async (req, res) => {
   try {
     const studentId = req.params.id;

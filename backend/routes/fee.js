@@ -26,17 +26,17 @@ const storage = new CloudinaryStorage({
 
 const screenshotUpload = multer({
   storage: storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB
+  limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.startsWith('image/')) cb(null, true);
     else cb(new Error('Only image files allowed'));
   }
 });
 
-// Helper: get month label like "March 2026"
+
 function getMonthLabel() {
-  const now = new Date(); // Current date
-  const monthNames = [ // Month names array
+  const now = new Date(); 
+  const monthNames = [ 
     'January',
     'February',
     'March',
@@ -49,74 +49,68 @@ function getMonthLabel() {
     'October',
     'November',
     'December',
-  ]; // End month names array
-  const monthName = monthNames[now.getMonth()]; // Get month name from index
-  const year = now.getFullYear(); // Get current year
-  return monthName + ' ' + year; // Example March 2026
+  ]; 
+  const monthName = monthNames[now.getMonth()]; 
+  const year = now.getFullYear(); 
+  return monthName + ' ' + year; 
 }
 
-// Helper: due date = last day of this month
+
 function getDueDateForCurrentMonth() {
-  const now = new Date(); // Current date
-  const year = now.getFullYear(); // Current year
-  const month = now.getMonth(); // Current month index (0-11)
-  return new Date(year, month + 1, 0); // Last day of current month
+  const now = new Date(); 
+  const year = now.getFullYear(); 
+  const month = now.getMonth(); 
+  return new Date(year, month + 1, 0); 
 }
 
-// POST /api/fee/generate
-// Generate fee records for all active students for current month
 router.post('/generate', async (req, res) => {
   try {
-    console.log('Generate fee request received'); // Log request
+    console.log('Generate fee request received'); 
 
-    const month = getMonthLabel(); // Current month label
-    const dueDate = getDueDateForCurrentMonth(); // Due date for current month
+    const month = getMonthLabel(); 
+    const dueDate = getDueDateForCurrentMonth(); 
 
-    // 1) Get all students
-    const students = await User.find({ role: 'student' }); // Simple fetch
+   
+    const students = await User.find({ role: 'student' }); 
 
-    // 2) Loop and create fee records for each active student
+    
     for (const student of students) {
-      const active = !student.status || student.status === 'Active'; // Treat missing status as active
+      const active = !student.status || student.status === 'Active'; 
 
       if (!active) {
-        continue; // Skip inactive students
+        continue; 
       }
 
-      // Check if fee already generated for this student + this month
+      
       const existing = await Fee.findOne({
-        studentId: student._id, // Match student
-        month: month, // Match current month
-      }); // End query
+        studentId: student._id,
+        month: month, 
+      }); 
 
       if (existing) {
-        continue; // Skip if already generated
+        continue;
       }
 
-      // Create new fee record
       const record = new Fee({
-        studentId: student._id, // Store student id
-        studentName: student.name, // Store student name
-        month: month, // Store month
-        amount: student.monthlyFee || 0, // Take monthlyFee from student
-        dueDate: dueDate, // Due date
-        status: 'Unpaid', // Default unpaid
-        paidDate: null, // Not paid yet
-      }); // End record
+        studentId: student._id,
+        studentName: student.name,
+        month: month,
+        amount: student.monthlyFee || 0,
+        dueDate: dueDate,
+        status: 'Unpaid',
+        paidDate: null,
+      });
 
-      await record.save(); // Save fee to database
-      console.log('Fee created for:', student.email); // Simple log
-    } // End for loop
+      await record.save();
+      console.log('Fee created for:', student.email);
+    }
 
-    return res.json({ message: 'Fee generation complete', month: month }); // Send response
+    return res.json({ message: 'Fee generation complete', month: month });
   } catch (err) {
-    return res.status(500).json({ message: err.message }); // Send error
+    return res.status(500).json({ message: err.message });
   }
 });
 
-// GET /api/fee/all
-// Get fee records — Active students only, with batchType
-// Optional ?month=April 2026 to filter by specific month
 router.get('/all', async (req, res) => {
   try {
     const month = req.query.month || getMonthLabel();
@@ -148,12 +142,9 @@ router.get('/all', async (req, res) => {
   }
 });
 
-// GET /api/fee/months
-// Get list of all months that have fee records (for dropdown)
 router.get('/months', async (req, res) => {
   try {
     const months = await Fee.distinct('month');
-    // Sort newest first
     const sorted = months.sort((a, b) => {
       const da = new Date(a); const db = new Date(b);
       return db - da;
@@ -164,65 +155,58 @@ router.get('/months', async (req, res) => {
   }
 });
 
-// GET /api/fee/student/:id
-// Get fee history for one student
 router.get('/student/:id', async (req, res) => {
   try {
-    console.log('Get fee history for student'); // Log request
+    console.log('Get fee history for student');
 
-    const studentId = req.params.id; // Read student id
+    const studentId = req.params.id;
 
-    const records = await Fee.find({ studentId: studentId }).sort({ dueDate: -1 }); // Newest first
+    const records = await Fee.find({ studentId: studentId }).sort({ dueDate: -1 });
 
-    return res.json(records); // Send history
+    return res.json(records);
   } catch (err) {
-    return res.status(500).json({ message: err.message }); // Send error
+    return res.status(500).json({ message: err.message });
   }
 });
 
-// PUT /api/fee/pay/:id
-// Mark a fee record as paid and set paidDate to today
 router.put('/pay/:id', async (req, res) => {
   try {
-    console.log('Mark fee as paid'); // Log request
+    console.log('Mark fee as paid');
 
-    const feeId = req.params.id; // Fee record id
+    const feeId = req.params.id;
 
     const updated = await Fee.findByIdAndUpdate(
-      feeId, // Which fee record
+      feeId,
       {
-        status: 'Paid', // Mark as paid
-        paidDate: new Date(), // Set paid date
-      }, // Update fields
-      { new: true } // Return updated record
-    ); // End update
+        status: 'Paid',
+        paidDate: new Date(),
+      },
+      { new: true }
+    );
 
-    return res.json(updated); // Send updated record
+    return res.json(updated);
   } catch (err) {
-    return res.status(500).json({ message: err.message }); // Send error
+    return res.status(500).json({ message: err.message });
   }
 });
 
-// GET /api/fee/defaulters
-// Get students whose fee status is Unpaid and due date has passed
 router.get('/defaulters', async (req, res) => {
   try {
-    console.log('Get defaulters'); // Log request
+    console.log('Get defaulters');
 
-    const today = new Date(); // Today
+    const today = new Date();
 
     const records = await Fee.find({
-      status: 'Unpaid', // Still unpaid
-      dueDate: { $lt: today }, // Due date passed
-    }).sort({ dueDate: -1 }); // Newest first
+      status: 'Unpaid',
+      dueDate: { $lt: today },
+    }).sort({ dueDate: -1 });
 
-    return res.json(records); // Send defaulter fee records
+    return res.json(records);
   } catch (err) {
-    return res.status(500).json({ message: err.message }); // Send error
+    return res.status(500).json({ message: err.message });
   }
 });
 
-// PUT /api/fee/request/:id  (with optional screenshot upload)
 router.put('/request/:id', screenshotUpload.single('screenshot'), async (req, res) => {
   try {
     const feeId = req.params.id;
@@ -241,72 +225,64 @@ router.put('/request/:id', screenshotUpload.single('screenshot'), async (req, re
   }
 });
 
-// PUT /api/fee/confirm/:id
-// Teacher confirms payment
 router.put('/confirm/:id', async (req, res) => {
   try {
-    console.log('Teacher confirmed payment'); // Log request
+    console.log('Teacher confirmed payment');
 
-    const feeId = req.params.id; // Fee record id
+    const feeId = req.params.id;
 
     const updated = await Fee.findByIdAndUpdate(
-      feeId, // Which fee record
+      feeId,
       {
-        status: 'Paid', // Mark as paid
-        paymentStatus: 'Paid', // Advanced flow
-        paidDate: new Date(), // Set paid date
-      }, // Update fields
-      { new: true } // Return updated record
-    ); // End update
+        status: 'Paid',
+        paymentStatus: 'Paid',
+        paidDate: new Date(),
+      },
+      { new: true }
+    );
 
-    return res.json(updated); // Send updated record
+    return res.json(updated);
   } catch (err) {
-    return res.status(500).json({ message: err.message }); // Send error
+    return res.status(500).json({ message: err.message });
   }
 });
 
-// PUT /api/fee/reject/:id
-// Teacher rejects payment
 router.put('/reject/:id', async (req, res) => {
   try {
-    console.log('Teacher rejected payment'); // Log request
+    console.log('Teacher rejected payment');
 
-    const feeId = req.params.id; // Fee record id
+    const feeId = req.params.id;
 
     const updated = await Fee.findByIdAndUpdate(
-      feeId, // Which fee record
+      feeId,
       {
-        status: 'Unpaid', // Revert to unpaid
-        paymentStatus: 'Rejected', // Mark as rejected for student to see
-      }, // Update fields
-      { new: true } // Return updated record
-    ); // End update
+        status: 'Unpaid',
+        paymentStatus: 'Rejected',
+      },
+      { new: true }
+    );
 
-    return res.json(updated); // Send updated record
+    return res.json(updated);
   } catch (err) {
-    return res.status(500).json({ message: err.message }); // Send error
+    return res.status(500).json({ message: err.message });
   }
 });
 
-// GET /api/fee/requests
-// Get all payment requested fees for teacher
 router.get('/requests', async (req, res) => {
   try {
-    console.log('Get all payment requests'); // Log request
+    console.log('Get all payment requests');
 
-    const records = await Fee.find({ paymentStatus: 'Payment Requested' }).sort({ paymentRequestDate: -1 }); // Newest requests first
+    const records = await Fee.find({ paymentStatus: 'Payment Requested' }).sort({ paymentRequestDate: -1 });
 
-    return res.json(records); // Send fee requests
+    return res.json(records);
   } catch (err) {
-    return res.status(500).json({ message: err.message }); // Send error
+    return res.status(500).json({ message: err.message });
   }
 });
 
-// POST /api/fee/confirm-bulk
-// Teacher confirms multiple payments at once
 router.post('/confirm-bulk', async (req, res) => {
   try {
-    const { ids } = req.body; // array of fee IDs
+    const { ids } = req.body;
     if (!Array.isArray(ids) || ids.length === 0) return res.status(400).json({ message: 'No IDs provided' });
     await Fee.updateMany(
       { _id: { $in: ids } },

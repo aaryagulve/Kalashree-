@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Attendance = require('../models/Attendance');
-const User = require('../models/user'); // Moved to top
+const User = require('../models/user'); 
 
-// POST /api/attendance/mark
 router.post('/mark', async (req, res) => {
   try {
     const { studentId, studentName, status, date } = req.body;
@@ -25,7 +24,6 @@ router.post('/mark', async (req, res) => {
   }
 });
 
-// GET /api/attendance/today (can also pass ?date=YYYY-MM-DD)
 router.get('/today', async (req, res) => {
   try {
     const targetDate = req.query.date ? new Date(req.query.date) : new Date();
@@ -44,7 +42,6 @@ router.get('/today', async (req, res) => {
   }
 });
 
-// GET /api/attendance/student/:id
 router.get('/student/:id', async (req, res) => {
   try {
     const records = await Attendance.find({ studentId: req.params.id }).sort({ date: -1 });
@@ -54,7 +51,6 @@ router.get('/student/:id', async (req, res) => {
   }
 });
 
-// GET /api/attendance/percentage/:id
 router.get('/percentage/:id', async (req, res) => {
   try {
     const records = await Attendance.find({ studentId: req.params.id });
@@ -68,7 +64,6 @@ router.get('/percentage/:id', async (req, res) => {
   }
 });
 
-// GET /api/attendance/weekly-progress/:id
 router.get('/weekly-progress/:id', async (req, res) => {
   try {
     const student = await User.findById(req.params.id);

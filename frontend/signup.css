@@ -1,0 +1,29 @@
+.signup-hint {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 13.5px;
+  color: #8C6A52;
+}
+
+.back-link {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  color: #9C7A62;
+  text-decoration: none;
+  font-size: 13.5px;
+  font-weight: 500;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.back-link:hover {
+  color: #7A3210;
+}
+
+@media (max-width: 900px) {
+  .back-link {
+    top: 20px;
+    left: 20px;
+  }
+}

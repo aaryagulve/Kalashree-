@@ -14,7 +14,6 @@ function verifyTeacher(req, res) {
   return decoded;
 }
 
-// GET /api/ragas — get global raga list (public, students can read)
 router.get('/', async (req, res) => {
   try {
     let list = await RagaList.findOne();
@@ -27,7 +26,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// PUT /api/ragas — teacher updates global raga list
 router.put('/', async (req, res) => {
   try {
     verifyTeacher(req, res);
@@ -44,7 +42,6 @@ router.put('/', async (req, res) => {
   }
 });
 
-// GET /api/ragas/:studentId/progress — get one student's raga progress
 router.get('/:studentId/progress', async (req, res) => {
   try {
     const student = await User.findById(req.params.studentId).select('ragaProgress name');
@@ -55,18 +52,15 @@ router.get('/:studentId/progress', async (req, res) => {
   }
 });
 
-// PUT /api/ragas/:studentId/progress — teacher updates a student's raga statuses
-// Body: { updates: [{ ragaName: 'Yaman', status: 'Mastered' }, ...] }
 router.put('/:studentId/progress', async (req, res) => {
   try {
     verifyTeacher(req, res);
-    const { updates } = req.body; // array of { ragaName, status }
+    const { updates } = req.body;
     if (!Array.isArray(updates)) return res.status(400).json({ message: 'updates must be an array' });
 
     const student = await User.findById(req.params.studentId);
     if (!student) return res.status(404).json({ message: 'Student not found' });
 
-    // Merge updates into existing ragaProgress
     updates.forEach(({ ragaName, status }) => {
       const existing = student.ragaProgress.find(r => r.ragaName === ragaName);
       if (existing) {
@@ -76,7 +70,6 @@ router.put('/:studentId/progress', async (req, res) => {
       }
     });
 
-    // Auto-calculate ragaLevel from mastered count
     const masteredCount = student.ragaProgress.filter(r => r.status === 'Mastered').length;
     if      (masteredCount >= 7) student.ragaLevel = 'Gurukul';
     else if (masteredCount >= 5) student.ragaLevel = 'Advanced';

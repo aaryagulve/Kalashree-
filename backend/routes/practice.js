@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
 
-// @route   PUT /api/practice/mark-done
-// @desc    Mark practice done for a student and update streak
 router.put('/mark-done', async (req, res) => {
   try {
     const { studentId, date } = req.body;
@@ -23,7 +21,6 @@ router.put('/mark-done', async (req, res) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Check if this date is already in practiceHistory
     const alreadyMarked = (user.practiceHistory || []).some(d => {
       const pd = new Date(d);
       pd.setHours(0, 0, 0, 0);
@@ -69,10 +66,7 @@ router.put('/mark-done', async (req, res) => {
 });
 
 // ── IMPORTANT: /stats/weekly MUST come BEFORE /:studentId ──
-// Otherwise Express will match "stats" as a studentId param and crash.
 
-// @route   GET /api/practice/stats/weekly
-// @desc    Get practice counts for the last 7 days across all students
 router.get('/stats/weekly', async (req, res) => {
   try {
     const students = await User.find({ role: 'student' });
@@ -109,8 +103,6 @@ router.get('/stats/weekly', async (req, res) => {
   }
 });
 
-// @route   GET /api/practice/:studentId
-// @desc    Get current practice streak for a student
 router.get('/:studentId', async (req, res) => {
   try {
     const user = await User.findById(req.params.studentId);
